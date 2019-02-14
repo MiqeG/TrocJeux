@@ -46,8 +46,9 @@ app.post('/',(req,res)=>{
       if (err) return console.error(err);
       console.log(comment.Comment + "\r\n saved to comment collection.");
       req.flash('success',"Merci")
+      res.redirect('/')
     });
-   res.redirect('/')
+  
    }
 
 })

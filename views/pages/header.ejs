@@ -6,6 +6,10 @@
     <title>Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/semantic/semantic.min.css">
+   
+    <script src="assets/jquery/jquery-3.3.1.min.js"></script>
+    <script src="assets/semantic/semantic.min.js"></script>
+   
  <style>
      .main.container{
          margin-top: 7em;
@@ -22,4 +26,12 @@
         <div class="ui negative message">
             <%= flash.error %>
         </div>
+        
         <% } %>
+        <% if(locals.flash && locals.flash.success){ %>
+            <div class="ui success message">
+                <%= flash.success %>
+            </div>
+            
+            <% } %>
+      
