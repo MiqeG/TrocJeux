@@ -10,6 +10,7 @@ var CommentSchema = mongoose.Schema({
     Type:String
   
   });
+
   var Comment = mongoose.model('Comment', CommentSchema, 'Comment2');
 db.once('open', function() { console.log("Connection to database NewTest Successful!")});
 
