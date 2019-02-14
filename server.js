@@ -1,7 +1,7 @@
 let express = require('express')
 let app = express()
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/TestDB',{useNewUrlParser:true});
+mongoose.connect('mongodb://localhost:27017/NewTest',{useNewUrlParser:true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -11,7 +11,7 @@ var CommentSchema = mongoose.Schema({
   
   });
   var Comment = mongoose.model('Comment', CommentSchema, 'Comment');
-db.once('open', function() { console.log("Connection to database TestDB Successful!")});
+db.once('open', function() { console.log("Connection to database NewTest Successful!")});
 
 let session=require('express-session')
 let configFile= require('./config/server_config.json')
@@ -45,7 +45,9 @@ app.post('/',(req,res)=>{
     comment1.save(function (err, comment) {
       if (err) return console.error(err);
       console.log(comment.Comment + "\r\n saved to comment collection.");
+      req.flash('success',"Merci")
     });
+   res.redirect('/')
    }
 
 })
