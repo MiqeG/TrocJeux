@@ -88,7 +88,11 @@ $(document).ready(function(){
           },
           {
             type   : 'regExp[^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,10}$]',
-            prompt : 'Veuillez entrer un mot de passe valide'
+            prompt : 'Veuillez entrer un mot de passe valide, minimum 8 caractères,une minuscule,une majuscule,un chiffre et un caractère spécial'
+          },
+          {
+            type   : 'maxLength[40]',
+            prompt : "Mot de passe maximum 40 caractères"
           }
        
         ]

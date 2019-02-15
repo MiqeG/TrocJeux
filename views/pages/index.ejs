@@ -1,6 +1,8 @@
 <% include header %>
 <script src="assets/formValidation/formValidation.js"></script>
 
+        <h1 class="head">Formulaire d'inscription</h1>
+    
 <form class="ui form" action="/Inscription" method="POST">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="two fields">
@@ -8,18 +10,18 @@
             <label for="NomUtilisateur">Nom d'utilisateur</label>
             <% if(locals.formdata && locals.formdata.NomUtilisateur ){ %>
 
-            <input name="NomUtilisateur" id="NomUtilisateur" value="<%= locals.formdata.NomUtilisateur %>"></input>
+            <input name="NomUtilisateur" id="NomUtilisateur" value="<%= locals.formdata.NomUtilisateur %>" maxlength="15" minlength="4"></input>
             <% }else{ %>
 
-            <input name="NomUtilisateur" id="NomUtilisateur"></input>
+            <input name="NomUtilisateur" id="NomUtilisateur" maxlength="15" minlength="4"></input>
             <% } %>
         </div>
         <div class="field">
             <label for="Nom">Nom</label>
             <% if(locals.formdata && locals.formdata.Nom){ %>
-            <input name="Nom" id="Nom" value="<%= locals.formdata.Nom %>"></input>
+            <input name="Nom" id="Nom" value="<%= locals.formdata.Nom %>" maxlength="35" minlength="2"></input>
             <% }else{ %>
-            <input name="Nom" id="Nom"></input>
+            <input name="Nom" id="Nom" maxlength="35" minlength="2"></input>
             <% } %>
 
         </div>
@@ -29,18 +31,18 @@
 
             <label for="Prenom">Prenom</label>
             <% if(locals.formdata && locals.formdata.Prenom ){ %>
-            <input name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>"></input>
+            <input name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>" maxlength="35" minlength="2"></input>
             <% }else{ %>
-            <input name="Prenom" id="Prenom"></input>
+            <input name="Prenom" id="Prenom" maxlength="35" minlength="2"></input>
             <% } %>
         </div>
         <div class="field">
 
             <label for="Email">Email</label>
             <% if(locals.formdata && locals.formdata.Email && locals.flash.error!="Email deja soumis"){ %>
-            <input name="Email" id="Email" value="<%= locals.formdata.Email %>"></input>
+            <input name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50"></input>
             <% }else{ %>
-                <input name="Email" id="Email"></input>
+                <input name="Email" id="Email" maxlength="50"></input>
                 <% } %>
         </div>
     </div>
@@ -48,31 +50,31 @@
         <div class="field">
             <label for="MotDePasse">Mot de passe</label>
             <% if(locals.formdata && locals.formdata.MotDePasse ){ %>
-            <input name="MotDePasse" id="MotDePasse" type="password" value="<%= locals.formdata.MotDePasse %>"></input>
+            <input name="MotDePasse" id="MotDePasse" type="password" value="<%= locals.formdata.MotDePasse %>" maxlength="40"></input>
             <% }else{ %>
-                <input name="MotDePasse" id="MotDePasse" type="password"></input>
+                <input name="MotDePasse" id="MotDePasse" type="password" maxlength="40"></input>
                 <% } %>
         </div>
         <div class="field">
             <label for="MotDePasse">Verification mot de passe</label>
-            <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password"></input>
+            <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password" maxlength="40"></input>
         </div>
     </div>
     <div class="two fields">
         <div class="field">
             <label for=" Adresse">Adresse</label>
             <% if(locals.formdata && locals.formdata.Adresse ){ %>
-            <input name="Adresse" id="Adresse" value="<%= locals.formdata.Adresse %>"></input>
+            <input name="Adresse" id="Adresse" value="<%= locals.formdata.Adresse %>" maxlength="400" minlength="4"></input>
             <% }else{ %>
-                <input name="Adresse" id="Adresse"></input>
+                <input name="Adresse" id="Adresse" maxlength="400" minlength="4"></input>
                 <% } %>
         </div>
         <div class="field">
             <label for="CodePostal">Code Postal</label>
             <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.error!="Ville introuvable" ){ %>
-            <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>"></input>
+            <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>" maxlength="5"></input>
             <% }else{ %>
-            <input name="CodePostal" id="CodePostal"></input>
+            <input name="CodePostal" id="CodePostal"  maxlength="5"></input>
             <% } %>
         </div>
     </div>
