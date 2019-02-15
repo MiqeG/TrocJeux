@@ -43,9 +43,9 @@ app.use(require('./middlewares/flash'))
 app.get('/', (req, res) => {
 
   res.render('pages/index')
-  
+
 })
-app.post('/', (req, res) => {
+app.post('/Inscription', (req, res) => {
   if (req.body === undefined || req.body === '') {
     req.flash('error', 'formulaire vide')
     res.redirect('/')
@@ -56,9 +56,11 @@ app.post('/', (req, res) => {
     User.findOne({Email:req.body.Email},'Email',function(err,item){
       if(err)return console.error(err)
       else if(item!=null) {
-       
-        req.flash('error','Email deja soumis')
+      
         
+        req.flash('error','Email deja soumis')
+      
+      
         res.redirect('/')
        
       }
@@ -71,8 +73,10 @@ app.post('/', (req, res) => {
       if(arrayFound[0]===undefined){
         
         req.flash('error','Ville introuvable')
-        res.redirect('/')
       
+       
+       res.redirect('/')
+       return
       }
      
         var user1 = new User({

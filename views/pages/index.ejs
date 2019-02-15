@@ -1,97 +1,89 @@
 <% include header %>
 <script src="assets/formValidation/formValidation.js"></script>
-<!-- <form action="/" method="POST" class="ui form error">
 
-<div class="field">
-    <label for="NomUtilisateur">Nom d'utilisateur</label>
-    <input name="NomUtilisateur" id="NomUtilisateur"></input>
-</div>
-<div class="field">
-    <label for="Nom">Nom</label>
-    <input name="Nom" id="Nom"></input>
-</div>
-<div class="field">
-    <label for="Prenom">Prenom</label>
-    <input name="Prenom" id="Prenom"></input>
-</div>
-<div class="field">
-    <label for="Email">Email</label>
-    <input name="Email" id="Email"></input>
-</div>
-<div class="field">
-    <label for="MotDePasse">Mot de passe</label>
-    <input name="MotDePasse" id="MotDePasse"></input>
-</div>
-<div class="field">
-    <label for=" Adresse">Adresse</label>
-    <input name="Adresse" id="Adresse"></input>
-</div>
-<div class="field">
-    <label for="CodePostal">Code Postal</label>
-    <input name="CodePostal" id="CodePostal"></input>
-</div>
-<div class="field">
-    <label for="Ville">Ville</label>
-    <input name="Ville" id="Ville"></input>
-</div>
-<div class="field">
-    <label for="Pays">Pays</label>
-    <input name="Pays" id="Pays"></input>
-</div>
-
-
-</form> -->
-
-<form class="ui form" action="/" method="POST">
+<form class="ui form" action="/Inscription" method="POST">
     <div class="two fields">
-      <div class="field">
-        <label for="NomUtilisateur">Nom d'utilisateur</label>
-        <input name="NomUtilisateur" id="NomUtilisateur"></input>
-      </div>
-      <div class="field">
-        <label for="Nom">Nom</label>
-    <input name="Nom" id="Nom"></input>
-      </div>
+        <div class="field">
+            <label for="NomUtilisateur">Nom d'utilisateur</label>
+            <% if(locals.formdata && locals.formdata.NomUtilisateur ){ %>
+
+            <input name="NomUtilisateur" id="NomUtilisateur" value="<%= locals.formdata.NomUtilisateur %>"></input>
+            <% }else{ %>
+
+            <input name="NomUtilisateur" id="NomUtilisateur"></input>
+            <% } %>
+        </div>
+        <div class="field">
+            <label for="Nom">Nom</label>
+            <% if(locals.formdata && locals.formdata.Nom){ %>
+            <input name="Nom" id="Nom" value="<%= locals.formdata.Nom %>"></input>
+            <% }else{ %>
+            <input name="Nom" id="Nom"></input>
+            <% } %>
+
+        </div>
     </div>
     <div class="two fields">
-      <div class="field">
-        <label for="Prenom">Prenom</label>
-    <input name="Prenom" id="Prenom"></input>
-      </div>
-      <div class="field">
-        <label for="Email">Email</label>
-    <input name="Email" id="Email"></input>
-      </div>
+        <div class="field">
+
+            <label for="Prenom">Prenom</label>
+            <% if(locals.formdata && locals.formdata.Prenom ){ %>
+            <input name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>"></input>
+            <% }else{ %>
+            <input name="Prenom" id="Prenom"></input>
+            <% } %>
+        </div>
+        <div class="field">
+
+            <label for="Email">Email</label>
+            <% if(locals.formdata && locals.formdata.Email && locals.flash.error!="Email deja soumis"){ %>
+            <input name="Email" id="Email" value="<%= locals.formdata.Email %>"></input>
+            <% }else{ %>
+                <input name="Email" id="Email"></input>
+                <% } %>
+        </div>
     </div>
     <div class="two fields">
-      <div class="field">
-        <label for="MotDePasse">Mot de passe</label>
-    <input name="MotDePasse" id="MotDePasse" type="password"></input>
-      </div>
-      <div class="field">
-        <label for="MotDePasse">Verification mot de passe</label>
-    <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password"></input>
-      </div>
+        <div class="field">
+            <label for="MotDePasse">Mot de passe</label>
+            <% if(locals.formdata && locals.formdata.MotDePasse ){ %>
+            <input name="MotDePasse" id="MotDePasse" type="password" value="<%= locals.formdata.MotDePasse %>"></input>
+            <% }else{ %>
+                <input name="MotDePasse" id="MotDePasse" type="password"></input>
+                <% } %>
+        </div>
+        <div class="field">
+            <label for="MotDePasse">Verification mot de passe</label>
+            <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password"></input>
+        </div>
     </div>
     <div class="two fields">
-      <div class="field">
-        <label for=" Adresse">Adresse</label>
-    <input name="Adresse" id="Adresse"></input>
-      </div>
-      <div class="field">
-        <label for="CodePostal">Code Postal</label>
-        <input name="CodePostal" id="CodePostal"></input>
-      </div>
+        <div class="field">
+            <label for=" Adresse">Adresse</label>
+            <% if(locals.formdata && locals.formdata.Adresse ){ %>
+            <input name="Adresse" id="Adresse" value="<%= locals.formdata.Adresse %>"></input>
+            <% }else{ %>
+                <input name="Adresse" id="Adresse"></input>
+                <% } %>
+        </div>
+        <div class="field">
+            <label for="CodePostal">Code Postal</label>
+            <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.error!="Ville introuvable" ){ %>
+            <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>"></input>
+            <% }else{ %>
+            <input name="CodePostal" id="CodePostal"></input>
+            <% } %>
+        </div>
     </div>
     <div class="two fields">
         <div class="field">
             <label for="Ville">Ville</label>
             <label name="Ville" id="Ville"></label>
         </div>
-   
-      </div>
-      
+
+    </div>
+
     <button type="submit" class="ui blue labeled submit icon button"><i class="icon edit"></i>Envoyer</button>
     <div class="ui error message"></div>
-  </form>
+</form>
 <% include footer %>
