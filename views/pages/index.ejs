@@ -93,12 +93,20 @@
         <div class="field">
             <label>Pays</label>
             <div class="ui fluid selection dropdown">
-                <input type="hidden" name="Pays" id="Pays">
-                <div class="default text">-</div>
+                    <% if(locals.formdata &&locals.formdata.Pays  ){ %>
+                <input type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
+                <% }else{ %>
+                    <input type="hidden" name="Pays" id="Pays">
+                    <% } %>
+                <% if(locals.formdata &&locals.formdata.Pays  ){ %>
+                <div class="default text"><%= locals.formdata.Pays  %></div>
+                <% }else{ %>
+                    <div class="default text">-</div>
+                    <% } %>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <div class="item" data-value="1">France</div>
-
+                    <div id="PaysValue" class="item" data-value="France">France</div>
+                   
                 </div>
             </div>
         </div>

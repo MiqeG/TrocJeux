@@ -150,7 +150,7 @@ $(document).ready(function () {
           identifier: 'Ville',
           rules: [
             {
-              type: 'regExp[^[a-zA-Z]+$]',
+              type: 'regExp[^[a-zA-Z0-9\/ ]+$]',
               prompt: 'Veuillez entrer une ville valide'
             },
             {
@@ -163,31 +163,47 @@ $(document).ready(function () {
             }
           ]
         },
-
+        Pays: {
+          identifier: 'Pays',
+          rules: [
+            {
+              type: 'empty',
+              prompt: 'Veuilez choisir votre pays'
+            }
+           
+          ]
+        },
       }
     })
-    
-    $("#CodePostal").change(function(event){
+    function ajaxGO(options){
       $.ajax({
         url: "/ajaxCodePostal",
         type: "get", //send it through get method
         data: { 
-         
-          CodePostal: $("#CodePostal").val()
+          options:options,
+         Ville: $("#Ville").val(),
+          CodePostal: $("#CodePostal").val(),
+          Pays:$("#Pays").val()
         },
         success: function(result) {
           //Do Something
           console.log(result)
           $("#Ville").val(result.Ville);
+          $("#CodePostal").val(result.CodePostal);
           
           
         },
         error: function(err) {
-          console.log(err)
-          $("#Ville").val(result.Ville);
+         
+         console.log('error')
         
         }
       });
+    }
+    $("#CodePostal").change(function(event){
+  ajaxGO('CodePostal')
     });
-    
+    $("#Ville").change(function(event){
+    ajaxGO('Ville')
+    })
 });
