@@ -47,8 +47,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/success', (req, res) => res.send("Ok logging in"));
-app.get('/error', (req, res) => res.send("error logging in"));
+app.get('/success', (req, res) => res.send("Ok logging in" +req.user.Email));
+app.get('/error', (req, res) => {
+  let json={ServerResponse:"Not ok"}
+  res.writeHead(200, { 'Content-Type': 'application/json' }); 
+    res.end(JSON.stringify(json));
+});
 
 passport.serializeUser(function(user, cb) {
   cb(null, user.id);
