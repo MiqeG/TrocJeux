@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser')
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
-
+const passport = require('passport');
 mongoose.connect('mongodb://localhost:27017/NewTest', { useNewUrlParser: true })
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'))
@@ -44,6 +44,49 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }))
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/success', (req, res) => res.redirect('/espacemembre'));
+app.get('/error', (req, res) => res.send("error logging in"));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+  User.findById(id, function(err, user) {
+    cb(err, user);
+  });
+});
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+      User.findOne({
+        Email: username
+      }, function(err, user) {
+        if (err) {
+          return done(err);
+        }
+
+        if (!user) {
+          return done(null, false);
+        }
+
+        if (user.MotDePasse != password) {
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+  }
+));
+
+app.post('/connexion',
+  passport.authenticate('local', { failureRedirect: '/error' }),
+  function(req, res) {
+    res.redirect('/success?username='+req.user.username);
+  });
 app.use(require('./middlewares/flash'))
 
 app.get('/', csrfProtection, (req, res) => {
@@ -51,6 +94,18 @@ app.get('/', csrfProtection, (req, res) => {
   res.render('pages/index', { csrfToken: req.csrfToken() })
 
 })
+app.get('/inscription', csrfProtection, (req, res) => {
+
+  res.render('pages/inscription', { csrfToken: req.csrfToken() })
+
+})
+/*app.get('/connexion', csrfProtection, (req, res) => {
+
+  res.query.Email
+  res.query.MotDePasse
+  res.render('pages/espacemembre', { csrfToken: req.csrfToken() })
+
+})*/
 app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   let arrayFound=''
  if(req.query.Pays=='-'||req.query.Pays==''){req.query.CodePostal='';req.query.Ville=''}
@@ -88,7 +143,7 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {
     req.flash('error', 'formulaire vide','vide')
-    res.redirect('/')
+    res.redirect('/inscription')
 
   }
   else {
@@ -101,7 +156,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
         req.flash('error', 'Email deja soumis','eDejaSoumis')
 
 
-        res.redirect('/')
+        res.redirect('/inscription')
 
       }
       else {
@@ -113,7 +168,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
             req.flash('error', "Nom d'utilisateur deja soumis","nUdejaSoumis")
     
     
-            res.redirect('/')
+            res.redirect('/inscription')
     
           }
           else{
@@ -127,7 +182,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
               req.flash('error', 'Ville introuvable',"villeIntrouvable")
     
     
-              res.redirect('/')
+              res.redirect('/inscription')
               return
             }
     
@@ -150,7 +205,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
               if (err) return console.error(err)
               console.log(user.Email + "\r\n saved to Users collection.")
               req.flash('success', "Merci","SuccessCode")
-              res.redirect('/')
+              res.redirect('/inscription')
     
             });
           }
