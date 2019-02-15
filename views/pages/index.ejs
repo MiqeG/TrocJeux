@@ -7,13 +7,13 @@
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="two fields">
         <div class="field">
-            <label for="NomUtilisateur">Nom d'utilisateur</label>
+            <label for="NomUitilisateur">Nom d'utilisateur</label>
             <% if(locals.formdata && locals.formdata.NomUtilisateur ){ %>
 
-            <input name="NomUtilisateur" id="NomUtilisateur" value="<%= locals.formdata.NomUtilisateur %>" maxlength="15" minlength="4"></input>
+            <input name="NomUitilisateur" id="NomUitilisateur" value="<%= locals.formdata.NomUitilisateur %>" maxlength="15" minlength="4"></input>
             <% }else{ %>
 
-            <input name="NomUtilisateur" id="NomUtilisateur" maxlength="15" minlength="4"></input>
+            <input name="NomUitilisateur" id="NomUitilisateur" maxlength="15" minlength="4"></input>
             <% } %>
         </div>
         <div class="field">

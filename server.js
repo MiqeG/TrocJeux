@@ -13,15 +13,17 @@ var VillesSchema = mongoose.Schema({
   Villes: Array
 })
 var UserSchema = mongoose.Schema({
-  Type: String,
-  NomUitilisateur: String,
-  Nom: String,
-  Prenom: String,
-  Email: String,
-  MotDePasse: String,
-  Adresse: String,
-  CodePostal: Number,
-  Ville: String
+  Type: { type: String, required: true },
+  NomUitilisateur: { type: String, required: true },
+  Nom: { type: String, required: true },
+  Prenom:{ type: String, required: true },
+  Email: { type: String, required: true },
+  MotDePasse: { type: String, required: true },
+  Adresse: { type: String, required: true },
+  CodePostal:{ type: Number, required: true },
+  Ville: { type: String, required: true },
+  DateInscription:{ type: Date, default: Date.now ,required:true},
+  Actif:{ type: Boolean, required: true }
 
 
 }, { collection: 'Villes' })
@@ -85,6 +87,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
         }
 
         var user1 = new User({
+          Type: "User",
           NomUitilisateur: req.body.NomUitilisateur,
           Nom: req.body.Nom,
           Prenom: req.body.Prenom,
@@ -93,7 +96,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
           Adresse: req.body.Adresse,
           CodePostal: req.body.CodePostal,
           Ville: arrayFound[0].NomCommune,
-          Type: "User"
+          Actif:true
         });
 
         // save model to database
