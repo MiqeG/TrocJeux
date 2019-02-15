@@ -47,7 +47,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/success', (req, res) => res.redirect('/espacemembre'));
+app.get('/success', (req, res) => res.send("Ok logging in"));
 app.get('/error', (req, res) => res.send("error logging in"));
 
 passport.serializeUser(function(user, cb) {
