@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5c6621bd1d4f444abcfb11b1"},"Nom":"Ghilescu","Prenom":"Mihai","Email":"mggkkpp@gmail.com","MotDePasse":"Taty8216@","Adresse":"rue de l'amandier, 8","CodePostal":92500,"Ville":"RUEIL MALMAISON","Type":"User","__v":0}
+{"_id":{"$oid":"5c66253d7633b02cb8ce315a"},"Nom":"Ghilescu","Prenom":"Mihai","Email":"secondmais@sdfsf.com","MotDePasse":"Taty8216@","Adresse":"rue de l'amandier, 8","CodePostal":78400,"Ville":"CHATOU","Type":"User","__v":0}
