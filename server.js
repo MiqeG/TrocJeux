@@ -20,6 +20,7 @@ var UserSchema = mongoose.Schema({
   Adresse: { type: String, required: true },
   CodePostal:{ type: Number, required: true },
   Ville: { type: String, required: true },
+  Pays: { type: String, required: true },
   DateInscription:{ type: Date, default: Date.now ,required:true},
   Actif:{ type: Boolean, required: true }
 
@@ -30,7 +31,7 @@ var User = mongoose.model('User', UserSchema, 'Users')
 db.once('open', function () { console.log("Connection to database NewTest Successful!") })
 
 let session = require('express-session')
-let SearchVille = require('./csvvilles/villes.json')
+let SearchVille = require('./csvvilles/FRANCE/villes.json')
 let configFile = require('./config/server_config.json')
 app.set('view engine', 'ejs')
 app.use('/assets', express.static('public'))
@@ -48,6 +49,25 @@ app.use(require('./middlewares/flash'))
 app.get('/', csrfProtection, (req, res) => {
 
   res.render('pages/index', { csrfToken: req.csrfToken() })
+
+})
+app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
+  var arrayFound = SearchVille.Villes.filter(function (item) {
+   
+    return item.CodePostal == req.query.CodePostal;
+
+  });
+
+  if (arrayFound[0] === undefined) {
+   let json={Ville:"Ville introuvable",Pays:"Pays introuvable"}
+    res.writeHead(200, { 'Content-Type': 'application/json' }); 
+      res.end(JSON.stringify(json));
+    return
+  }
+  let json={Ville:arrayFound[0].NomCommune,Pays:"FRANCE"}
+  res.writeHead(200, { 'Content-Type': 'application/json' }); 
+      res.end(JSON.stringify(json));
+ 
 
 })
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
@@ -99,13 +119,14 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
             var user1 = new User({
               Type: "User",
               NomUitilisateur: req.body.NomUitilisateur,
-              Nom: req.body.Nom,
-              Prenom: req.body.Prenom,
-              Email: req.body.Email,
+              Nom: req.body.Nom.toUpperCase(),
+              Prenom: req.body.Prenom.toUpperCase(),
+              Email: req.body.Email.toLowerCase(),
               MotDePasse: req.body.MotDePasse,
-              Adresse: req.body.Adresse,
+              Adresse: req.body.Adresse.toUpperCase(),
               CodePostal: req.body.CodePostal,
-              Ville: arrayFound[0].NomCommune,
+              Ville: arrayFound[0].NomCommune.toUpperCase(),
+              Pays:req.body.Pays,
               Actif:true
             });
     
@@ -113,7 +134,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
             user1.save(function (err, user) {
               if (err) return console.error(err)
               console.log(user.Email + "\r\n saved to Users collection.")
-              req.flash('success', "Merci")
+              req.flash('success', "Merci","SuccessCode")
               res.redirect('/')
     
             });

@@ -166,5 +166,28 @@ $(document).ready(function () {
 
       }
     })
-    ;
+    
+    $("#CodePostal").change(function(event){
+      $.ajax({
+        url: "/ajaxCodePostal",
+        type: "get", //send it through get method
+        data: { 
+         
+          CodePostal: $("#CodePostal").val()
+        },
+        success: function(result) {
+          //Do Something
+          console.log(result)
+          $("#Ville").val(result.Ville);
+          
+          
+        },
+        error: function(err) {
+          console.log(err)
+          $("#Ville").val(result.Ville);
+        
+        }
+      });
+    });
+    
 });
