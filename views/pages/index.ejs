@@ -8,7 +8,7 @@
     <div class="two fields">
         <div class="field">
             <label for="NomUitilisateur">Nom d'utilisateur</label>
-            <% if(locals.formdata && locals.formdata.NomUtilisateur ){ %>
+            <% if(locals.formdata && locals.formdata.NomUitilisateur && locals.flash.code!="nUdejaSoumis"){ %>
 
             <input name="NomUitilisateur" id="NomUitilisateur" value="<%= locals.formdata.NomUitilisateur %>" maxlength="15" minlength="4"></input>
             <% }else{ %>
@@ -39,7 +39,7 @@
         <div class="field">
 
             <label for="Email">Email</label>
-            <% if(locals.formdata && locals.formdata.Email && locals.flash.error!="Email deja soumis"){ %>
+            <% if(locals.formdata && locals.formdata.Email && locals.flash.code!="eDejaSoumis"){ %>
             <input name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50"></input>
             <% }else{ %>
                 <input name="Email" id="Email" maxlength="50"></input>
@@ -71,7 +71,7 @@
         </div>
         <div class="field">
             <label for="CodePostal">Code Postal</label>
-            <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.error!="Ville introuvable" ){ %>
+            <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.code!="villeIntrouvable" ){ %>
             <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>" maxlength="5"></input>
             <% }else{ %>
             <input name="CodePostal" id="CodePostal"  maxlength="5"></input>

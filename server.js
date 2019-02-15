@@ -9,9 +9,7 @@ var parseForm = express.urlencoded({ extended: true })
 mongoose.connect('mongodb://localhost:27017/NewTest', { useNewUrlParser: true })
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'))
-var VillesSchema = mongoose.Schema({
-  Villes: Array
-})
+
 var UserSchema = mongoose.Schema({
   Type: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
@@ -27,7 +25,7 @@ var UserSchema = mongoose.Schema({
 
 
 }, { collection: 'Villes' })
-var Villes = mongoose.model('Villes', VillesSchema, 'Villes')
+
 var User = mongoose.model('User', UserSchema, 'Users')
 db.once('open', function () { console.log("Connection to database NewTest Successful!") })
 
@@ -54,7 +52,7 @@ app.get('/', csrfProtection, (req, res) => {
 })
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {
-    req.flash('error', 'formulaire vide')
+    req.flash('error', 'formulaire vide','vide')
     res.redirect('/')
 
   }
@@ -65,48 +63,63 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
       else if (item != null) {
 
 
-        req.flash('error', 'Email deja soumis')
+        req.flash('error', 'Email deja soumis','eDejaSoumis')
 
 
         res.redirect('/')
 
       }
       else {
-        var arrayFound = SearchVille.Villes.filter(function (item) {
-          return item.CodePostal == req.body.CodePostal;
-
-        });
-
-        if (arrayFound[0] === undefined) {
-
-          req.flash('error', 'Ville introuvable')
-
-
-          res.redirect('/')
-          return
-        }
-
-        var user1 = new User({
-          Type: "User",
-          NomUitilisateur: req.body.NomUitilisateur,
-          Nom: req.body.Nom,
-          Prenom: req.body.Prenom,
-          Email: req.body.Email,
-          MotDePasse: req.body.MotDePasse,
-          Adresse: req.body.Adresse,
-          CodePostal: req.body.CodePostal,
-          Ville: arrayFound[0].NomCommune,
-          Actif:true
-        });
-
-        // save model to database
-        user1.save(function (err, user) {
+        User.findOne({ NomUitilisateur: req.body.NomUitilisateur }, 'NomUtilisateur', function (err, item) {
           if (err) return console.error(err)
-          console.log(user.Email + "\r\n saved to Users collection.")
-          req.flash('success', "Merci")
-          res.redirect('/')
+          else if (item != null) {
 
-        });
+
+            req.flash('error', "Nom d'utilisateur deja soumis","nUdejaSoumis")
+    
+    
+            res.redirect('/')
+    
+          }
+          else{
+            var arrayFound = SearchVille.Villes.filter(function (item) {
+              return item.CodePostal == req.body.CodePostal;
+    
+            });
+    
+            if (arrayFound[0] === undefined) {
+    
+              req.flash('error', 'Ville introuvable',"villeIntrouvable")
+    
+    
+              res.redirect('/')
+              return
+            }
+    
+            var user1 = new User({
+              Type: "User",
+              NomUitilisateur: req.body.NomUitilisateur,
+              Nom: req.body.Nom,
+              Prenom: req.body.Prenom,
+              Email: req.body.Email,
+              MotDePasse: req.body.MotDePasse,
+              Adresse: req.body.Adresse,
+              CodePostal: req.body.CodePostal,
+              Ville: arrayFound[0].NomCommune,
+              Actif:true
+            });
+    
+            // save model to database
+            user1.save(function (err, user) {
+              if (err) return console.error(err)
+              console.log(user.Email + "\r\n saved to Users collection.")
+              req.flash('success', "Merci")
+              res.redirect('/')
+    
+            });
+          }
+        })
+       
 
       }
 
