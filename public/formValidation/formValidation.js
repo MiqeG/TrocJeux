@@ -1,8 +1,12 @@
 $(document).ready(function(){
+  $('.ui.dropdown')
+  .dropdown()
+
     $('.ui.form')
   .form({
     on: 'blur',
     fields: {
+     
       NomUtilisateur: {
         identifier  : 'NomUtilisateur',
         rules: [
@@ -67,11 +71,11 @@ $(document).ready(function(){
         rules: [
           {
             type   : 'empty',
-            prompt : 'Entrez un e-mail'
+            prompt : 'Veuillez entrer un e-mail'
           },
           {
             type   : 'email',
-            prompt : 'Entrez un e-mail valide'
+            prompt : 'Veuillez entrer un e-mail valide'
           }
         ]
       },
@@ -83,7 +87,7 @@ $(document).ready(function(){
             prompt : 'Veuillez entrer un mot de passe'
           },
           {
-            type   : 'regExp[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$]',
+            type   : 'regExp[^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,10}$]',
             prompt : 'Veuillez entrer un mot de passe valide'
           }
        
@@ -120,11 +124,11 @@ $(document).ready(function(){
         rules: [
           {
             type   : 'integer',
-            prompt : 'Please enter a value not containing exactly "dog"'
+            prompt : 'Veuillez entrer un code postal valide'
           },
           {
               type:'exactLength[5]',
-              prompt:'Entrez un code postal valide'
+              prompt:'Veuillez entrer un code postal valide'
           }
         ]
       },
@@ -145,23 +149,7 @@ $(document).ready(function(){
           }
         ]
       },
-      Pays: {
-        identifier  : 'Pays',
-        rules: [
-            {
-              type   : 'regExp[^[a-zA-Z]+$]',
-              prompt : 'Veuillez entrer une ville valide'
-            },
-            {
-                type:'maxLength[60]',
-                prompt:'Veuillez entrer une ville valide'
-            },
-            {
-                type:'minLength[2]',
-                prompt:'Veuillez entrer une ville valide'
-            }
-          ]
-        },
+     
     }
   })
 ;
