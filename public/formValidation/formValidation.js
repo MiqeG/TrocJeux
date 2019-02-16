@@ -1,6 +1,5 @@
 $(document).ready(function () {
-  $('.ui.dropdown')
-    .dropdown()
+
 
   $('.ui.form')
     .form({

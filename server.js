@@ -92,7 +92,11 @@ app.post('/connexion',
   function(req, res) {
     res.redirect('/success?username='+req.user.username);
   });
-
+app.get('/logout',(req,res)=>{
+  res.cookie.maxAge=Date.now -3
+  req.session=null
+  res.redirect('/')
+})
 
 app.get('/', csrfProtection, (req, res) => {
 
@@ -101,7 +105,7 @@ app.get('/', csrfProtection, (req, res) => {
 })
 app.get('/inscription', csrfProtection, (req, res) => {
 
-  res.render('pages/inscription', { csrfToken: req.csrfToken() })
+  res.render('pages/inscription', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user },)
 
 })
 /*app.get('/connexion', csrfProtection, (req, res) => {
