@@ -46,12 +46,11 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(require('./middlewares/flash'))
 app.get('/success', (req, res) => res.send("Ok logging in" +req.user));
 app.get('/error', (req, res) => {
-  let json={ServerResponse:"Not ok"}
-  res.writeHead(200, { 'Content-Type': 'application/json' }); 
-    res.end(JSON.stringify(json));
+  req.flash('error', 'Mot de pass ou email erroné','FailLogin')
+  res.redirect('/');
 });
 
 passport.serializeUser(function(user, cb) {
@@ -91,7 +90,7 @@ app.post('/connexion',
   function(req, res) {
     res.redirect('/success?username='+req.user.username);
   });
-app.use(require('./middlewares/flash'))
+
 
 app.get('/', csrfProtection, (req, res) => {
 
@@ -144,6 +143,18 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
  
 
 })
+function isLoggedIn(req, res, next) {
+  console.log('here is Authenticated', req.isAuthenticated())
+  if (req.isAuthenticated()){
+      return next();
+  }
+ 
+  res.redirect('/');
+}
+app.get('/espacemembre', isLoggedIn,
+function(req, res){
+ res.render('/pages/espacemembre')
+});
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {
     req.flash('error', 'formulaire vide','vide')
@@ -222,5 +233,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
 
   }
 
-})
+}
+
+)
 app.listen(configFile.serverConfigurationVariables.port)
