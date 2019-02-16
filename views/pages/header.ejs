@@ -69,7 +69,8 @@
       <div  class="ui marginClass primary button" onclick="window.location.href='/inscription'" id="Inscription">Inscription</div> &nbsp
       <div class="ui marginClass button " id="Connexion">Connexion</div>
       <% }else if(auth==true){ %>
-      <button onclick="window.location.href='/espacemembre'" class="ui marginClass primary button " id="EspaceMembre">Bonjour <%= user.Prenom %></button>
+      <button onclick="window.location.href='/espacemembre'" class="ui marginClass primary button " id="EspaceMembre">Bonjour <%= user.Prenom %></button>&nbsp
+      <div class="ui marginClass button " id="LogOut">Se Deconnecter</div>&nbsp
         <% } %>
       
     </div>
