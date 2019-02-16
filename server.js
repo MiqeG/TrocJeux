@@ -2,6 +2,7 @@ let express = require('express')
 let app = express()
 let mongoose = require('mongoose')
 var cookieParser = require('cookie-parser')
+const cookieSession =require('cookie-session');
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
@@ -37,13 +38,14 @@ app.set('view engine', 'ejs')
 app.use('/assets', express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: 'testpass',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
+app.use(cookieSession({
+  maxAge:24*60*60*1000,
+  keys:[configFile.session.cookieKey]
 }))
+//initialiaze passport
+
+app.set('trust proxy', 1) // trust first proxy
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
@@ -94,7 +96,7 @@ app.post('/connexion',
 
 app.get('/', csrfProtection, (req, res) => {
 
-  res.render('pages/index', { csrfToken: req.csrfToken() })
+  res.render('pages/index', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user })
 
 })
 app.get('/inscription', csrfProtection, (req, res) => {
@@ -153,7 +155,8 @@ function isLoggedIn(req, res, next) {
 }
 app.get('/espacemembre', isLoggedIn,
 function(req, res){
- res.render('/pages/espacemembre')
+ 
+ res.render('pages/espacemembre',{auth:req.isAuthenticated(),user:req.user})
 });
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {

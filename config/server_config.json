@@ -1,6 +1,8 @@
 {
     "serverConfigurationVariables":{
         "port":80
+    },
+    "session":{
+                "cookieKey":"trocjeuxclef"
     }
-
 }

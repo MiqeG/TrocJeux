@@ -65,8 +65,13 @@
         <i class="search link icon"></i>
       </div>
       &nbsp
+      <% if(auth==false){ %>
       <div  class="ui marginClass primary button" onclick="window.location.href='/inscription'" id="Inscription">Inscription</div> &nbsp
       <div class="ui marginClass button " id="Connexion">Connexion</div>
+      <% }else if(auth==true){ %>
+      <div class="ui marginClass button " id="Connexion">Bonjour <%= user.Prenom %></div>
+        <% } %>
+      
     </div>
    
   </div>
