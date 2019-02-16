@@ -36,13 +36,15 @@
         });
        
 
-        $('#Connexion').click(function() {
+        $('.Connexion').click(function() {
             $('.ui.basic.modal').modal('show')
                 
         })
-        $('#LogOut').click(function() {
+       
+        $('.LogOut').click(function() {
           window.location.href='/logout'
         })
+        
     });
    
 }

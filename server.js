@@ -100,12 +100,12 @@ app.get('/logout',(req,res)=>{
 
 app.get('/', csrfProtection, (req, res) => {
 
-  res.render('pages/index', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user })
+  res.render('pages/index', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user,categories:configFile.categories })
 
 })
 app.get('/inscription', csrfProtection, (req, res) => {
 
-  res.render('pages/inscription', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user },)
+  res.render('pages/inscription', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user,categories:configFile.categories },)
 
 })
 /*app.get('/connexion', csrfProtection, (req, res) => {
@@ -160,7 +160,7 @@ function isLoggedIn(req, res, next) {
 app.get('/espacemembre', isLoggedIn,
 function(req, res){
  
- res.render('pages/espacemembre',{auth:req.isAuthenticated(),user:req.user})
+ res.render('pages/espacemembre',{auth:req.isAuthenticated(),user:req.user,categories:configFile.categories})
 });
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {

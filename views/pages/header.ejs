@@ -15,97 +15,47 @@
 <body>
 <div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
   <div class="item logo">
-    <img src="https://image.flaticon.com/icons/svg/866/866218.svg" /><img src="https://image.flaticon.com/icons/svg/866/866218.svg" style="display: none" />
+    <div class="paddingLogo">
+        <img src="/assets/img/logo.png" />
+       
+    </div>
+  <img src="/assets/img/logo.png" style="display: none" />
   </div>
   <div class="ui accordion">
-    <a class="title item">Dashboard  <i class="dropdown icon"></i>
-                </a>
-    <div class="content">
-      <a class="item" href="dashboard.html">Dashboard
-                    </a>
-    </div>
+  
+      <% if(auth==false){ %>
+      
+        <a  class="item " href="/inscription" ><i class="users icon"></i><b>Rejoignez nous!</b></a> 
+  
+   
+        <a  class="item Connexion" ><i class="sign-in alternate icon"></i><b>Se Connecter!</b> </a> &nbsp
+    
+   
+    <% }else if(auth==true){ %>
+     
+      <a  class="item " href="/espacemembre" ><i class="user icon"></i><b>Bonjour <%= user.Prenom %> !</b></a> 
+  
+   
+      <a  class="item LogOut" ><i class="sign-out alternate icon"></i><b>Se Deconnecter!</b> </a> &nbsp
+     
+      <% } %>
 
     <div class="title item">
-      <i class="dropdown icon"></i> Apps
+      <i class="dropdown icon"></i> Catégories
     </div>
     <div class="content">
-      <a class="item" href="inbox.html">Inbox
-                    </a>
-      <a class="item" href="mail.html">Mailbox
-                    </a>
-      <a class="item" href="chat.html">Chat
-                    </a>
-      <a class="item" href="contacts.html">Contacts
-                    </a>
-      <a class="item" href="photoeditor.html">Photo Editor
-                    </a>
-      <a class="item" href="calendar.html">Calendar
-                    </a>
-      <a class="item" href="filter.html">Filter
-                    </a>
-      <a class="item" href="todo.html">Todo
-                    </a>
+      <% categories.forEach(element => { %>
+        <a class="item" href="inbox.html"><%= element %>
+        </a>
+        <% }); %>
+      
+                    
+     
     </div>
-    <div class="title item">
-      <i class="dropdown icon"></i> Layouts
-    </div>
-    <div class="content">
-      <a class="item" href="sidebar.html">Sidebar
-                    </a>
-      <a class="item" href="menu.html">Nav
-                    </a>
-      <a class="item" href="animatedicon.html">Animated Icon
-                    </a>
-      <a class="item" href="box.html">Box
-                    </a>
-      <a class="item" href="cards.html">Cards
-                    </a>
-      <a class="item" href="color.html">Colors
-                    </a>
-      <a class="item" href="comment.html">Comment
-                    </a>
-      <a class="item" href="embed.html">Embed
-                    </a>
-      <a class="item" href="faq.html">Faq
-                    </a>
-      <a class="item" href="feed.html">Feed
-                    </a>
-      <a class="item" href="gallery.html">Gallery
-                    </a>
-      <a class="item" href="grid.html">Grid
-                    </a>
-      <a class="item" href="header.html">Header
-                    </a>
-      <a class="item" href="timeline.html">Timeline
-                    </a>
-      <a class="item" href="message.html">Message
-                    </a>
-      <a class="item" href="price.html">Price
-                    </a>
-    </div>
+  
 
-    <a class="item">
-      <b>Components</b>
-    </a>
-    <% if(auth==false){ %>
-      <div class="item">
-          <div  class="ui marginClass primary button" onclick="window.location.href='/inscription'" id="Inscription">Rejoignez nous!</div> &nbsp
-      </div>
-      <div class="item">
-          <div  class="ui marginClass  button"  id="Connexion">Se Connecter!</div> &nbsp
-      
-      </div>
-      <% }else if(auth==true){ %>
-       
-      
-        <div class="item">
-            <div  class="ui marginClass primary button" onclick="window.location.href='/espacemembre'" id="EspaceMembre">Bonjour <%= user.Prenom %> !</div> &nbsp
-        </div>
-        <div class="item">
-            <div  class="ui marginClass  button"  id="LogOut">Se Deconnecter!</div> &nbsp
-        
-        </div>
-        <% } %>
+
+  
     <div class="title item">
       <i class="dropdown icon"></i> UI-Kit
     </div>
@@ -219,16 +169,28 @@
     </div>
   </div>
   <div class="ui dropdown item displaynone">
-    <z>Dashboard</z>
-    <i class="icon demo-icon heart icon-heart"></i>
+    <z></z>
+    <i class="icon demo-icon user icon-heart"></i>
 
     <div class="menu">
-      <div class="header">
-        Dashboard
-      </div>
+     
       <div class="ui divider"></div>
-      <a class="item" href="dashboard.html">Dashboard
-                    </a>
+      <% if(auth==false){ %>
+      
+        <a  class="item " href="/inscription" ><i class="users icon"></i><b>Rejoignez nous!</b></a> 
+  
+   
+        <a  class="item Connexion" ><i class="sign-in alternate icon"></i><b>Se Connecter!</b> </a> &nbsp
+    
+   
+    <% }else if(auth==true){ %>
+     
+      <a  class="item " href="/espacemembre" ><i class="user icon"></i><b>Bonjour <%= user.Prenom %> !</b></a> 
+  
+   
+      <a  class="item LogOut" ><i class="sign-out alternate icon"></i><b>Se Deconnecter!</b> </a> &nbsp
+     
+      <% } %>
     </div>
   </div>
   <div class="ui dropdown item displaynone">
@@ -303,13 +265,14 @@
   </div>
 </div>
 <div class="pusher">
-  <div class="ui menu asd borderless" style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
+  <div class="ui inverted menu asd borderless" style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
     <a class="item openbtn">
       <i class="icon content"></i>
     </a>
-    <a class="item">Messages
+    <a href="/" class="item"><b>Troc'Jeux</b>
                 </a>
     <div class="right menu">
+       
       <div class="ui dropdown item">
         Langue <i class="dropdown icon"></i>
         <div class="menu">
@@ -318,25 +281,7 @@
           <a class="item">Spanish</a>
         </div>
       </div>
-      <% if(auth==false){ %>
-        <div class="item">
-            <div  class="ui marginClass primary button" onclick="window.location.href='/inscription'" id="Inscription">Rejoignez nous!</div> &nbsp
-        </div>
-        <div class="item">
-            <div  class="ui marginClass  button"  id="Connexion">Se Connecter!</div> &nbsp
-        
-        </div>
-        <% }else if(auth==true){ %>
-         
-        
-          <div class="item">
-              <div  class="ui marginClass primary button" onclick="window.location.href='/espacemembre'" id="EspaceMembre">Bonjour <%= user.Prenom %> !</div> &nbsp
-          </div>
-          <div class="item">
-              <div  class="ui marginClass  button"  id="LogOut">Se Deconnecter!</div> &nbsp
-          
-          </div>
-          <% } %>
+     
      
     </div>
   </div>

@@ -2,9 +2,14 @@
     padding:2em ;
 }
 .padding{
-    padding-left:15%;
-    padding-right:15%;
+    padding-left:16%;
+    padding-right:16%;
     padding-top:5%;
+}
+.paddingLogo{
+    padding-left:41%;
+    padding-right:41%;
+   
 }
 .main.container{
     margin-top: 7em;

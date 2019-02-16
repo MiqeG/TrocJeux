@@ -1,8 +1,15 @@
 {
-    "serverConfigurationVariables":{
-        "port":80
+    "serverConfigurationVariables": {
+        "port": 80
     },
-    "session":{
-                "cookieKey":"trocjeuxclef"
-    }
+    "session": {
+        "cookieKey": "trocjeuxclef"
+    },
+    "categories": [
+        "Plateau",
+        "Aventure",
+        "Cartes",
+        "Stratégie",
+        "Chance"
+    ]
 }

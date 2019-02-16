@@ -75,13 +75,26 @@
                     <% } %>
                 </div>
                 <div class="field">
-                    <label for="CodePostal">Code Postal</label>
-                    <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.code!="villeIntrouvable" ){ %>
-                    <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>" maxlength="5"></input>
-                    <% }else{ %>
-                    <input name="CodePostal" id="CodePostal" maxlength="5"></input>
-                    <% } %>
-                </div>
+                        <label>Pays</label>
+                        <div class="ui fluid selection dropdown">
+                                <% if(locals.formdata &&locals.formdata.Pays  ){ %>
+                            <input type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
+                            <% }else{ %>
+                                <input type="hidden" name="Pays" id="Pays">
+                                <% } %>
+                            <% if(locals.formdata &&locals.formdata.Pays  ){ %>
+                            <div class="default text"><%= locals.formdata.Pays  %></div>
+                            <% }else{ %>
+                                <div class="default text">-</div>
+                                <% } %>
+                            <i class="dropdown icon"></i>
+                            <div class="inverted menu">
+                                <div id="PaysValue" class="item" data-value="France">France</div>
+                               
+                            </div>
+                        </div>
+                    </div>
+               
             </div>
             <div class="two fields">
                 <div class="field">
@@ -93,25 +106,13 @@
                     <% } %>
                 </div>
                 <div class="field">
-                    <label>Pays</label>
-                    <div class="ui fluid selection dropdown">
-                            <% if(locals.formdata &&locals.formdata.Pays  ){ %>
-                        <input type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
+                        <label for="CodePostal">Code Postal</label>
+                        <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.code!="villeIntrouvable" ){ %>
+                        <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>" maxlength="5"></input>
                         <% }else{ %>
-                            <input type="hidden" name="Pays" id="Pays">
-                            <% } %>
-                        <% if(locals.formdata &&locals.formdata.Pays  ){ %>
-                        <div class="default text"><%= locals.formdata.Pays  %></div>
-                        <% }else{ %>
-                            <div class="default text">-</div>
-                            <% } %>
-                        <i class="dropdown icon"></i>
-                        <div class="inverted menu">
-                            <div id="PaysValue" class="item" data-value="France">France</div>
-                           
-                        </div>
+                        <input name="CodePostal" id="CodePostal" maxlength="5"></input>
+                        <% } %>
                     </div>
-                </div>
             </div>
         
             <button type="submit" class="ui blue labeled submit icon button"><i class="icon edit"></i>Envoyer</button>
