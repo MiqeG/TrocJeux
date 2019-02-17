@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>TrocJeux</title>
+  <title>Troc'Jeux</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="assets/semantic/semantic.min.css">
   <link rel="stylesheet" type="text/css" media="screen" href="assets/sitecss/sitecss.css">
@@ -17,14 +17,16 @@
 <body style="margin-bottom:5%">
   <div class="ui sidebar vertical left menu overlay visible inverted"
     style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
+   
     <div class="item logo">
       <div class="paddingLogo">
-        <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" />
+          <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" styled="width:content;" /> 
 
       </div>
       <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" style="display: none" />
     </div>
     <div class="ui accordion">
+        <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="/"></i><b>Troc'Jeux!</b></a>
 
       <% if(auth==false){ %>
 
@@ -98,11 +100,11 @@
 
         <% }else if(auth==true){ %>
 
-        <a class="item " href="/espacemembre"><i class="user icon"></i><b>Bonjour <%= user.Prenom %> !</b></a>
-        <a class="item " href="/deposer"><i class="tasks icon"></i><b>Déposer une annonce...</b></a>
+        <a class="item " href="/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %> !</b></a>
+        <a class="item " href="/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
 
 
-        <a class="item LogOut"><i class="sign-out alternate icon"></i><b>Se Deconnecter!</b> </a> &nbsp
+        <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se Deconnecter!</b> </a> &nbsp
 
         <% } %>
       </div>
@@ -167,20 +169,21 @@
       <div class="column">
         <h2 class="ui image content">
           <div class="content">
-            Connectez Vous...
+           <i class="thumbs up outline
+           teal icon"></i> Connectez Vous...
           </div>
         </h2>
         <form action="/connexion" method="POST" class="ui large form">
           <div class="ui stacked secondary  segment">
             <div class="field">
               <div class="ui left icon input">
-                <i class="user icon"></i>
-                <input type="text" name="username" id="username" placeholder="E-mail ou nom d'utilisateur">
+                <i class="user  teal icon"></i>
+                <input type="text" name="username" id="username" placeholder="E-mail">
               </div>
             </div>
             <div class="field">
               <div class="ui left icon input">
-                <i class="lock icon"></i>
+                <i class="lock teal  icon"></i>
                 <input type="password" name="password" id="password" placeholder="Mot de passe">
               </div>
             </div>
