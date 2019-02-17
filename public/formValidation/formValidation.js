@@ -42,7 +42,7 @@ $(document).ready(function () {
               type: 'minLength[2]',
               prompt: "Nom minimum 2 caractères"
             },
-           
+
             {
               type: 'empty',
               prompt: 'Veuillez entrer un nom'
@@ -68,7 +68,7 @@ $(document).ready(function () {
               type: 'empty',
               prompt: 'Veuillez entrer un prénom'
             },
-           
+
           ]
         },
         Email: {
@@ -169,40 +169,40 @@ $(document).ready(function () {
               type: 'empty',
               prompt: 'Veuilez choisir votre pays'
             }
-           
+
           ]
         },
       }
     })
-    function ajaxGO(options){
-      $.ajax({
-        url: "/ajaxCodePostal",
-        type: "get", //send it through get method
-        data: { 
-          options:options,
-         Ville: $("#Ville").val(),
-          CodePostal: $("#CodePostal").val(),
-          Pays:$("#Pays").val()
-        },
-        success: function(result) {
-          //Do Something
-          console.log(result)
-          $("#Ville").val(result.Ville);
-          $("#CodePostal").val(result.CodePostal);
-          
-          
-        },
-        error: function(err) {
-         
-         console.log('error')
-        
-        }
-      });
-    }
-    $("#CodePostal").change(function(event){
-  ajaxGO('CodePostal')
+  function ajaxGO(options) {
+    $.ajax({
+      url: "/ajaxCodePostal",
+      type: "get", //send it through get method
+      data: {
+        options: options,
+        Ville: $("#Ville").val(),
+        CodePostal: $("#CodePostal").val(),
+        Pays: $("#Pays").val()
+      },
+      success: function (result) {
+        //Do Something
+        console.log(result)
+        $("#Ville").val(result.Ville);
+        $("#CodePostal").val(result.CodePostal);
+
+
+      },
+      error: function (err) {
+
+        console.log('error')
+
+      }
     });
-    $("#Ville").change(function(event){
+  }
+  $("#CodePostal").change(function (event) {
+    ajaxGO('CodePostal')
+  });
+  $("#Ville").change(function (event) {
     ajaxGO('Ville')
-    })
+  })
 });

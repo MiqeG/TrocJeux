@@ -2,7 +2,7 @@ let express = require('express')
 let app = express()
 let mongoose = require('mongoose')
 var cookieParser = require('cookie-parser')
-const cookieSession =require('cookie-session');
+const cookieSession = require('cookie-session');
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
@@ -15,15 +15,15 @@ var UserSchema = mongoose.Schema({
   Type: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
   Nom: { type: String, required: true },
-  Prenom:{ type: String, required: true },
+  Prenom: { type: String, required: true },
   Email: { type: String, required: true },
   MotDePasse: { type: String, required: true },
   Adresse: { type: String, required: true },
-  CodePostal:{ type: Number, required: true },
+  CodePostal: { type: Number, required: true },
   Ville: { type: String, required: true },
   Pays: { type: String, required: true },
-  DateInscription:{ type: Date, default: Date.now ,required:true},
-  Actif:{ type: Boolean, required: true }
+  DateInscription: { type: Date, default: Date.now, required: true },
+  Actif: { type: Boolean, required: true }
 
 
 }, { collection: 'Villes' })
@@ -39,8 +39,8 @@ app.use('/assets', express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(cookieSession({
-  maxAge:24*60*60*1000,
-  keys:[configFile.session.cookieKey]
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: [configFile.session.cookieKey]
 }))
 //initialiaze passport
 
@@ -49,104 +49,108 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
-app.get('/success', (req, res) =>res.render('pages/espacemembre',{auth:req.isAuthenticated(),user:req.user,categories:configFile.categories}));
+app.get('/success', (req, res) => res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories }));
 app.get('/error', (req, res) => {
-  req.flash('error', 'Mot de pass ou email erroné','FailLogin')
+  req.flash('error', 'Mot de pass ou email erroné', 'FailLogin')
   res.redirect('/');
 });
-app.get('/searchApi',(req,res)=>{
- console.log(req.query.q)
+app.get('/searchApi', (req, res) => {
+  console.log(req.query.q)
 
-  let searchResponse ={results:
-    [
-      {
-      titre:'Monopoly',
-      imgsrc:'/assets/img/logo.png',
-      localisation:'Chatou France',
-      description:'Tres bon etat',
-      localisation:'CHATOU',
-      categorie:'Plateau',
-      image:'/assets/img/logo.png',
-      url:'/'
-      
-    },
-    {
-      titre:'Hotel',
-      imgsrc:'/assets/img/logo.png',
-      localisation:'Chatou France',
-      description:'Tres bon etat',
-      localisation:'RUEIL MALMAISON',
-      categorie:'Plateau',
-      image:'/assets/img/logo.png',
-      url:'/'
-    }
-  ]
+  let searchResponse = {
+    results:
+      [
+        {
+          titre: 'Monopoly',
+          imgsrc: '/assets/img/logo.png',
+          localisation: 'Chatou France',
+          description: 'Tres bon etat',
+          localisation: 'CHATOU',
+          categorie: 'Plateau',
+          image: '/assets/img/logo.png',
+          url: '/'
+
+        },
+        {
+          titre: 'Hotel',
+          imgsrc: '/assets/img/logo.png',
+          localisation: 'Chatou France',
+          description: 'Tres bon etat',
+          localisation: 'RUEIL MALMAISON',
+          categorie: 'Plateau',
+          image: '/assets/img/logo.png',
+          url: '/'
+        }
+      ]
   }
 
- var arrayFound = searchResponse.results.filter(function(item) {
+  var arrayFound = searchResponse.results.filter(function (item) {
     return item.categorie.toUpperCase() == req.query.q.toUpperCase();
-});
+  });
 
-let returnArray={results:arrayFound}
-   
-   
-  
-  res.writeHead(200, { 'Content-Type': 'application/json' }); 
+  let returnArray = { results: arrayFound }
+
+
+
+  res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(returnArray));
 })
 
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
   cb(null, user.id);
 });
 
-passport.deserializeUser(function(id, cb) {
-  User.findById(id, function(err, user) {
+passport.deserializeUser(function (id, cb) {
+  User.findById(id, function (err, user) {
     cb(err, user);
   });
 });
 const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-      User.findOne({
-        Email: username
-      }, function(err, user) {
-        if (err) {
-          return done(err);
-        }
+  function (username, password, done) {
+    User.findOne({
+      Email: username
+    }, function (err, user) {
+      if (err) {
+        return done(err);
+      }
 
-        if (!user) {
-          return done(null, false);
-        }
+      if (!user) {
+        return done(null, false);
+      }
 
-        if (user.MotDePasse != password) {
-          return done(null, false);
-        }
-        return done(null, user);
-      });
+      if (user.MotDePasse != password) {
+        return done(null, false);
+      }
+      return done(null, user);
+    });
   }
 ));
 
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
-  function(req, res) {
-    res.redirect('/success?username='+req.user.username);
+  function (req, res) {
+    res.redirect('/success?username=' + req.user.username);
   });
-app.get('/logout',(req,res)=>{
-  res.cookie.maxAge=Date.now -3
-  req.session=null
+app.get('/logout', (req, res) => {
+  res.cookie.maxAge = Date.now - 3
+  req.session = null
   res.redirect('/')
 })
 
 app.get('/', csrfProtection, (req, res) => {
 
-  res.render('pages/index', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user,categories:configFile.categories })
+  res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
 
 })
 app.get('/inscription', csrfProtection, (req, res) => {
-
-  res.render('pages/inscription', { csrfToken: req.csrfToken(),auth:req.isAuthenticated(),user:req.user,categories:configFile.categories },)
+if(req.isAuthenticated()==true){
+  res.redirect('/espacemembre')
+  return
+}
+  res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
 
 })
 /*app.get('/connexion', csrfProtection, (req, res) => {
@@ -157,55 +161,55 @@ app.get('/inscription', csrfProtection, (req, res) => {
 
 })*/
 app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
-  let arrayFound=''
- if(req.query.Pays=='-'||req.query.Pays==''){req.query.CodePostal='';req.query.Ville=''}
-   if(req.query.options=='CodePostal'&&req.query.CodePostal!=''){
-  
-   arrayFound = SearchVille.Villes.filter(function (item) {
-   
+  let arrayFound = ''
+  if (req.query.Pays == '-' || req.query.Pays == '') { req.query.CodePostal = ''; req.query.Ville = '' }
+  if (req.query.options == 'CodePostal' && req.query.CodePostal != '') {
+
+    arrayFound = SearchVille.Villes.filter(function (item) {
+
       return item.CodePostal == req.query.CodePostal;
-  
+
     });
   }
-  else if(req.query.options=='Ville'&&req.query.Ville!=''){
- 
-     arrayFound = SearchVille.Villes.filter(function (item) {
-   
+  else if (req.query.options == 'Ville' && req.query.Ville != '') {
+
+    arrayFound = SearchVille.Villes.filter(function (item) {
+
       return item.NomCommune == req.query.Ville.toUpperCase();
-  
+
     });
   }
- 
-  if (arrayFound[0] === undefined||arrayFound=='') {
-    
-   let json={Ville:"",Pays:req.query.Pays}
-    res.writeHead(200, { 'Content-Type': 'application/json' }); 
-      res.end(JSON.stringify(json));
+
+  if (arrayFound[0] === undefined || arrayFound == '') {
+
+    let json = { Ville: "", Pays: req.query.Pays }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(json));
     return
   }
   console.log(req.query.Pays)
-  let json={Ville:arrayFound[0].NomCommune,Pays:req.query.Pays,CodePostal:arrayFound[0].CodePostal}
-  res.writeHead(200, { 'Content-Type': 'application/json' }); 
-      res.end(JSON.stringify(json));
- 
+  let json = { Ville: arrayFound[0].NomCommune, Pays: req.query.Pays, CodePostal: arrayFound[0].CodePostal }
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(json));
+
 
 })
 function isLoggedIn(req, res, next) {
   console.log('here is Authenticated', req.isAuthenticated())
-  if (req.isAuthenticated()){
-      return next();
+  if (req.isAuthenticated()) {
+    return next();
   }
- 
+
   res.redirect('/');
 }
 app.get('/espacemembre', isLoggedIn,
-function(req, res){
- 
- res.render('pages/espacemembre',{auth:req.isAuthenticated(),user:req.user,categories:configFile.categories})
-});
+  function (req, res) {
+
+    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+  });
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {
-    req.flash('error', 'formulaire vide','vide')
+    req.flash('error', 'formulaire vide', 'vide')
     res.redirect('/inscription')
 
   }
@@ -216,7 +220,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
       else if (item != null) {
 
 
-        req.flash('error', 'Email deja soumis','eDejaSoumis')
+        req.flash('error', 'Email deja soumis', 'eDejaSoumis')
 
 
         res.redirect('/inscription')
@@ -228,27 +232,27 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
           else if (item != null) {
 
 
-            req.flash('error', "Nom d'utilisateur deja soumis","nUdejaSoumis")
-    
-    
+            req.flash('error', "Nom d'utilisateur deja soumis", "nUdejaSoumis")
+
+
             res.redirect('/inscription')
-    
+
           }
-          else{
+          else {
             var arrayFound = SearchVille.Villes.filter(function (item) {
               return item.CodePostal == req.body.CodePostal;
-    
+
             });
-    
+
             if (arrayFound[0] === undefined) {
-    
-              req.flash('error', 'Ville introuvable',"villeIntrouvable")
-    
-    
+
+              req.flash('error', 'Ville introuvable', "villeIntrouvable")
+
+
               res.redirect('/inscription')
               return
             }
-    
+
             var user1 = new User({
               Type: "User",
               NomUitilisateur: req.body.NomUitilisateur,
@@ -259,21 +263,21 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
               Adresse: req.body.Adresse.toUpperCase(),
               CodePostal: req.body.CodePostal,
               Ville: arrayFound[0].NomCommune.toUpperCase(),
-              Pays:req.body.Pays,
-              Actif:true
+              Pays: req.body.Pays,
+              Actif: true
             });
-    
+
             // save model to database
             user1.save(function (err, user) {
               if (err) return console.error(err)
               console.log(user.Email + "\r\n saved to Users collection.")
-              req.flash('success', "Merci pour votre inscription","SuccessCode")
-              res.redirect('/inscription')
-    
+              req.flash('success', "Merci pour votre inscription", "SuccessCode")
+              res.redirect('/')
+
             });
           }
         })
-       
+
 
       }
 

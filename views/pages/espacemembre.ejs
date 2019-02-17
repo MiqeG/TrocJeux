@@ -1,20 +1,37 @@
 <% include header %>
+<div class="ui basic modal annoncemodal">
+        <div class="ui icon header">
+          <i class="trash alternate icon"></i>
+        Effacer l'annonce?
+        </div>
+        <div class="content">
+          <p>Si vous confirmez l'annonce sera effacée de la base de données...</p>
+        </div>
+        <div class="actions">
+          <div class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            Non
+          </div>
+          <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            Oui
+          </div>
+        </div>
+      </div>
 <div class="ui inverted   asd "
     style="border-radius: 0!important; border: 0; margin-left: 260px;padding-bottom:5%; -webkit-transition-duration: 0.1s;">
     </i>
     <H1> <i class="user icon"></i>Espace Membre</h1>
-    <div class="ui top inverted  attached tabular menu">
+    <div class="ui top   attached tabular menu">
         <a class="item active toggler1 "><i class="address card icon"></i>
-            <span style="color:rgb(50, 240, 240);">Informations</span>
+            <span style="color:rgb(36, 161, 161);">Informations</span>
 
         </a>
         <a class="item toggler2"><i class="list alternate outline icon"></i>
-            <span style="color:rgb(50, 240, 240);">Annonces</span>
+            <span style="color:rgb(36, 161, 161);">Annonces</span>
         </a>
-    </a>
-    <a href="/deposer" class="item toggler2"><i class="tasks icon"></i>
-        <span style="color:rgb(50, 240, 240);">Deposer une Annonce</span>
-    </a>
+        </a>
+      
         <div class="right menu">
             <div class="item">
 
@@ -25,7 +42,7 @@
     </div>
     <div class="ui bottom attached segment ">
         <div class="togglerClass1">
-            <table class="ui inverted  table">
+            <table class="ui   table">
                 <thead>
                     <tr>
                         <th></th>
@@ -85,8 +102,8 @@
                 <div class="content">
 
                     <p></p>
-                    <div class="ui right  black  button"><i class=" edit outline icon"></i>Modifier</div>
-                    
+                    <div class="ui right  teal  button"><i class=" edit  icon"></i>Modifier</div>
+
 
                 </div>
             </div>
@@ -96,73 +113,90 @@
         </div>
 
         <div class="ui divided demo items togglerClass2" hidden>
-            <table class="ui inverted  table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="blackColor">
-                        <td><img class="ui small image centered" src="/assets/img/image.png" alt="">
-
-                        </td>
-                        <td>
-                            <table class="ui inverted  table">
-                                <thead>
-                                   
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="centered">Titre et Lieu</td>
-                                        <td class="centered" >Contact</td>
-                                        <td class="centered">Date</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="centered">Titre et Lieu</td>
-                                        <td class="centered">Contact</td>
-                                        <td class="centered">Date</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <div class="ui right  black  button" style=" width:13em"><i
-                                    class=" edit outline icon"></i>Modifier</div>&nbsp
-                            <div class="ui  right red  button" style=" width:13em"><i
-                                    class=" edit delete icon"></i>Supprimer</div>
-                        </td>
-                    </tr>
-                    <tr class="blackColor ">
-                        <td><img class="ui small image centered" src="/assets/img/image.png" alt=""></td>
-                        <td> <table class="ui inverted  table">
-                                <thead>
-                                   
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="centered">Titre et Lieu</td>
-                                        <td class="centered" >Contact</td>
-                                        <td class="centered">Date</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="centered">Titre et Lieu</td>
-                                        <td class="centered">Contact</td>
-                                        <td class="centered">Date</td>
-                                    </tr>
-                                </tbody>
-                            </table></td>
-                        <td>
-                            <div class="ui   black  button" style=" width:13em"><i
-                                    class=" edit outline icon"></i>Modifier</div>&nbsp
-                            <div class="ui   red  button" style=" width:13em"><i class=" edit delete icon"></i>Supprimer
+                <div class="ui items">
+                        <div class="item">
+                          <div class="image">
+                                <div class="slideshow-container" style="text-align:center">
+                
+                                        <div class="mySlides fade">
+                                            
+                                            <img src="/assets/img/image.png" style="height:115px ;width:115px">
+        
+                                        </div>
+        
+                                        <div class="mySlides fade">
+                                           
+                                            <img src="/assets/img/logo.png" style="height:115px ;width:115px">
+        
+                                        </div>
+        
+                                        <div class="mySlides fade">
+                                            
+                                            <img src="/assets/img/image.png" style="height:115px ;width:115px">
+        
+                                        </div>
+        
+                                      
+        
+                                    </div>
+                                    <br>
+        
+                                    <div style="text-align:center">
+                                        <span class="dot" onclick="currentSlide(1)"></span>
+                                        <span class="dot" onclick="currentSlide(2)"></span>
+                                        <span class="dot" onclick="currentSlide(3)"></span>
+                                    </div>
+                          </div>
+                          <div class="content">
+                            <a class="header">Titre</a>
+                            <div class="meta">
+                              <span>Description</span>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <div class="description">
+                              <p></p>
+                            </div>
+                            <div class="extra">
+                              Additional Details
+                             
+                              
+                            </div>
+                            <div class="description">
+                                    <div class="ui right  teal  button " style="width:150px; " onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"  ></i>Modifier</div> &nbsp;
+                              <div class="ui right  red  button modalshow " style="width:150px"><i class=" delete  icon" ></i>Supprimer</div>
+                                  </div>
+                          </div>
+                        </div>
+                        <div class="item">
+                          <div class="image">
+                            <img src="/images/wireframe/image.png">
+                          </div>
+                          <div class="content">
+                            <a class="header">Header</a>
+                            <div class="meta">
+                              <span>Description</span>
+                            </div>
+                            <div class="description">
+                              <p></p>
+                            </div>
+                            <div class="extra">
+                              Additional Details
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                              
+                              
+                              
+                              
+                         
+                                        
+                                     
+                         
+                            
+                        </div>
+                       
+                      </div>
+          
         </div>
 
     </div>
