@@ -11,6 +11,19 @@
     padding-right:41%;
    
 }
+.tealColor{
+    color:rgb(50, 240, 240);
+}
+.fontWeight{
+    font-weight: 500;
+}
+.blackColor{
+    color: black;
+    font-style: italic;
+    font-weight: 500;
+
+}
+.frontlogo:hover{cursor:pointer}
 .main.container{
     margin-top: 7em;
 }

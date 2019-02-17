@@ -1,17 +1,19 @@
 <% include header %>
-<div class="padding">
-        <script src="assets/formValidation/formValidation.js"></script>
+<script src="assets/formValidation/formValidation.js"></script>
+<div class="ui inverted  asd " style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;" >
+        
         <% if(locals.flash==undefined ||locals.flash.code!="SuccessCode"){ %>
           
-        <h1 class="head">Rejoignez nous...</h1>
+       
         
-        <form class="ui form" action="/Inscription" method="POST">
+        <form class="ui form asd" action="/Inscription" method="POST">
+            <h1 class="head"><i class="users icon"></i>Rejoignez nous... </h1>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="two fields">
                 <div class="field">
-                    <label for="NomUitilisateur">Nom d'utilisateur</label>
+                    <label for="NomUitilisateur">   <i class="user icon"></i>Nom d'utilisateur</label>
                     <% if(locals.formdata && locals.formdata.NomUitilisateur && locals.flash.code!="nUdejaSoumis"){ %>
-        
+                     
                     <input name="NomUitilisateur" id="NomUitilisateur" value="<%= locals.formdata.NomUitilisateur %>"
                         maxlength="20" minlength="4"></input>
                     <% }else{ %>
@@ -20,7 +22,7 @@
                     <% } %>
                 </div>
                 <div class="field">
-                    <label for="Nom">Nom</label>
+                    <label for="Nom"><i class="address card icon"></i> Nom</label>
                     <% if(locals.formdata && locals.formdata.Nom){ %>
                     <input name="Nom" id="Nom" value="<%= locals.formdata.Nom %>" maxlength="35" minlength="2"></input>
                     <% }else{ %>
@@ -32,7 +34,7 @@
             <div class="two fields">
                 <div class="field">
         
-                    <label for="Prenom">Prenom</label>
+                    <label for="Prenom"><i class="address card outline icon"></i> Prenom</label>
                     <% if(locals.formdata && locals.formdata.Prenom ){ %>
                     <input name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>" maxlength="35" minlength="2"></input>
                     <% }else{ %>
@@ -41,7 +43,7 @@
                 </div>
                 <div class="field">
         
-                    <label for="Email">Email</label>
+                    <label for="Email"><i class="envelope open outline icon"></i>Email</label>
                     <% if(locals.formdata && locals.formdata.Email && locals.flash.code!="eDejaSoumis"){ %>
                     <input name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50"></input>
                     <% }else{ %>
@@ -51,7 +53,7 @@
             </div>
             <div class="two fields">
                 <div class="field">
-                    <label for="MotDePasse">Mot de passe</label>
+                    <label for="MotDePasse"><i class="key icon"></i> Mot de passe</label>
                     <% if(locals.formdata && locals.formdata.MotDePasse ){ %>
                     <input name="MotDePasse" id="MotDePasse" type="password" value="<%= locals.formdata.MotDePasse %>"
                         maxlength="40"></input>
@@ -60,13 +62,13 @@
                     <% } %>
                 </div>
                 <div class="field">
-                    <label for="MotDePasse">Verification mot de passe</label>
+                    <label for="MotDePasse"><i class="keyboard outline icon"></i> Verification mot de passe</label>
                     <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password" maxlength="40"></input>
                 </div>
             </div>
             <div class="two fields">
                 <div class="field">
-                    <label for=" Adresse">Adresse</label>
+                    <label for=" Adresse"><i class="address card icon"></i> Adresse</label>
                     <% if(locals.formdata && locals.formdata.Adresse ){ %>
                     <input name="Adresse" id="Adresse" value="<%= locals.formdata.Adresse %>" maxlength="400"
                         minlength="4"></input>
@@ -75,7 +77,7 @@
                     <% } %>
                 </div>
                 <div class="field">
-                        <label>Pays</label>
+                        <label><i class="globe icon"></i> Pays</label>
                         <div class="ui fluid selection dropdown">
                                 <% if(locals.formdata &&locals.formdata.Pays  ){ %>
                             <input type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
@@ -96,17 +98,17 @@
                     </div>
                
             </div>
-            <div class="two fields">
-                <div class="field">
-                    <label for="Ville">Ville</label>
+            <div class="two fields" >
+                <div class="field unhide" hidden>
+                    <label for="Ville"><i class="chess rook icon"></i> Ville</label>
                     <% if(locals.formdata &&locals.formdata.Ville && locals.flash.code!="villeIntrouvable" ){ %>
                     <input  type="text" name="Ville" id="Ville" value="<%= locals.formdata.Ville %>" ></input>
                     <% }else{ %>
                     <input type="text" name="Ville" id="Ville" ></input>
                     <% } %>
                 </div>
-                <div class="field">
-                        <label for="CodePostal">Code Postal</label>
+                <div class="field unhide" hidden>
+                        <label for="CodePostal"><i class="address card outline icon"></i> Code Postal</label>
                         <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.code!="villeIntrouvable" ){ %>
                         <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>" maxlength="5"></input>
                         <% }else{ %>
@@ -115,7 +117,7 @@
                     </div>
             </div>
         
-            <button type="submit" class="ui blue labeled submit icon button"><i class="icon edit"></i>Envoyer</button>
+            <button type="submit" class="ui teal labeled submit icon button"><i class="icon edit"></i>Envoyer</button>
             <div class="ui error message"></div>
         </form>
         <% } %>

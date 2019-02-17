@@ -1,27 +1,172 @@
-
 <% include header %>
-<div class="padding">
-        <H1>Espace Membre</h1>
-            <div class="ui top attached tabular menu">
-              <a class="item">
-                Informations
-              </a>
-              <a class="item active">
-                Annonces
-              </a>
-             
-              <div class="right menu">
-                <div class="item">
-                 
-                </div>
-               
-              </div>
-             
+<div class="ui inverted   asd "
+    style="border-radius: 0!important; border: 0; margin-left: 260px;padding-bottom:5%; -webkit-transition-duration: 0.1s;">
+    </i>
+    <H1> <i class="user icon"></i>Espace Membre</h1>
+    <div class="ui top inverted  attached tabular menu">
+        <a class="item active toggler1 "><i class="address card icon"></i>
+            <span style="color:rgb(50, 240, 240);">Informations</span>
+
+        </a>
+        <a class="item toggler2"><i class="list alternate outline icon"></i>
+            <span style="color:rgb(50, 240, 240);">Annonces</span>
+        </a>
+    </a>
+    <a href="/deposer" class="item toggler2"><i class="tasks icon"></i>
+        <span style="color:rgb(50, 240, 240);">Deposer une Annonce</span>
+    </a>
+        <div class="right menu">
+            <div class="item">
+
             </div>
-            <div class="ui bottom attached segment">
-              <p></p>
-            </div>
-            <div>sdfsdf</div>
+
+        </div>
+
     </div>
+    <div class="ui bottom attached segment ">
+        <div class="togglerClass1">
+            <table class="ui inverted  table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fontWeight">
+                        <td><i class="address card  icon"></i><span>Nom</span> </td>
+                        <td><%= user.Nom %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="address card outline icon"></i> Prenom</td>
+                        <td> <%= user.Prenom %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="envelope open outline icon"></i></i> Email</td>
+                        <td> <%= user.Email %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="user icon"></i> Nom d'utilisateur</td>
+                        <td> <%= user.NomUitilisateur %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="address card icon"></i></i> Adresse</td>
+                        <td> <%= user.Adresse %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="address card outline icon"></i> Code Postal</td>
+                        <td><%= user.CodePostal %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="chess rook icon"></i></i>Ville</td>
+                        <td><%= user.Ville %></td>
+
+                    </tr>
+                    <tr class="fontWeight">
+                        <td><i class="globe icon"></i> Pays</td>
+                        <td><%= user.Pays %></td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+
+            <div class="item">
+
+                <div class="content">
+
+                    <p></p>
+                    <div class="ui right  black  button"><i class=" edit outline icon"></i>Modifier</div>
+                    
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="ui divided demo items togglerClass2" hidden>
+            <table class="ui inverted  table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="blackColor">
+                        <td><img class="ui small image centered" src="/assets/img/image.png" alt="">
+
+                        </td>
+                        <td>
+                            <table class="ui inverted  table">
+                                <thead>
+                                   
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="centered">Titre et Lieu</td>
+                                        <td class="centered" >Contact</td>
+                                        <td class="centered">Date</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="centered">Titre et Lieu</td>
+                                        <td class="centered">Contact</td>
+                                        <td class="centered">Date</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <div class="ui right  black  button" style=" width:13em"><i
+                                    class=" edit outline icon"></i>Modifier</div>&nbsp
+                            <div class="ui  right red  button" style=" width:13em"><i
+                                    class=" edit delete icon"></i>Supprimer</div>
+                        </td>
+                    </tr>
+                    <tr class="blackColor ">
+                        <td><img class="ui small image centered" src="/assets/img/image.png" alt=""></td>
+                        <td> <table class="ui inverted  table">
+                                <thead>
+                                   
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="centered">Titre et Lieu</td>
+                                        <td class="centered" >Contact</td>
+                                        <td class="centered">Date</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="centered">Titre et Lieu</td>
+                                        <td class="centered">Contact</td>
+                                        <td class="centered">Date</td>
+                                    </tr>
+                                </tbody>
+                            </table></td>
+                        <td>
+                            <div class="ui   black  button" style=" width:13em"><i
+                                    class=" edit outline icon"></i>Modifier</div>&nbsp
+                            <div class="ui   red  button" style=" width:13em"><i class=" edit delete icon"></i>Supprimer
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
 
 <% include footer %>

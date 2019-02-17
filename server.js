@@ -49,11 +49,52 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
-app.get('/success', (req, res) => res.send("Ok logging in" +req.user));
+app.get('/success', (req, res) =>res.render('pages/espacemembre',{auth:req.isAuthenticated(),user:req.user,categories:configFile.categories}));
 app.get('/error', (req, res) => {
   req.flash('error', 'Mot de pass ou email erroné','FailLogin')
   res.redirect('/');
 });
+app.get('/searchApi',(req,res)=>{
+ console.log(req.query.q)
+
+  let searchResponse ={results:
+    [
+      {
+      titre:'Monopoly',
+      imgsrc:'/assets/img/logo.png',
+      localisation:'Chatou France',
+      description:'Tres bon etat',
+      localisation:'CHATOU',
+      categorie:'Plateau',
+      image:'/assets/img/logo.png',
+      url:'/'
+      
+    },
+    {
+      titre:'Hotel',
+      imgsrc:'/assets/img/logo.png',
+      localisation:'Chatou France',
+      description:'Tres bon etat',
+      localisation:'RUEIL MALMAISON',
+      categorie:'Plateau',
+      image:'/assets/img/logo.png',
+      url:'/'
+    }
+  ]
+  }
+
+ var arrayFound = searchResponse.results.filter(function(item) {
+    return item.categorie.toUpperCase() == req.query.q.toUpperCase();
+});
+
+let returnArray={results:arrayFound}
+   
+   
+  
+  res.writeHead(200, { 'Content-Type': 'application/json' }); 
+  res.end(JSON.stringify(returnArray));
+})
+
 
 passport.serializeUser(function(user, cb) {
   cb(null, user.id);
@@ -226,7 +267,7 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
             user1.save(function (err, user) {
               if (err) return console.error(err)
               console.log(user.Email + "\r\n saved to Users collection.")
-              req.flash('success', "Merci","SuccessCode")
+              req.flash('success', "Merci pour votre inscription","SuccessCode")
               res.redirect('/inscription')
     
             });

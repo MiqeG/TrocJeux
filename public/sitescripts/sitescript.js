@@ -1,5 +1,24 @@
 {
     $( document ).ready(function() {
+        
+      $('#Pays').change(function(){
+          $('.unhide').fadeIn(400)
+      })
+        $('.toggler1').click(function(){
+            $('.togglerClass2').hide()
+            $('.togglerClass1').fadeIn(400)
+        })
+        $('.toggler2').click(function(){
+            $('.togglerClass1').hide()
+            $('.togglerClass2').fadeIn(400)
+        })
+        $('.demo.items .image img')
+  .visibility({
+    type       : 'image',
+    transition : 'fade in',
+    duration   : 1000
+  })
+;
         $(".openbtn").on("click", function() {
             $(".ui.sidebar").toggleClass("very thin icon");
             $(".asd").toggleClass("marginlefting");
@@ -10,6 +29,10 @@
             $(".logo").find('img').toggle();
          
           })
+          $('.demo.sidebar')
+  .sidebar('setting', 'transition', 'overlay')
+  .sidebar('toggle')
+;
           $(".ui.dropdown").dropdown({
             allowCategorySelection: true,
             transition: "fade up",
@@ -44,7 +67,24 @@
         $('.LogOut').click(function() {
           window.location.href='/logout'
         })
-        
+        $('.ui.search')
+        .search({
+          apiSettings: {
+            url: 'searchapi/?q={query}'
+          },
+          fields: {
+            results : 'results',
+            title   : 'titre',
+            url     : 'url',
+            image:'image',
+            price: "localisation",
+            
+            description:'categorie'
+           
+          },
+          minCharacters : 3
+        })
+      ;
     });
    
 }

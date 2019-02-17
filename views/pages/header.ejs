@@ -12,40 +12,40 @@
     <script src="assets/sitescripts/sitescript.js"></script>
  
 </head>
-<body>
-<div class="ui sidebar vertical left menu overlay visible" style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
+<body style="margin-bottom:5%">
+<div class="ui sidebar vertical left menu overlay visible inverted" style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
   <div class="item logo">
     <div class="paddingLogo">
-        <img src="/assets/img/logo.png" />
+        <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" />
        
     </div>
-  <img src="/assets/img/logo.png" style="display: none" />
+  <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" style="display: none" />
   </div>
   <div class="ui accordion">
   
       <% if(auth==false){ %>
       
-        <a  class="item " href="/inscription" ><i class="users icon"></i><b>Rejoignez nous!</b></a> 
+        <a  class="item button" style="color:rgb(50, 240, 240)" href="/inscription" ><i class="users icon" style="color:white"></i><b>Rejoignez nous!</b></a> 
   
    
-        <a  class="item Connexion" ><i class="sign-in alternate icon"></i><b>Se Connecter!</b> </a> &nbsp
+        <a  class="item Connexion"  style="color:rgb(50, 240, 240)" ><i class="sign-in alternate icon" style="color:white"></i><b>Se Connecter!</b> </a> &nbsp
     
    
     <% }else if(auth==true){ %>
      
-      <a  class="item " href="/espacemembre" ><i class="user icon"></i><b>Bonjour <%= user.Prenom %> !</b></a> 
-  
+      <a  class="item tealColor" href="/espacemembre" style="color:rgb(50, 240, 240)" ><i class="user icon" style="color:white"></i><b> Bonjour &nbsp <%= user.Prenom %> !</b></a> 
+      <a  class="item tealColor" href="/deposer" style="color:rgb(50, 240, 240)" ><i class="tasks icon" style="color:white"></i><b> Déposer une annonce...</b></a> 
    
-      <a  class="item LogOut" ><i class="sign-out alternate icon"></i><b>Se Deconnecter!</b> </a> &nbsp
+      <a  class="item LogOut" style="color:rgb(50, 240, 240)"  ><i class="sign-out alternate icon" style="color:white"></i><b>Se &nbsp Deconnecter!</b> </a> &nbsp
      
       <% } %>
 
-    <div class="title item">
-      <i class="dropdown icon"></i> Catégories
+    <div class="title item"  style="color:white">
+      <i class="dropdown icon tealColor" ></i > Catégories
     </div>
     <div class="content">
       <% categories.forEach(element => { %>
-        <a class="item" href="inbox.html"><%= element %>
+        <a class="item" style="color:rgb(50, 240, 240)"  ><%= element %>
         </a>
         <% }); %>
       
@@ -56,121 +56,26 @@
 
 
   
-    <div class="title item">
-      <i class="dropdown icon"></i> UI-Kit
+   
+
+    <div class="title item" style="color:white">
+      <i class="dropdown icon tealColor" ></i> Pages
     </div>
     <div class="content">
-      <a class="item" href="accordion.html">Accordion
-                    </a>
-      <a class="item" href="breadcrumb.html">Breadcrumb
-                    </a>
-      <a class="item" href="button.html">Button
-                    </a>
-      <a class="item" href="divider.html">Divider
-                    </a>
-      <a class="item" href="dropdown.html">Dropdown
-                    </a>
-      <a class="item" href="flag.html">Flag
-                    </a>
-      <a class="item" href="icon.html">Icon
-                    </a>
-      <a class="item" href="image.html">Image
-                    </a>
-      <a class="item" href="label.html">Label
-                    </a>
-      <a class="item" href="list.html">List
-                    </a>
-      <a class="item" href="modal.html">Modal
-                    </a>
-      <a class="item" href="notification.html">Notification
-                    </a>
-      <a class="item" href="alert.html">Alert
+      <a class="item" style="color:rgb(50, 240, 240)"  href="profile.html">Profile
                     </a>
 
-      <a class="item" href="progress.html">Progress
-                    </a>
-      <a class="item" href="range-v1.html">Range Semantic
-                    </a>
-      <a class="item" href="range-v2.html">Range Material
-                    </a>
-      <a class="item" href="rating.html">Rating
-                    </a>
-      <a class="item" href="tab.html">Tab
-                    </a>
-      <a class="item" href="tooltip.html">Tooltip
-                    </a>
-      <a class="item" href="transition.html">Transition
-                    </a>
-    </div>
-
-    <div class="title item">
-      <i class="dropdown icon"></i> Pages
-    </div>
-    <div class="content">
-      <a class="item" href="profile.html">Profile
+      <a class="item"  style="color:rgb(50, 240, 240)"  href="settings.html">Settings
                     </a>
 
-      <a class="item" href="settings.html">Settings
-                    </a>
-
-      <a class="item" href="blank.html">Blank
-                    </a>
-      <a class="item" href="signin.html">Sign In
-                    </a>
-                    
-      <a class="item" href="signup.html">Sign Up
-                    </a>
-      <a class="item" href="forgotpassword.html">Forgot Password
-                    </a>
-      <a class="item" href="lockme.html">Lock Me Screen
-                    </a>
-      <a class="item" href="404.html">Error 404
-                    </a>
-      <a class="item" href="comingsoon.html">Coming Soon
-                    </a>
+     
     </div>
 
-    <div class="title item">
-      <i class="dropdown icon"></i> Form
-    </div>
-    <div class="content">
-      <a class="item" href="formelements.html">Form Element
-                    </a>
-      <a class="item" href="input.html">Input
-                    </a>
-      <a class="item" href="formvalidation.html">Form Validation
-                    </a>
-
-      <a class="item" href="editor.html">Html Editor
-                    </a>
-    </div>
-
-    <div class="title item">
-      <i class="dropdown icon"></i> Tables
-    </div>
-    <div class="content">
-      <a class="item" href="table.html">Static Table
-                    </a>
-      <a class="item" href="datatable.html">Datatable
-                    </a>
-      <a class="item" href="editable.html">Editable
-                    </a>
-    </div>
-    <div class="title item">
-      <i class="dropdown icon"></i> Chart
-    </div>
-    <div class="content">
-      <a class="item" href="chart.html">Charts 1
-                    </a>
-      <a class="item" href="chart-2.html">Charts 2
-                    </a>
-      <a class="item" href="chart-3.html">Charts 3
-                    </a>
-    </div>
+    
   </div>
-  <div class="ui dropdown item displaynone">
+  <div class="ui dropdown item   displaynone inverted teal">
     <z></z>
-    <i class="icon demo-icon user icon-heart"></i>
+    <i class="icon demo-icon user icon-heart " ></i>
 
     <div class="menu">
      
@@ -186,6 +91,7 @@
     <% }else if(auth==true){ %>
      
       <a  class="item " href="/espacemembre" ><i class="user icon"></i><b>Bonjour <%= user.Prenom %> !</b></a> 
+      <a  class="item " href="/deposer" ><i class="tasks icon"></i><b>Déposer une annonce...</b></a>
   
    
       <a  class="item LogOut" ><i class="sign-out alternate icon"></i><b>Se Deconnecter!</b> </a> &nbsp
@@ -193,99 +99,57 @@
       <% } %>
     </div>
   </div>
-  <div class="ui dropdown item displaynone">
-    <z>Layout</z>
-    <i class="icon demo-icon world icon-globe"></i>
+  <div class="ui dropdown item displaynone inverted teal">
+    <z>Catégories</z>
+    <i class="icon demo-icon gamepad icon-globe " ></i>
 
-    <div class="menu">
+    <div class="menu blackColor">
       <div class="header">
-        Layout
+         Catégories
       </div>
-      <div class="ui divider"></div>
-      <a class="item" href="inbox.html">Inbox
-                    </a>
-      <a class="item" href="mail.html">Mailbox
-                    </a>
-      <a class="item" href="chat.html">Chat
-                    </a>
-      <a class="item" href="contacts.html">Contacts
-                    </a>
-      <a class="item" href="photoeditor.html">Photo Editor
-                    </a>
-      <a class="item" href="calendar.html">Calendar
-                    </a>
-      <a class="item" href="filter.html">Filter
-                    </a>
-      <a class="item" href="todo.html">Todo
-                    </a>
+      <div class="ui divider " style="background-color:rgb(50, 240, 240)"></div>
+      <% categories.forEach(element => { %>
+        <a class="item " ><b><%= element %></b> 
+        </a>
+        <% }); %>
+     
     </div>
   </div>
   <div class="ui dropdown item displaynone">
-    <z>Pages</z>
+    <z></z>
     <i class="icon demo-icon  icon-params alarm"></i>
 
-    <div class="menu">
-      <div class="header">
-        Layouts
-      </div>
-      <div class="ui divider"></div>
-      <a class="item" href="sidebar.html">Sidebar
-                    </a>
-      <a class="item" href="menu.html">Nav
-                    </a>
-      <a class="item" href="animatedicon.html">Animated Icon
-                    </a>
-      <a class="item" href="box.html">Box
-                    </a>
-      <a class="item" href="cards.html">Cards
-                    </a>
-      <a class="item" href="color.html">Colors
-                    </a>
-      <a class="item" href="comment.html">Comment
-                    </a>
-      <a class="item" href="embed.html">Embed
-                    </a>
-      <a class="item" href="faq.html">Faq
-                    </a>
-      <a class="item" href="feed.html">Feed
-                    </a>
-      <a class="item" href="gallery.html">Gallery
-                    </a>
-      <a class="item" href="grid.html">Grid
-                    </a>
-      <a class="item" href="header.html">Header
-                    </a>
-      <a class="item" href="timeline.html">Timeline
-                    </a>
-      <a class="item" href="message.html">Message
-                    </a>
-      <a class="item" href="price.html">Price
-                    </a>
+   
+     
+   
     </div>
   </div>
 </div>
 <div class="pusher">
-  <div class="ui inverted menu asd borderless" style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
+  
+  <div class="ui inverted menu asd fixed borderless inverted teal " style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
+   
     <a class="item openbtn">
       <i class="icon content"></i>
     </a>
-    <a href="/" class="item"><b>Troc'Jeux</b>
-                </a>
-    <div class="right menu">
-       
-      <div class="ui dropdown item">
-        Langue <i class="dropdown icon"></i>
-        <div class="menu">
-          <a class="item">English</a>
-          <a class="item">Russian</a>
-          <a class="item">Spanish</a>
+   
+               
+    <div class="ui category search">
+        <div class="ui icon input">
+          <input class="prompt" type="text" placeholder="Rechercher...">
+          <i class="search icon"></i>
         </div>
+        <div class="results"></div>
       </div>
-     
+       
+    
+      </div>
+ 
      
     </div>
   </div>
 </div>
+
 <div class="ui basic modal">
      
      
@@ -311,7 +175,7 @@
                 <input type="password" name="password" id="password" placeholder="Mot de passe">
               </div>
             </div>
-            <input type="submit" class="ui fluid large blue submit button" id="LogIn" value="Connexion"></input>
+            <input type="submit" class="ui fluid large teal submit button" id="LogIn" value="Connexion"></input>
           </div>
     
        
@@ -319,7 +183,7 @@
         </form>
     
         <div class="ui message">
-         S'Inscrire? <a href="/inscription">Inscription</a>
+         S'Inscrire? <a style="color:teal" href="/inscription">Inscription</a>
         </div>
       </div>
     </div>
@@ -328,13 +192,13 @@
 <div class="ui main container">
     <% if(locals.flash && locals.flash.error){ %>
     <div class="ui negative message">
-        <%= flash.error %>
+       <i class="meh outline icon"></i> <%= flash.error %>
     </div>
     
     <% } %>
     <% if(locals.flash && locals.flash.success){ %>
         <div class="ui success message">
-            <%= flash.success %>
+            <i class="smile outline icon"></i><%= flash.success %> 
         </div>
         
         <% } %>
