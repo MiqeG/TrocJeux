@@ -29,9 +29,25 @@ var UserSchema = mongoose.Schema({
   Actif: { type: Boolean, required: true }
 
 
-}, { collection: 'Villes' })
+}, { collection: 'Users' })
+var AnnonceSchema= mongoose.Schema({
+  Type: { type: String, required: true },
+  NomUitilisateur: { type: String, required: true },
+  Nom: { type: String, required: true },
+  Prenom: { type: String, required: true },
+  Email: { type: String, required: true },
+  MotDePasse: { type: String, required: true },
+  Adresse: { type: String, required: true },
+  CodePostal: { type: Number, required: true },
+  Ville: { type: String, required: true },
+  Pays: { type: String, required: true },
+  DateInscription: { type: Date, default: Date.now, required: true },
+  Actif: { type: Boolean, required: true }
 
+
+}, { collection: 'Annonces' })
 var User = mongoose.model('User', UserSchema, 'Users')
+var Annonce = mongoose.model('Annonce', UserSchema, 'Annonces')
 db.once('open', function () { console.log("Connection to database NewTest Successful!") })
 
 let session = require('express-session')
@@ -52,8 +68,9 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
+
 app.get('/success', (req, res) => res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories }));
-app.get('/deposer',csrfProtection,(req,res)=>{
+app.get('/deposer',isLoggedIn,csrfProtection,(req,res)=>{
   if( req.isAuthenticated()==true){
     res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
 
@@ -221,13 +238,49 @@ app.get('/espacemembre', isLoggedIn,
 
     res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
   });
-  app.post('/deposer',csrfProtection,(req,res)=>{
+  app.post('/deposer',isLoggedIn,(req,res)=>{
     if (req.body === undefined || req.body === '') {
       req.flash('error', 'formulaire vide', 'vide')
       res.redirect('/deposer')
+      return
     }
     else{
-      console.log(req.body);
+      console.log(req.body)
+      //get user images
+      let form = new formidable.IncomingForm();
+    form.uploadDir = configFile.serverConfigurationVariables.userImageFolder;
+    form.maxFileSize = configFile.serverConfigurationVariables.maxFile * 1024 * 1024;
+
+    form.hash = 'md5';
+    form.keepExtensions = true;
+    form.parse(req, function (err, fields, files) {
+      console.log(files)
+
+  
+    
+    });
+    //on end of transfer
+    form.on('end', function (fields, files) {
+    
+      req.flash('success', "Merci pour votre confiance!", "SuccessCode")
+     
+      
+      res.redirect('/.');
+     return
+      /* Temporary location of our uploaded file */
+  //  for (let i = 0; i < this.openedFiles.length; i++) {
+     //   let temp_path = this.openedFiles[i].path;
+        /* The file name of the uploaded file */
+       // let file_name = this.openedFiles[i].name;
+        /* Location where we want to copy the uploaded file */
+       // let new_location = configFile.transferfilesFolder + '/';
+  
+        //copy from temp to folder
+
+
+     //}
+  
+    });
     }
   })
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {

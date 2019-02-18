@@ -1,6 +1,8 @@
 {
     "serverConfigurationVariables": {
-        "port": 80
+        "port": 80,
+        "maxFile:": 100,
+        "userImageFolder":"C:/git/TrocJeux/UserImages"
     },
     "session": {
         "cookieKey": "trocjeuxclef"

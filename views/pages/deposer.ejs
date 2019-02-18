@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" href="assets/sitecss/fileinput.css">
 <script src="/assets/formvalidation/imageformvalidation.js"></script>
+<script src="assets/sitescripts/custom-file-input.js"></script>
 <div class="ui inverted  asd "
     style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
 
@@ -10,7 +11,7 @@
 
 
 
-    <form class="ui form imageform asd " style="margin-bottom: 10%;" action="/deposer" method="POST">
+    <form class="ui form imageform asd " style="margin-bottom: 10%;" action="/deposer" method="post" enctype="multipart/form-data">
         <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="two fields">
@@ -78,7 +79,7 @@
                         <button class="file-upload-btn 1 ui  teal button " type="button" onclick="$('.file-upload-input.1').trigger( 'click' )">Ajouter Image</button>
                       
                         <div class="image-upload-wrap 1">
-                          <input name="file1" class="file-upload-input 1" type='file' onchange="readURL1(this);" accept="image/*" />
+                          <input type="file" name="file" class="file-upload-input 1 inputfile"  onchange="readURL1(this);" accept="image/*"  required="required" data-multiple-caption="{count} files selected" multiple="multiple" />
                           <div class="drag-text 1">
                             <h3>Glissez déposez votre image ici!</h3>
                           </div>
@@ -98,7 +99,7 @@
                                 <button class="file-upload-btn 2 ui  teal button " type="button" onclick="$('.file-upload-input.2').trigger( 'click' )">Ajouter Image</button>
                               
                                 <div class="image-upload-wrap 2">
-                                  <input name="file2" class="file-upload-input 2" type='file' onchange="readURL2(this);" accept="image/*" />
+                                  <input  type="file" name="file"  class="file-upload-input 2 inputfile"  onchange="readURL2(this);" accept="image/*"  required="required" data-multiple-caption="{count} files selected" multiple="multiple"/>
                                   <div class="drag-text 2">
                                     <h3>Glissez déposez votre image ici!</h3>
                                   </div>
@@ -118,7 +119,7 @@
                                 <button class="file-upload-btn 3 ui  teal button " type="button" onclick="$('.file-upload-input.3').trigger( 'click' )">Ajouter Image</button>
                               
                                 <div class="image-upload-wrap 3 centered">
-                                  <input name="file3" class="file-upload-input 3" type='file' onchange="readURL3(this);" accept="image/*" />
+                                  <input  type="file" name="file"  name="files" class="file-upload-input 3 inputfile"  onchange="readURL3(this);" accept="image/*"  required="required" data-multiple-caption="{count} files selected" multiple="multiple"/>
                                   <div class="drag-text 3">
                                     <h3>Glissez déposez votre image ici!</h3>
                                   </div>
@@ -154,3 +155,4 @@
   
 <script src="assets/sitescripts/fileinput.js"></script>
 <% include footer %>
+
