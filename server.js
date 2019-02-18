@@ -348,13 +348,13 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
             var user1 = new User({
               Type: "User",
               NomUitilisateur: req.body.NomUitilisateur,
-              Nom: req.body.Nom.toUpperCase(),
-              Prenom: req.body.Prenom.toUpperCase(),
-              Email: req.body.Email.toLowerCase(),
-              MotDePasse: req.body.MotDePasse,
-              Adresse: req.body.Adresse.toUpperCase(),
-              CodePostal: req.body.CodePostal,
-              Ville: arrayFound[0].NomCommune.toUpperCase(),
+              Nom: req.body.Nom.toUpperCase().trim(),
+              Prenom: req.body.Prenom.toUpperCase().trim(),
+              Email: req.body.Email.toLowerCase().trim(),
+              MotDePasse: req.body.MotDePasse.trim(),
+              Adresse: req.body.Adresse.toUpperCase().trim(),
+              CodePostal: req.body.CodePostal.trim(),
+              Ville: arrayFound[0].NomCommune.toUpperCase().trim(),
               Pays: req.body.Pays,
               Actif: true
             });
