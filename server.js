@@ -4,14 +4,18 @@ let mongoose = require('mongoose')
 var cookieParser = require('cookie-parser')
 const cookieSession = require('cookie-session');
 var formidable = require('formidable'),
-    http = require('http'),
-    util = require('util');
+  http = require('http'),
+  util = require('util');
 var csrf = require('csurf')
+var mkdirp = require('mkdirp')
+
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
 const passport = require('passport');
+let IoOp = require('./securescripts/Io/copyformfiles.js')
 mongoose.connect('mongodb://localhost:27017/NewTest', { useNewUrlParser: true })
 var db = mongoose.connection;
+
 db.on('error', console.error.bind(console, 'connection error:'))
 
 var UserSchema = mongoose.Schema({
@@ -30,19 +34,19 @@ var UserSchema = mongoose.Schema({
 
 
 }, { collection: 'Users' })
-var AnnonceSchema= mongoose.Schema({
-  Type: { type: String, required: true },
+var AnnonceSchema = mongoose.Schema({
+  Categorie: { type: String, required: true },
+  User_Id: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
-  Nom: { type: String, required: true },
-  Prenom: { type: String, required: true },
+
   Email: { type: String, required: true },
-  MotDePasse: { type: String, required: true },
+  imgsrc: { type: Array },
   Adresse: { type: String, required: true },
   CodePostal: { type: Number, required: true },
   Ville: { type: String, required: true },
   Pays: { type: String, required: true },
-  DateInscription: { type: Date, default: Date.now, required: true },
-  Actif: { type: Boolean, required: true }
+  DatePublication: { type: Date, default: Date.now, required: true },
+  Active: { type: Boolean, required: true }
 
 
 }, { collection: 'Annonces' })
@@ -62,7 +66,10 @@ app.use(cookieSession({
   keys: [configFile.session.cookieKey]
 }))
 //initialiaze passport
-
+mkdirp(configFile.serverConfigurationVariables.userImageFolder+'/temp' , function (err) {
+  if(err)throw err
+  console.log('Temp folder ok!')
+ });
 app.set('trust proxy', 1) // trust first proxy
 
 app.use(passport.initialize());
@@ -70,13 +77,13 @@ app.use(passport.session());
 app.use(require('./middlewares/flash'))
 
 app.get('/success', (req, res) => res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories }));
-app.get('/deposer',isLoggedIn,csrfProtection,(req,res)=>{
-  if( req.isAuthenticated()==true){
+app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
+  if (req.isAuthenticated() == true) {
     res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
 
   }
-  else{
-    req.flash('error','Veuillez vous authentifiez avant de déposer un annonce!')
+  else {
+    req.flash('error', 'Veuillez vous authentifiez avant de déposer un annonce!')
     res.redirect('/')
     return
   }
@@ -177,10 +184,10 @@ app.get('/', csrfProtection, (req, res) => {
 
 })
 app.get('/inscription', csrfProtection, (req, res) => {
-if(req.isAuthenticated()==true){
-  res.redirect('/espacemembre')
-  return
-}
+  if (req.isAuthenticated() == true) {
+    res.redirect('/espacemembre')
+    return
+  }
   res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
 
 })
@@ -238,51 +245,60 @@ app.get('/espacemembre', isLoggedIn,
 
     res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
   });
-  app.post('/deposer',isLoggedIn,(req,res)=>{
-    if (req.body === undefined || req.body === '') {
-      req.flash('error', 'formulaire vide', 'vide')
-      res.redirect('/deposer')
-      return
-    }
-    else{
-      console.log(req.body)
-      //get user images
-      let form = new formidable.IncomingForm();
-    form.uploadDir = configFile.serverConfigurationVariables.userImageFolder;
-    form.maxFileSize = configFile.serverConfigurationVariables.maxFile * 1024 * 1024;
+app.post('/deposer', isLoggedIn, (req, res) => {
+  if (req.body === undefined || req.body === '') {
+    req.flash('error', 'formulaire vide', 'vide')
+    res.redirect('/deposer')
+    return
+  }
+  else {
 
+    //get user images
+    let form = new formidable.IncomingForm();
+
+    form.maxFileSize = configFile.serverConfigurationVariables.maxFile * 1024 * 1024;
+    form.uploadDir = configFile.serverConfigurationVariables.userImageFolder;
     form.hash = 'md5';
     form.keepExtensions = true;
+    form.uploadDir = configFile.serverConfigurationVariables.userImageFolder + ('/temp')
     form.parse(req, function (err, fields, files) {
-      console.log(files)
 
-  
-    
+      User.findOne({ Email: fields.Email.trim() }, 'Email', function (err, item) {
+
+        if (err) throw err
+        console.log(item)
+
+        for (let i = 0; i < form.openedFiles.length; i++) {
+          let temp_path = form.openedFiles[i].path;
+          /* The file name of the uploaded file */
+          let file_name = form.openedFiles[i].name;
+          /* Location where we want to copy the uploaded file */
+
+          mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/' + item._id, function (err) {
+            if (err) throw err
+            let new_location = configFile.serverConfigurationVariables.userImageFolder + '/' + item._id+'/';
+            //copy from temp to folder
+            IoOp.copyFiles(temp_path, new_location, file_name, function () {
+            });
+          });
+        }
+      })
     });
     //on end of transfer
     form.on('end', function (fields, files) {
-    
+
+
+
       req.flash('success', "Merci pour votre confiance!", "SuccessCode")
-     
-      
-      res.redirect('/.');
-     return
-      /* Temporary location of our uploaded file */
-  //  for (let i = 0; i < this.openedFiles.length; i++) {
-     //   let temp_path = this.openedFiles[i].path;
-        /* The file name of the uploaded file */
-       // let file_name = this.openedFiles[i].name;
-        /* Location where we want to copy the uploaded file */
-       // let new_location = configFile.transferfilesFolder + '/';
-  
-        //copy from temp to folder
 
 
-     //}
-  
+      res.redirect('/');
+
+
+
     });
-    }
-  })
+  }
+})
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {
     req.flash('error', 'formulaire vide', 'vide')
