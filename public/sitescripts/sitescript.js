@@ -1,5 +1,6 @@
 {
     $(document).ready(function () {
+        
         if ( $('#sessionFlash').length) {
           
             $('#inscriptionmodal').modal('show')

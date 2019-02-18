@@ -23,6 +23,20 @@
     font-weight: 500;
 
 }
+body {
+    padding: 1em;
+  }
+  
+  .ui.action.input input[type="file"] {
+    display: none;
+  }
+  
+
+  body {
+ 
+    background-color: #eeeeee;
+    padding-bottom: 10%;
+  }
 
 * {box-sizing: border-box}
 body {font-family: Verdana, sans-serif; margin:0}

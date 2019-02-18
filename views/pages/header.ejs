@@ -8,10 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="assets/semantic/semantic.min.css">
   <link rel="stylesheet" type="text/css" media="screen" href="assets/sitecss/sitecss.css">
+  
   <script src="assets/jquery/jquery-3.3.1.min.js"></script>
   <script src="assets/semantic/semantic.min.js"></script>
   <script src="assets/sitescripts/sitescript.js"></script>
- 
+
+
 </head>
 
 <body style="margin-bottom:5%">
@@ -35,18 +37,18 @@
 
 
       <a class="item Connexion" style="color:rgb(50, 240, 240)"><i class="sign-in alternate icon"
-          style="color:white"></i><b>Se Connecter!</b> </a> &nbsp
+          style="color:white"></i><b>Se connecter!</b> </a> &nbsp
 
 
       <% }else if(auth==true){ %>
 
-      <a class="item tealColor" href="/espacemembre" style="color:white"><i class="user icon"
-        style="color:rgb(50, 240, 240)"></i><b> Bonjour &nbsp <%= user.Prenom %> !</b></a>
-      <a class="item tealColor" href="/deposer" style="color:white"><i class="tasks icon"
-        style="color:rgb(50, 240, 240)"></i><b> Déposer une annonce...</b></a>
+      <a class="item tealColor" href="/espacemembre" style="color:white"><i class="user  icon"
+        ></i><b style="color:rgb(50, 240, 240)"> Bonjour &nbsp <%= user.Prenom %> !</b></a>
+      <a class="item tealColor" href="/deposer" style="color:white"><i class="tasks  icon"
+        ></i><b style="color:rgb(50, 240, 240)"> Déposer une annonce...</b></a>
 
       <a class="item LogOut" style="color:white"><i class="sign-out alternate icon"
-        style="color:rgb(50, 240, 240)"></i><b>Se &nbsp Deconnecter!</b> </a> &nbsp
+       ></i><b  style="color:rgb(50, 240, 240)">Se &nbsp deconnecter!</b> </a> &nbsp
 
       <% } %>
 
@@ -92,10 +94,10 @@
         <div class="ui divider"></div>
         <% if(auth==false){ %>
 
-        <a class="item " href="/inscription"><i class="users icon"></i><b>Rejoignez nous!</b></a>
+        <a class="item " href="/inscription"><i class="users  icon"></i><b>Rejoignez nous!</b></a>
 
 
-        <a class="item Connexion"><i class="sign-in alternate icon"></i><b>Se Connecter!</b> </a> &nbsp
+        <a class="item Connexion"><i class="sign-in alternate icon"></i><b>Se connecter!</b> </a> &nbsp
 
 
         <% }else if(auth==true){ %>
@@ -104,7 +106,7 @@
         <a class="item " href="/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
 
 
-        <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se Deconnecter!</b> </a> &nbsp
+        <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se deconnecter!</b> </a> &nbsp
 
         <% } %>
       </div>

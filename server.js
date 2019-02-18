@@ -3,6 +3,9 @@ let app = express()
 let mongoose = require('mongoose')
 var cookieParser = require('cookie-parser')
 const cookieSession = require('cookie-session');
+var formidable = require('formidable'),
+    http = require('http'),
+    util = require('util');
 var csrf = require('csurf')
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
@@ -50,6 +53,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
 app.get('/success', (req, res) => res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories }));
+app.get('/deposer',csrfProtection,(req,res)=>{
+  if( req.isAuthenticated()==true){
+    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+
+  }
+  else{
+    req.flash('error','Veuillez vous authentifiez avant de déposer un annonce!')
+    res.redirect('/')
+    return
+  }
+})
 app.get('/error', (req, res) => {
   req.flash('error', 'Mot de pass ou email erroné', 'FailLogin')
   res.redirect('/');
@@ -207,6 +221,15 @@ app.get('/espacemembre', isLoggedIn,
 
     res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
   });
+  app.post('/deposer',csrfProtection,(req,res)=>{
+    if (req.body === undefined || req.body === '') {
+      req.flash('error', 'formulaire vide', 'vide')
+      res.redirect('/deposer')
+    }
+    else{
+      console.log(req.body);
+    }
+  })
 app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
   if (req.body === undefined || req.body === '') {
     req.flash('error', 'formulaire vide', 'vide')
