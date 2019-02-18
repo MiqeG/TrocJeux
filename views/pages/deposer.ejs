@@ -5,154 +5,182 @@
 <script src="/assets/formvalidation/imageformvalidation.js"></script>
 <script src="assets/sitescripts/custom-file-input.js"></script>
 <div class="ui inverted  asd "
-    style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
-
-    
+  style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
 
 
 
-    <form class="ui form imageform asd " style="margin-bottom: 10%;" action="/deposer" method="POST" enctype="multipart/form-data">
-        <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <div class="two fields">
-            <div class="field">
-                <label for="NomUitilisateur"> <i class="user teal icon"></i>Nom d'utilisateur</label>
-              
 
-                <input name="NomUitilisateur" id="NomUitilisateur" value=" <%= user.NomUitilisateur %>"
-                   class="disabled field"></input>
-               
-            </div>
-            <div class="field">
 
-                    <label for="Email"><i class="envelope open outline teal icon"></i>Email</label>
-                   
-                    <input class="disabled field" name="Email" id="Email" value=" <%= user.Email %>"></input>
-                  
+  <form class="ui form imageform asd " style="margin-bottom: 10%;" action="/deposer" method="POST"
+    enctype="multipart/form-data">
+    <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="two fields" style="padding:1%">
+      <div class="field">
+        <label for="NomUitilisateur"> <i class="user teal icon"></i>Nom d'utilisateur</label>
+
+
+        <input name="NomUitilisateur" id="NomUitilisateur" value=" <%= user.NomUitilisateur %>"
+          class="disabled field"></input>
+
+      </div>
+      <div class="field">
+
+        <label for="Email"><i class="envelope open outline teal icon"></i>Email</label>
+
+        <input class="disabled field" name="Email" id="Email" value=" <%= user.Email %>"></input>
+
+      </div>
+    </div>
+    <div class="two fields" style="padding:1%">
+      <div class="field">
+        <label for="Adresse"> <i class="user teal icon"></i>Adresse</label>
+
+
+        <input name="Adresse" id="Adresse" value=" <%= user.Adresse %>" class="disabled field"></input>
+
+      </div>
+      <div class="field">
+
+        <label for="Ville"><i class="envelope open outline teal icon"></i>Ville</label>
+
+        <input class="disabled field" name="Ville" id="Ville" value=" <%= user.Ville %>"></input>
+
+      </div>
+    </div>
+
+    <div class="field" style="padding:1%">
+      <label for="Pays"><i class="globe teal icon"></i>Pays</label>
+
+      <input class="disabled field" name="Pays" id="Pays" value=" <%= user.Pays %>"></input>
+    </div>
+    <div class=" field" style="padding:1%">
+
+      <div class="field">
+        <label>Titre de l'annonce</label>
+        <textarea name="Titre" id="Titre" type="text" rows="2"
+          placeholder="Saisissez le titre de votre annonce ici..."></textarea>
+      </div>
+      <div class="field">
+        <label>Texte de l'annonce</label>
+        <textarea name="Texte" id="Texte" type="text"
+          placeholder="Saisissez le texte de votre annonce ici..."></textarea>
+      </div>
+
+
+    </div>
+    <div class="field" style="padding:1%">
+        <div class="field">
+            <div class="ui inverted  accordion">
+                <div class="title ">
+                  <i class="dropdown icon"></i>
+                <span style="color:rgb(36, 182, 182);font-weight:1000;" >Ajoutez des images...</span> 
                 </div>
-        </div>
-        <div class="two fields">
-                <div class="field">
-                    <label for="Adresse"> <i class="user teal icon"></i>Adresse</label>
-                  
-    
-                    <input name="Adresse" id="Adresse" value=" <%= user.Adresse %>"
-                       class="disabled field"></input>
-                   
-                </div>
-                <div class="field">
-    
-                        <label for="Ville"><i class="envelope open outline teal icon"></i>Ville</label>
-                       
-                        <input class="disabled field" name="Ville" id="Ville" value=" <%= user.Ville %>" ></input>
-                      
-                    </div>
-            </div>
-       
-   <div class="field">
-        <label for="Pays"><i class="globe teal icon"></i>Pays</label>
-                       
-        <input class="disabled field" name="Pays" id="Pays" value=" <%= user.Pays %>"></input>
-   </div>
-        <div class=" field">
-             
-                        <div class="field">
-                                <label>Titre de l'annonce</label>
-                                <textarea  name="Titre" id="Titre" type="text" rows="2" placeholder="Saisissez le titre de votre annonce ici..."></textarea>
-                              </div>
-                        <div  class="field">
-                          <label>Texte de l'annonce</label>
-                          <textarea name="Texte" id="Texte" type="text" placeholder="Saisissez le texte de votre annonce ici..."></textarea>
-                        </div>
-                      
-                    
-        </div>
-        <div class="field"> 
-            <table class="ui teal table">
-               <thead>
-                 <th colspan="3">Ajoutez des images...</th>
-
-               </thead>
-                 <tbody>
-                  <tr>
-                    <td class="centered">  <div class="file-upload 1 counter">
-                        <button class="file-upload-btn 1 ui  teal button " type="button" onclick="$('.file-upload-input.1').trigger( 'click' )">Ajouter Image</button>
-                      
-                        <div class="image-upload-wrap 1">
-                          <input type="file" name="file" class="file-upload-input 1 inputfile"  onchange="readURL1(this);" accept="image/*"  required="required" data-multiple-caption="{count} files selected" multiple="multiple" />
-                          <div class="drag-text 1">
-                            <h3>Glissez déposez votre image ici!</h3>
-                          </div>
-                        </div>
-                        <div class="file-upload-content 1">
-                          <img class="file-upload-image 1 ui "  src="#" alt="your image" />
-                          <div class="image-title-wrap 1">
-                            <button type="button" id="remove1" class="remove-image 1"><i class="ui delete icon"></i> <span class="image-title 1">Uploaded Image</span></button>
-                          </div>
-                        </div>
-                      </div>
-                   
-           </div></td>
-                    <td class="centered"><div class="field"> 
-              
-                        <div class="file-upload 2 counter">
-                                <button class="file-upload-btn 2 ui  teal button " type="button" onclick="$('.file-upload-input.2').trigger( 'click' )">Ajouter Image</button>
-                              
-                                <div class="image-upload-wrap 2">
-                                  <input  type="file" name="file"  class="file-upload-input 2 inputfile"  onchange="readURL2(this);" accept="image/*"  required="required" data-multiple-caption="{count} files selected" multiple="multiple"/>
-                                  <div class="drag-text 2">
-                                    <h3>Glissez déposez votre image ici!</h3>
-                                  </div>
-                                </div>
-                                <div class="file-upload-content 2">
-                                  <img class="file-upload-image 2 ui " src="#" alt="your image" />
-                                  <div class="image-title-wrap 2">
-                                    <button type="button" id="remove2" class="remove-image 2"><i class="ui delete icon"></i> <span class="image-title 2">Uploaded Image</span></button>
-                                  </div>
-                                </div>
-                              </div>
-                           
-                   </div></td>
-                    <td class="centered"><div class="field"> 
-              
-                        <div class="file-upload 3 counter centered" >
-                                <button class="file-upload-btn 3 ui  teal button " type="button" onclick="$('.file-upload-input.3').trigger( 'click' )">Ajouter Image</button>
-                              
-                                <div class="image-upload-wrap 3 centered">
-                                  <input  type="file" name="file"  name="files" class="file-upload-input 3 inputfile"  onchange="readURL3(this);" accept="image/*"  required="required" data-multiple-caption="{count} files selected" multiple="multiple"/>
-                                  <div class="drag-text 3">
-                                    <h3>Glissez déposez votre image ici!</h3>
-                                  </div>
-                                </div>
-                                <div class="file-upload-content 3 centered">
-                                  <img  class="file-upload-image 3 ui centered " src="#" alt="your image" />
-                                  <div class="image-title-wrap 3">
-                                    <button type="button" id="remove3" class="remove-image 3"><i class="ui delete icon"></i> <span class="image-title 3">Uploaded Image</span></button>
-                                  </div>
-                                </div>
-                              </div>
-                           
-                   </div></td>
-                  </tr>
-                <tr><td colspan="3"><div class="field" style="text-align: center"> <button type="submit" class="ui teal labeled submit icon button"><i class="icon edit"></i>Envoyer</button></div></td></tr>
-                </tbody>
-              </table>
-              
-    
-           
-           
-
-       
-        <div class="ui error message"></div>
+                <div class="content ">
+                    <table class="ui teal table" style="min-height:400px">
         
-    </form>
-   
+                        <tbody>
+                          <tr>
+                            <td class="centered">
+                              <div class="file-upload 1 counter" >
+                                <button class="file-upload-btn 1 ui  teal button " type="button"
+                                  onclick="$('.file-upload-input.1').trigger( 'click' )">Ajouter Image</button>
+                
+                                <div class="image-upload-wrap 1">
+                                  <input type="file" name="file" required class="file-upload-input 1 inputfile" onchange="readURL1(this);"
+                                    accept="image/*"  />
+                                  <div class="drag-text 1">
+                                    <h3>Glissez déposez votre image ici!</h3>
+                                  </div>
+                                </div>
+                                <div class="file-upload-content 1">
+                                  <img class="file-upload-image 1 ui " src="#" alt="your image" />
+                                  <div class="image-title-wrap 1">
+                                    <button type="button" id="remove1" class="remove-image 1"><i class="ui delete icon"></i> <span
+                                        class="image-title 1">Uploaded Image</span></button>
+                                  </div>
+                                </div>
+                              </div>
+                
+                    </div>
+                    </td>
+                    <td class="centered">
+                     
+                      
+                        <div class="file-upload 2 counter">
+                          <button class="file-upload-btn 2 ui  teal button " type="button"
+                            onclick="$('.file-upload-input.2').trigger( 'click' )">Ajouter Image</button>
+                
+                          <div class="image-upload-wrap 2">
+                            <input type="file" name="file" class="file-upload-input 2 inputfile" onchange="readURL2(this);"
+                              accept="image/*" />
+                            <div class="drag-text 2">
+                              <h3>Glissez déposez votre image ici!</h3>
+                            </div>
+                          </div>
+                          <div class="file-upload-content 2">
+                            <img class="file-upload-image 2 ui " src="#" alt="your image" />
+                            <div class="image-title-wrap 2">
+                              <button type="button" id="remove2" class="remove-image 2"><i class="ui delete icon"></i> <span
+                                  class="image-title 2">Uploaded Image</span></button>
+                            </div>
+                          </div>
+                        </div>
+                
+                      </div>
+                    </td>
+                    <td class="centered">
+                      <div class="field">
+                
+                        <div class="file-upload 3 counter centered">
+                          <button class="file-upload-btn 3 ui  teal button " type="button"
+                            onclick="$('.file-upload-input.3').trigger( 'click' )">Ajouter Image</button>
+                
+                          <div class="image-upload-wrap 3 centered">
+                            <input type="file" name="file" name="files" class="file-upload-input 3 inputfile" onchange="readURL3(this);"
+                              accept="image/*" />
+                            <div class="drag-text 3">
+                              <h3>Glissez déposez votre image ici!</h3>
+                            </div>
+                          </div>
+                          <div class="file-upload-content 3 centered">
+                            <img class="file-upload-image 3 ui centered " src="#" alt="your image" />
+                            <div class="image-title-wrap 3">
+                              <button type="button" id="remove3" class="remove-image 3"><i class="ui delete icon"></i> <span
+                                  class="image-title 3">Uploaded Image</span></button>
+                            </div>
+                          </div>
+                        </div>
+                
+                      </div>
+                    </td>
+                    </tr>
+                  
+                    </tbody>
+                    </table>
+                    <table>  <tr>
+                        <td colspan="3">
+                          <div class="field" style="text-align: center"> <button type="submit"
+                              class="ui teal labeled submit icon button"><i class="icon edit"></i>Envoyer</button></div>
+                        </td>
+                      </tr></table>
+                </div>
+               </div>
+    
   
- 
+
+
+
+
+    <div class="ui error message"></div>
+
+  </form>
+
+
+
 </div>
 
 
-  
+
 <script src="assets/sitescripts/fileinput.js"></script>
 <% include footer %>
-
