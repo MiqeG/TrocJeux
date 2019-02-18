@@ -8,10 +8,10 @@
         "cookieKey": "trocjeuxclef"
     },
     "categories": [
-        "Plateau",
-        "Aventure",
-        "Cartes",
-        "Stratégie",
-        "Chance"
+        ["Plateau","/assets/icons/houseicon/House-32.ico"],
+        ["Aventure","/assets/icons/railroadicon/railroad-32.ico"],
+        ["Cartes","/assets/icons/revolvericon/Revolver-32.ico"],
+        ["Stratégie","/assets/icons/greenicon/green-32.ico"],
+        ["Chance","/assets/icons/dice1icon/dice-1-32.ico"]
     ]
 }

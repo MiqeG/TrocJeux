@@ -14,7 +14,23 @@ mongoose.connect('mongodb://localhost:27017/NewTest', { useNewUrlParser: true })
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'))
 
-var UserSchema = mongoose.Schema({
+var AnnonceSchema = mongoose.Schema({
+  Categorie: { type: String, required: true },
+  User_Id: { type: String, required: true },
+  NomUitilisateur: { type: String, required: true },
+
+  Email: { type: String, required: true },
+  imgsrc:{type: Array},
+  Adresse: { type: String, required: true },
+  CodePostal: { type: Number, required: true },
+  Ville: { type: String, required: true },
+  Pays: { type: String, required: true },
+  DatePublication: { type: Date, default: Date.now, required: true },
+  Active: { type: Boolean, required: true }
+
+
+}, { collection: 'Annonces' })
+var UserSchema= mongoose.Schema({
   Type: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
   Nom: { type: String, required: true },
@@ -30,22 +46,6 @@ var UserSchema = mongoose.Schema({
 
 
 }, { collection: 'Users' })
-var AnnonceSchema= mongoose.Schema({
-  Type: { type: String, required: true },
-  NomUitilisateur: { type: String, required: true },
-  Nom: { type: String, required: true },
-  Prenom: { type: String, required: true },
-  Email: { type: String, required: true },
-  MotDePasse: { type: String, required: true },
-  Adresse: { type: String, required: true },
-  CodePostal: { type: Number, required: true },
-  Ville: { type: String, required: true },
-  Pays: { type: String, required: true },
-  DateInscription: { type: Date, default: Date.now, required: true },
-  Actif: { type: Boolean, required: true }
-
-
-}, { collection: 'Annonces' })
 var User = mongoose.model('User', UserSchema, 'Users')
 var Annonce = mongoose.model('Annonce', UserSchema, 'Annonces')
 db.once('open', function () { console.log("Connection to database NewTest Successful!") })
@@ -254,14 +254,44 @@ app.get('/espacemembre', isLoggedIn,
     form.hash = 'md5';
     form.keepExtensions = true;
     form.parse(req, function (err, fields, files) {
-      console.log(files)
+     
 
   
     
     });
     //on end of transfer
     form.on('end', function (fields, files) {
-    
+      User.findOne({ Email: req.body.Email }, 'E-mail', function (err, item) {
+      
+        mkdirp('/assets/UserImages/'+item._id, function(err) { 
+        
+
+          
+      
+      });
+        if(err)throw err
+       for (let index = 0; index < files.length; index++) {
+        imgarray.push('/assets/User/images/'+files[i].name)
+         
+       }
+
+        let imgarray=[]
+      let annonce1=new Annonce({
+        Categorie: req.body.Categorie,
+        User_Id: item._Id,
+        NomUitilisateur: item.NomUitilisateur,
+        imgsrc:imgarray,
+        Email: item.Email,
+      
+        Adresse:item.Adresse,
+        CodePostal: item.CodePostal,
+        Ville: item.Ville,
+        Pays: item.Pays,
+        DatePublication: Date.now,
+        Active: true
+      
+      })
+      })
       req.flash('success', "Merci pour votre confiance!", "SuccessCode")
      
       

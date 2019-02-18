@@ -68,6 +68,21 @@
                     
         </div>
         <div class="field"> 
+            <div class="ui fluid selection dropdown">
+                <input type="hidden" name="Categorie">
+                <i class="dropdown icon"></i>
+                <div class="default text">Selectionnez une catégorie</div>
+                <div class="menu" >
+                  <% categories.forEach(function(element){ %>
+                  <div class="item " data-value="jenny">
+                    <img class="ui mini avatar image" src="<%=  element[1] %>">
+                    <%=  element[0] %>
+                  </div>
+               <% }) %>
+                </div>
+              </div>
+        </div>
+        <div class="field"> 
             <table class="ui teal table">
                <thead>
                  <th colspan="3">Ajoutez des images...</th>

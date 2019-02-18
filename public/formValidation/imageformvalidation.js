@@ -43,13 +43,13 @@ $('.ui.form')
           }
         ]
       },
-    File1: {
-      identifier: 'file1',
+   Categorie : {
+      identifier: 'Categorie',
       rules: [
   
         {
           type: 'empty',
-          prompt: 'Veuillez selectionner au moins une image'
+          prompt: "Veuillez selectionner la catégorie de l'annonce"
         },
 
       ]
