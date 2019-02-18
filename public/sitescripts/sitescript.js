@@ -1,14 +1,19 @@
 {
     $(document).ready(function () {
+     
+       
+
+
         
-        if ( $('#sessionFlash').length) {
-          
+    
+        if ($('#sessionFlash').length) {
+
             $('#inscriptionmodal').modal('show')
         }
         $('#Pays').change(function () {
             $('.unhide').fadeIn(400)
         })
-        if ( $('#PaysTexte').text()!='') {
+        if ($('#PaysTexte').text() != '') {
             console.log($('#PaysTexte').text())
             $('.unhide').fadeIn(400)
         }
@@ -75,8 +80,8 @@
             $('.ui.basic.modal.annoncemodal').modal('show')
 
         })
-      
-        
+
+
         $('.LogOut').click(function () {
             window.location.href = '/logout'
         })

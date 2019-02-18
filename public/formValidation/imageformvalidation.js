@@ -54,7 +54,18 @@ $('.ui.form')
 
       ]
     },
-
+    Categories: {
+        identifier: 'Categories',
+        rules: [
+    
+          {
+            type: 'empty',
+            prompt: 'Veuillez selectionner au moins une image'
+          },
+  
+        ]
+      },
+  
   }
 })
 });

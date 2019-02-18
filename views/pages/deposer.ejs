@@ -1,5 +1,6 @@
 <% include header %>
 
+<div style="padding:1%">
 
 <link rel="stylesheet" href="assets/sitecss/fileinput.css">
 <script src="/assets/formvalidation/imageformvalidation.js"></script>
@@ -15,7 +16,7 @@
     enctype="multipart/form-data">
     <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-    <div class="two fields" style="padding:1%">
+    <div class="two fields" >
       <div class="field">
         <label for="NomUitilisateur"> <i class="user teal icon"></i>Nom d'utilisateur</label>
 
@@ -32,7 +33,7 @@
 
       </div>
     </div>
-    <div class="two fields" style="padding:1%">
+    <div class="two fields" >
       <div class="field">
         <label for="Adresse"> <i class="user teal icon"></i>Adresse</label>
 
@@ -49,18 +50,41 @@
       </div>
     </div>
 
-    <div class="field" style="padding:1%">
+    <div class="field" >
       <label for="Pays"><i class="globe teal icon"></i>Pays</label>
 
       <input class="disabled field" name="Pays" id="Pays" value=" <%= user.Pays %>"></input>
     </div>
-    <div class=" field" style="padding:1%">
+    <div class="field" >
+
+
+
+
+        <div class="ui fluid multiple search selection dropdown searchCategorie">
+          <input name="Categories" type="hidden">
+          <i class="dropdown icon"></i>
+          <div class="default text">Catégories</div>
+          <div class="menu">
+              <% categories.forEach(element => { %>
+         
+        <div class="item" data-value="<%= element %>"><%= element %></div>
+        <% }); %>
+       
+          </div>
+       
+        </div>
+       
+    
+
+       
+    <div class=" field" >
 
       <div class="field">
         <label>Titre de l'annonce</label>
         <textarea name="Titre" id="Titre" type="text" rows="2"
           placeholder="Saisissez le titre de votre annonce ici..."></textarea>
       </div>
+     
       <div class="field">
         <label>Texte de l'annonce</label>
         <textarea name="Texte" id="Texte" type="text"
@@ -69,22 +93,21 @@
 
 
     </div>
-    <div class="field" style="padding:1%">
+    <div class="field" >
         <div class="field">
             <div class="ui inverted  accordion">
                 <div class="title ">
-                  <i class="dropdown icon"></i>
+                  <i class="dropdown  black icon"></i>
                 <span style="color:rgb(36, 182, 182);font-weight:1000;" >Ajoutez des images...</span> 
                 </div>
                 <div class="content ">
-                    <table class="ui teal table" style="min-height:400px">
+                    <table class="ui teal table ImageTable"  >
         
                         <tbody>
                           <tr>
                             <td class="centered">
                               <div class="file-upload 1 counter" >
-                                <button class="file-upload-btn 1 ui  teal button " type="button"
-                                  onclick="$('.file-upload-input.1').trigger( 'click' )">Ajouter Image</button>
+                               
                 
                                 <div class="image-upload-wrap 1">
                                   <input type="file" name="file" required class="file-upload-input 1 inputfile" onchange="readURL1(this);"
@@ -108,8 +131,7 @@
                      
                       
                         <div class="file-upload 2 counter">
-                          <button class="file-upload-btn 2 ui  teal button " type="button"
-                            onclick="$('.file-upload-input.2').trigger( 'click' )">Ajouter Image</button>
+                         
                 
                           <div class="image-upload-wrap 2">
                             <input type="file" name="file" class="file-upload-input 2 inputfile" onchange="readURL2(this);"
@@ -133,8 +155,7 @@
                       <div class="field">
                 
                         <div class="file-upload 3 counter centered">
-                          <button class="file-upload-btn 3 ui  teal button " type="button"
-                            onclick="$('.file-upload-input.3').trigger( 'click' )">Ajouter Image</button>
+                         
                 
                           <div class="image-upload-wrap 3 centered">
                             <input type="file" name="file" name="files" class="file-upload-input 3 inputfile" onchange="readURL3(this);"
@@ -160,7 +181,7 @@
                     </table>
                     <table>  <tr>
                         <td colspan="3">
-                          <div class="field" style="text-align: center"> <button type="submit"
+                          <div class="field" style="text-align: center"> <button  type="submit"
                               class="ui teal labeled submit icon button"><i class="icon edit"></i>Envoyer</button></div>
                         </td>
                       </tr></table>
@@ -180,7 +201,24 @@
 
 </div>
 
-
+  
+</div>
 
 <script src="assets/sitescripts/fileinput.js"></script>
+<script>    
+        $(document).ready(function () {
+    $('.searchCategorie')
+    .dropdown({
+      allowAdditions: false,
+      clearable: true,
+    maxSelections: 3,
+ 
+   
+
+    })
+  })
+
+;
+  ;</script>
+
 <% include footer %>
