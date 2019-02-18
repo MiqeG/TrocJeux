@@ -35,17 +35,13 @@ var UserSchema = mongoose.Schema({
 
 }, { collection: 'Users' })
 var AnnonceSchema = mongoose.Schema({
-  Categorie: { type: String, required: true },
+  Categories: { type: String, required: true },
   User_Id: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
-
   Email: { type: String, required: true },
-  imgsrc: { type: Array },
-  Adresse: { type: String, required: true },
-  CodePostal: { type: Number, required: true },
-  Ville: { type: String, required: true },
-  Pays: { type: String, required: true },
-  DatePublication: { type: Date, default: Date.now, required: true },
+   DatePublication: { type: Date, default: Date.now, required: true },
+  Texte:{type:String,required:true},
+  Titre:{type:String,required:true},
   Active: { type: Boolean, required: true }
 
 
@@ -66,10 +62,10 @@ app.use(cookieSession({
   keys: [configFile.session.cookieKey]
 }))
 //initialiaze passport
-mkdirp(configFile.serverConfigurationVariables.userImageFolder+'/temp' , function (err) {
-  if(err)throw err
+mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
+  if (err) throw err
   console.log('Temp folder ok!')
- });
+});
 app.set('trust proxy', 1) // trust first proxy
 
 app.use(passport.initialize());
@@ -266,8 +262,20 @@ app.post('/deposer', isLoggedIn, (req, res) => {
       User.findOne({ Email: fields.Email.trim() }, 'Email', function (err, item) {
 
         if (err) throw err
-        console.log(fields)
-
+        var annonce1 = new Annonce({
+          Categories: fields.Categories,
+          User_Id: item._id,
+          NomUitilisateur: item.NomUitilisateur,
+          Email: item.Email,
+        
+          DatePublication: Date.now,
+          Texte:fields.Texte,
+          Titre:fields.Titre,
+          Active: true
+        })
+     
+        console.log(annonce1)
+     
         for (let i = 0; i < form.openedFiles.length; i++) {
           let temp_path = form.openedFiles[i].path;
           /* The file name of the uploaded file */
@@ -276,9 +284,11 @@ app.post('/deposer', isLoggedIn, (req, res) => {
 
           mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/' + item._id, function (err) {
             if (err) throw err
-            let new_location = configFile.serverConfigurationVariables.userImageFolder + '/' + item._id+'/';
+            let new_location = configFile.serverConfigurationVariables.userImageFolder + '/' + item._id + '/';
             //copy from temp to folder
-            IoOp.copyFiles(temp_path, new_location, file_name, function () {
+            IoOp.copyFiles(temp_path, new_location, file_name, function (err) {
+              if (err) throw err
+
             });
           });
         }
