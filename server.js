@@ -266,7 +266,7 @@ app.post('/deposer', isLoggedIn, (req, res) => {
       User.findOne({ Email: fields.Email.trim() }, 'Email', function (err, item) {
 
         if (err) throw err
-        console.log(item)
+        console.log(form.openedFiles)
 
         for (let i = 0; i < form.openedFiles.length; i++) {
           let temp_path = form.openedFiles[i].path;
