@@ -3,7 +3,9 @@
         "port": 80,
         "maxFile:": 100,
         "userImageFolder":"C:/git/TrocJeux/UserImages",
-        "uploadAmount":10
+        "uploadAmount":10,
+        "maxFieldSize:":20,
+        "maxFields":50
     },
     "session": {
         "cookieKey": "trocjeuxclef"

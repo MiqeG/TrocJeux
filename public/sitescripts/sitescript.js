@@ -99,7 +99,9 @@
                     description: 'categorie'
 
                 },
-                minCharacters: 3
+                minCharacters: 3,
+                maxResults:10,
+
             })
             ;
     });

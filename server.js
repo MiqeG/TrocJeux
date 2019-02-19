@@ -113,22 +113,27 @@ if(docs.length!=0){
    for (let index = 0; index < docs.length; index++) {
     let  result={
       titre: docs[index].Titre,
-      imgsrc: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[index],
+      imgsrc: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[0],
       localisation: docs[index].Ville+' '+docs[index].CodePostal,
       description:  docs[index].Categories,
       price:  docs[index].Categories,
       categorie:  docs[index].Categories,
-      image: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[index],
+      image: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[0],
       url: '/annonces/?' +docs[index].User_Id+'?'+ docs[index]._id
 
     }
      results.push(result)
      
    }
- 
-  // console.log(results)
-   let returnArray = { results: results }
 
+   let  pathToResults= "/searchresults?q="+req.query.q
+   let action=  { url: pathToResults, text: docs.length+ " resultats cliquez pour parcourir"} 
+  // console.log(results)
+
+   let returnArray = { results: results,action}
+
+
+ 
 
 
    res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -262,14 +267,16 @@ app.post('/deposer', isLoggedIn, (req, res) => {
 
     //get user images
     let form = new formidable.IncomingForm();
-
+    form.maxFieldsSize = configFile.serverConfigurationVariables.maxFieldsSize * 1024 * 1024;
+    form.maxFields = configFile.serverConfigurationVariables.maxFields;
     form.maxFileSize = configFile.serverConfigurationVariables.maxFile * 1024 * 1024;
     form.uploadDir = configFile.serverConfigurationVariables.userImageFolder;
     form.hash = 'md5';
     form.keepExtensions = true;
     form.uploadDir = configFile.serverConfigurationVariables.userImageFolder + ('/temp')
     form.parse(req, function (err, fields, files) {
-
+        if(files.length>configFile.serverConfigurationVariables.uploadAmount)
+        return
       User.findOne({ Email: fields.Email.trim() },  function (err, item) {
       
       var array=  fields.Categories.split(',')
