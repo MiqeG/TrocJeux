@@ -273,10 +273,7 @@ app.post('/deposer', isLoggedIn, (req, res) => {
       User.findOne({ Email: fields.Email.trim() },  function (err, item) {
       
       var array=  fields.Categories.split(',')
-     for (let index = 0; index < array.length; index++) {
-      array[index]=array[index].toUpperCase()
-       
-     }
+    
     
         if (err) throw err
         
@@ -289,7 +286,7 @@ app.post('/deposer', isLoggedIn, (req, res) => {
          Ville:item.Ville,
          CodePostal:item.CodePostal,
           Categories: array,
-          Titre:fields.Titre.toUpperCase(),
+          Titre:fields.Titre,
           Texte:fields.Texte,
          
           Active: true
