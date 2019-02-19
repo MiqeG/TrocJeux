@@ -12,6 +12,7 @@ body {
   
   .file-upload-btn {
     width: 100%;
+  
     margin: 0;
     color: #fff;
     background: rgb(25, 161, 143);
@@ -40,8 +41,12 @@ body {
   .file-upload-content {
     display: none;
     text-align: center;
+     border: 4px dashed #ffffff;
   }
-  
+  .dynamicImage{
+   width:150px;
+    margin:5px;
+  }
   .file-upload-input {
     position: absolute;
     margin: 0;
@@ -68,6 +73,7 @@ body {
   .image-title-wrap {
     padding: 0 15px 15px 15px;
     color: #222;
+   
   }
   
   .drag-text {
@@ -82,10 +88,8 @@ body {
   }
   
   .file-upload-image {
-    max-height: 125px;
-    max-width:  125px;
-    margin: auto;
-    padding: 20px;
+   
+   
   }
   
   .remove-image {

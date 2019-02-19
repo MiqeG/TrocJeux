@@ -1,13 +1,12 @@
-function readURL(input) {
+function readURL(input,length) {
     if (input.files && input.files[0]) {
-        if (input.files.length > 3) {
-            alert('Maximum 3 images.')
+        if (input.files.length > length) {
+            alert('Maximum ' +length+ ' images.')
             return
         }
        
         $('.file-upload-image').hide()
-        $('.image-title').html(input.files.length);
-      
+       
         for (let index = 0; index < input.files.length ; index++) {
 
             var reader = new FileReader();

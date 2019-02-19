@@ -98,10 +98,10 @@
             <div class="ui inverted  accordion">
                 <div class="title ">
                   <i class="dropdown  black icon"></i>
-                <span style="color:rgb(36, 182, 182);font-weight:1000;" >Ajoutez des images...</span> 
+                <span style="color:rgb(36, 182, 182);font-weight:1000;" ><i class="file icon"></i> Ajoutez des images...</span> 
                 </div>
                 <div class="content ">
-                    <table class="ui teal table ImageTable"  >
+                    <table class="ui inverted teal table ImageTable"  >
         
                         <tbody>
                           <tr>
@@ -110,24 +110,28 @@
                      
                       
                     
-                    <td class="centered" colspan="3">
+                    <td class="centered" colspan="4">
                       <div class="field">
                       
                           <div class="file-upload">
-                            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Ajoutez des Images...</button>
+                            
                           
                             <div class="image-upload-wrap">
-                              <input class="file-upload-input" name="Categories" type='file' onchange="readURL(this);" accept="image/*" multiple/>
+                              <input class="file-upload-input" name="Categories" type='file' onchange="readURL(this,<%= uploadAmount %>);" accept="image/*" multiple/>
                               <div class="drag-text">
-                                <h3>Déposez vos images ici!</h3>
+                                
+                                <h3><i class="file huge icon"></i> Déposez vos images ici!</h3>
                               </div>
                             </div>
                             <div class="file-upload-content">
-                              <img class="file-upload-image 0" src="#" alt="your image" />
-                              <img class="file-upload-image 1" src="#" alt="your image" />
-                              <img class="file-upload-image 2" src="#" alt="your image" />
+                              <% for(let i=0;i<uploadAmount;i++){ %>
+                              <img class="file-upload-image <%= i %> dynamicImage  " src="#" alt="your image" />
+                             
+
+                              <% } %>
+                              
                               <div class="image-title-wrap">
-                                <button type="button" onclick="removeUpload()" class="remove-image"> <span class="image-title center">>Uploaded Image</span><br><span><i class="x icon"></i></span></button>
+                                <div onclick="removeUpload()" class="ui red  inverted  button"> <span class="image-title " ><span></span><i class="trash icon"></i></span></div>
                               </div>
                             </div>
                           </div>

@@ -35,7 +35,7 @@
             $(".ui.sidebar").toggleClass("very thin icon");
             $(".asd").toggleClass("marginlefting");
             $(".sidebar z").toggleClass("displaynone");
-            $(".ui.accordion").toggleClass("displaynone");
+            $(".ui.accordion.sidebarpage").toggleClass("displaynone");
             $(".ui.dropdown.item").toggleClass("displayblock");
 
             $(".logo").find('img').toggle();

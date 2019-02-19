@@ -60,7 +60,7 @@ $('.ui.form')
     
           {
             type: 'empty',
-            prompt: 'Veuillez selectionner au moins une image'
+            prompt: 'Veuillez selectionner au moins une catégorie'
           },
   
         ]

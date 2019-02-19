@@ -40,7 +40,9 @@ var AnnonceSchema = mongoose.Schema({
   Categories: { type: Array, required: true },
   User_Id: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
-  Email: { type: String, required: true },
+  CodePostal:{type: String,required : true},
+    Email: { type: String, required: true },
+    Ville:{type:String,required:true},
    DatePublication: { type: Date, default: Date.now, required: true },
   Texte:{type:String,required:true},
   Titre:{type:String,required:true},
@@ -58,6 +60,8 @@ let SearchVille = require('./csvvilles/FRANCE/villes.json')
 let configFile = require('./config/server_config.json')
 app.set('view engine', 'ejs')
 app.use('/assets', express.static('public'))
+app.use('/pregistered', express.static('UserImages'))
+
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(cookieSession({
@@ -78,7 +82,7 @@ app.use(require('./middlewares/flash'))
 app.get('/success', (req, res) => res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories }));
 app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
-    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories,uploadAmount:configFile.serverConfigurationVariables.uploadAmount })
 
   }
   else {
@@ -92,45 +96,49 @@ app.get('/error', (req, res) => {
   res.redirect('/');
 });
 app.get('/searchApi', (req, res) => {
-  console.log(req.query.q)
 
-  let searchResponse = {
-    results:
-      [
-        {
-          titre: 'Monopoly',
-          imgsrc: '/assets/img/logo.png',
-          localisation: 'Chatou France',
-          description: 'Tres bon etat',
-          localisation: 'CHATOU',
-          categorie: 'Plateau',
-          image: '/assets/img/logo.png',
-          url: '/'
+   
+  let strRegExPatternUpper = '(?i)'+req.query.q+'(?-i)';
 
-        },
-        {
-          titre: 'Hotel',
-          imgsrc: '/assets/img/logo.png',
-          localisation: 'Chatou France',
-          description: 'Tres bon etat',
-          localisation: 'RUEIL MALMAISON',
-          categorie: 'Plateau',
-          image: '/assets/img/logo.png',
-          url: '/'
-        }
-      ]
-  }
+  Annonce.find({ $and:[{"$or": [
+    { "CodePostal": req.query.q}, {  "Ville": { "$regex": strRegExPatternUpper }},{ "Titre": { "$regex": strRegExPatternUpper }},{ Categories: { "$regex": strRegExPatternUpper }},{ "NomUitilisateur": { "$regex": strRegExPatternUpper }}
+]},{"Active":true}]}, function (err, docs) {
+    if(err)throw err
+    console.log(docs.length)
+if(docs.length!=0){
+  
 
-  var arrayFound = searchResponse.results.filter(function (item) {
-    return item.categorie.toUpperCase() == req.query.q.toUpperCase();
-  });
+    let results=[]
+    //for (let index = 0; index < docs.length; index++) {
+   for (let index = 0; index < docs.length; index++) {
+    let  result={
+      titre: docs[index].Titre,
+      imgsrc: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[index],
+      localisation: docs[index].Ville+' '+docs[index].CodePostal,
+      description:  docs[index].Categories,
+      price:  docs[index].Categories,
+      categorie:  docs[index].Categories,
+      image: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[index],
+      url: '/annonces/?' +docs[index].User_Id+'?'+ docs[index]._id
 
-  let returnArray = { results: arrayFound }
+    }
+     results.push(result)
+     
+   }
+ 
+  // console.log(results)
+   let returnArray = { results: results }
 
 
 
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(returnArray));
+   res.writeHead(200, { 'Content-Type': 'application/json' });
+   res.end(JSON.stringify(returnArray));
+      
+
+  }});
+
+
+ 
 })
 
 
@@ -265,17 +273,23 @@ app.post('/deposer', isLoggedIn, (req, res) => {
       User.findOne({ Email: fields.Email.trim() },  function (err, item) {
       
       var array=  fields.Categories.split(',')
-      console.log(array)
+     for (let index = 0; index < array.length; index++) {
+      array[index]=array[index].toUpperCase()
+       
+     }
+    
         if (err) throw err
+        
         var annonce1 = new Annonce({
         
           User_Id: item._id,
           NomUitilisateur: item.NomUitilisateur,
           Email: item.Email,
           UserImages:[],
-         
+         Ville:item.Ville,
+         CodePostal:item.CodePostal,
           Categories: array,
-          Titre:fields.Titre,
+          Titre:fields.Titre.toUpperCase(),
           Texte:fields.Texte,
          
           Active: true
@@ -298,7 +312,7 @@ app.post('/deposer', isLoggedIn, (req, res) => {
             //copy from temp to folder
             IoOp.copyFiles(temp_path, new_location, file_name,annonce1._id, function (err,callback) {
               if (err) throw err
-              console.log(callback)
+             
             });
           });
         }

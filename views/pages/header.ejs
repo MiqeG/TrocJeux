@@ -27,7 +27,7 @@
       </div>
       <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" style="display: none" />
     </div>
-    <div class="ui accordion">
+    <div class="ui accordion sidebarpage">
         <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="/"></i><b>Troc'Jeux!</b></a>
 
       <% if(auth==false){ %>
@@ -180,13 +180,13 @@
             <div class="field">
               <div class="ui left icon input">
                 <i class="user  teal icon"></i>
-                <input type="text" name="username" id="username" placeholder="E-mail">
+                <input type="text" name="username" id="username" placeholder="E-mail" required>
               </div>
             </div>
             <div class="field">
               <div class="ui left icon input">
                 <i class="lock teal  icon"></i>
-                <input type="password" name="password" id="password" placeholder="Mot de passe">
+                <input type="password" name="password" id="password" placeholder="Mot de passe" required>
               </div>
             </div>
             <input type="submit" class="ui fluid large teal submit button" id="LogIn" value="Connexion"></input>
