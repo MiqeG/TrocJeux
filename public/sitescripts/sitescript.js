@@ -4,7 +4,6 @@
        
 
 
-        
     
         if ($('#sessionFlash').length) {
 

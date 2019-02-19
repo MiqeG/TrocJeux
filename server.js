@@ -9,6 +9,8 @@ var formidable = require('formidable'),
 var csrf = require('csurf')
 var mkdirp = require('mkdirp')
 
+const fs2 = require('fs-extra');
+let path=require('path')
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
 const passport = require('passport');
@@ -35,19 +37,20 @@ var UserSchema = mongoose.Schema({
 
 }, { collection: 'Users' })
 var AnnonceSchema = mongoose.Schema({
-  Categories: { type: String, required: true },
+  Categories: { type: Array, required: true },
   User_Id: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
   Email: { type: String, required: true },
    DatePublication: { type: Date, default: Date.now, required: true },
   Texte:{type:String,required:true},
   Titre:{type:String,required:true},
+  UserImages:{type:Array,required:true},
   Active: { type: Boolean, required: true }
 
 
 }, { collection: 'Annonces' })
 var User = mongoose.model('User', UserSchema, 'Users')
-var Annonce = mongoose.model('Annonce', UserSchema, 'Annonces')
+var Annonce = mongoose.model('Annonce', AnnonceSchema, 'Annonces')
 db.once('open', function () { console.log("Connection to database NewTest Successful!") })
 
 let session = require('express-session')
@@ -259,39 +262,54 @@ app.post('/deposer', isLoggedIn, (req, res) => {
     form.uploadDir = configFile.serverConfigurationVariables.userImageFolder + ('/temp')
     form.parse(req, function (err, fields, files) {
 
-      User.findOne({ Email: fields.Email.trim() }, 'Email', function (err, item) {
-
+      User.findOne({ Email: fields.Email.trim() },  function (err, item) {
+      
+      var array=  fields.Categories.split(',')
+      console.log(array)
         if (err) throw err
         var annonce1 = new Annonce({
-          Categories: fields.Categories,
+        
           User_Id: item._id,
           NomUitilisateur: item.NomUitilisateur,
           Email: item.Email,
-        
-          DatePublication: Date.now,
-          Texte:fields.Texte,
+          UserImages:[],
+         
+          Categories: array,
           Titre:fields.Titre,
+          Texte:fields.Texte,
+         
           Active: true
+
+
+
         })
-     
-        console.log(annonce1)
+       
+       let filearray=[]
      
         for (let i = 0; i < form.openedFiles.length; i++) {
           let temp_path = form.openedFiles[i].path;
           /* The file name of the uploaded file */
           let file_name = form.openedFiles[i].name;
           /* Location where we want to copy the uploaded file */
-
-          mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/' + item._id, function (err) {
+            filearray.push( path.basename(temp_path))
+          mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/' + item._id+'/'+annonce1._id, function (err) {
             if (err) throw err
             let new_location = configFile.serverConfigurationVariables.userImageFolder + '/' + item._id + '/';
             //copy from temp to folder
-            IoOp.copyFiles(temp_path, new_location, file_name, function (err) {
+            IoOp.copyFiles(temp_path, new_location, file_name,annonce1._id, function (err,callback) {
               if (err) throw err
-
+              console.log(callback)
             });
           });
         }
+        annonce1.UserImages=filearray
+        console.log(annonce1)
+        annonce1.save(function (err, annonce) {
+          if (err) return console.error(err)
+          console.log(annonce.NomUitilisateur + "\r\n saved to Annonces collection.")
+       
+
+        });
       })
     });
     //on end of transfer
