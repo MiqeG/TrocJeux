@@ -114,88 +114,87 @@
 
     <div class="ui divided demo items togglerClass2" hidden>
         <div class="ui styled fluid accordion">
-
+            <% let slideCounter=0 %>
+        <%  for(let index = 0; index < annonces.length; index++) {   %>
+         
+          <div class="ui items">
             <div class="active title">
               <i class="dropdown icon"></i>
               What is a dog?
             </div>
-
-            
             <div class="active content">
-              <p>A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+                <div class="item">
+                    <div class="image">
+                      <div class="slideshow-container" style="text-align:center">
+                        
+                 
+                  
+                  
+                              <div >
+                
+                                <img id="masterImg<%= index  %>" class="ui tiny rounded centered image" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> " style="height:115px ;width:115px">
+                
+                              </div>
+                            
+                           
+                
+                
+                
+                            </div>
+                            <br>
+                
+                            <div style="text-align:left">
+                             <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
+                            let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
+                              
+                
+                              <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular left floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span>
+                            
+                
+                              <% } %>
+                          
+                          
+                    </div>
+                    </div>
+                   
+                    <div class="content">
+                   <br>   <a class="header"> <%= annonces[index].Titre %> </a>
+                      <div class="meta">
+                          <span> <%= annonces[index].NomUitilisateur + '  ' + annonces[index].Email %> </span>
+                        </div>
+                      <div class="meta">
+                        <span> <%= annonces[index].Ville %> </span>
+                        <span> <%= annonces[index].CodePostal %> </span>
+                      </div>
+                      <div class="description">
+                        <p></p>
+                      </div>
+                      <div class="extra">
+                      <%= annonces[index].Texte %>
+          
+                          <br>
+                      </div>
+          
+                      <div class="description">
+                        <div class="ui right  teal  button " style="width:150px; "
+                          onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div> &nbsp;
+                        <div class="ui right  red  button modalshow " style="width:150px"><i class=" delete  icon"></i>Supprimer
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div>
            
-          </div>
-      <div class="ui items">
-        <% let slideCounter=0 %>
-        <%  for(let index = 0; index < annonces.length; index++) {   %>
+
+      
 
 
-
-        <div class="item">
-          <div class="image">
-            <div class="slideshow-container" style="text-align:center">
-              
-       
-        
-        
-                    <div >
-      
-                      <img id="masterImg<%= index  %>" class="ui tiny rounded centered image" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> " style="height:115px ;width:115px">
-      
-                    </div>
-                  
-                 
-      
-      
-      
-                  </div>
-                  <br>
-      
-                  <div style="text-align:left">
-                   <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
-                  let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
-                    
-      
-                    <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular left floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span>
-                  
-      
-                    <% } %>
-                
-                
-          </div>
-          </div>
-          <div class="content">
-            <a class="header"> <%= annonces[index].Titre %> </a>
-            <div class="meta">
-                <span> <%= annonces[index].NomUitilisateur + '  ' + annonces[index].Email %> </span>
-              </div>
-            <div class="meta">
-              <span> <%= annonces[index].Ville %> </span>
-              <span> <%= annonces[index].CodePostal %> </span>
-            </div>
-            <div class="description">
-              <p></p>
-            </div>
-            <div class="extra">
-            <%= annonces[index].Texte %>
-
-
-            </div>
-
-            <div class="description">
-              <div class="ui right  teal  button " style="width:150px; "
-                onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div> &nbsp;
-              <div class="ui right  red  button modalshow " style="width:150px"><i class=" delete  icon"></i>Supprimer
-              </div>
-            </div>
-          </div>
-        </div>
+     
 
         <% } %>
 
       
-
+      </div>
       </div>
     </div>
   </div>
