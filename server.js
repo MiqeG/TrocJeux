@@ -59,6 +59,7 @@ let session = require('express-session')
 let SearchVille = require('./csvvilles/FRANCE/villes.json')
 let configFile = require('./config/server_config.json')
 app.set('view engine', 'ejs')
+
 app.use('/assets', express.static('public'))
 app.use('/pregistered', express.static('UserImages'))
 
@@ -78,6 +79,8 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
+
+
 app.get('/searchoption', function (req, res) {
   if (req.query.searchoption) {
 
@@ -503,4 +506,26 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
 }
 
 )
+app.get('*', function(req, res){
+  res.status(404)
+   // respond with html page
+   if (req.accepts('html')) {
+     let searchoption;
+     if(req.session.searchoption===undefined){
+       searchoption='1'
+     }
+     req.flash('error','404 Not found : '+req.url )
+   res.redirect('/')
+    return;
+  }
+
+  // respond with json
+  if (req.accepts('json')) {
+    res.send({ error: 'Not found' });
+    return;
+  }
+
+  // default to plain-text. send()
+  res.type('txt').send('Not found');
+});
 app.listen(configFile.serverConfigurationVariables.port)

@@ -96,7 +96,10 @@ img {vertical-align: middle;}
   position: absolute;
   top: 0;
 }
-
+.miniatureImg:hover{
+  cursor:pointer;
+ 
+}
 /* The dots/bullets/indicators */
 .dot {
   cursor: pointer;
