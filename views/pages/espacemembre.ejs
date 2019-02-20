@@ -141,24 +141,25 @@
                 
                 
                             </div>
-                            <br>
+                            
                 
-                            <div style="text-align:left">
+                            <div class="content center" style="padding-right:27%;padding-left:27%; padding-top:5%;padding-bottom:5%;" >
                              <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
                             let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
                               
-                
-                              <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular left floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span>
-                            
+                <div>   <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular center floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span></div>
+                           
+                           
                 
                               <% } %>
                           
                           
-                    </div>
+                             </div>
+                             <br>
                     </div>
                    
-                    <div class="content">
-                   <br>   <a class="header"> <%= annonces[index].Titre %> </a>
+                    <div class="content" style="text-align:left ;padding-top:5%;padding-bottom:5%">
+                     <a class="header"> <%= annonces[index].Titre %> </a>
                       <div class="meta">
                           <span> <%= annonces[index].NomUitilisateur + '  ' + annonces[index].Email %> </span>
                         </div>
