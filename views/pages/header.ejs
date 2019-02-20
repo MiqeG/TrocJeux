@@ -147,14 +147,37 @@
       </a>
 
 
-      <div class="ui category search">
+      <div class="ui  left aligned category search">
         <div class="ui icon input">
           <input class="prompt" type="text" placeholder="Rechercher...">
           <i class="search icon"></i>
         </div>
-        <div class="results"></div>
+      
+        <div class="results" ></div>
       </div>
-
+      <div class="ui dropdown item">
+         <i class="dropdown icon"></i>
+        <div  class="menu">
+      <%
+      let s1='';
+      let s2='';
+      let s3='';
+      let s4='';
+      if(locals.searchoption==undefined||locals.searchoption=='1'){s1='active selected'}
+      else if(locals.searchoption=='2'){s2='active selected'}
+      else if(locals.searchoption=='3'){s3='active selected'}
+      else if(locals.searchoption=='4'){s4='active selected'}
+      %>
+        
+           
+          
+          
+          <a href="/searchoption/?searchoption=1" class="item searchOption <%= s1 %>" data-option="1">Titre</a>
+          <a href="/searchoption/?searchoption=2"  class="item searchOption <%= s2 %>" data-option="2">Catégorie</a>
+          <a href="/searchoption/?searchoption=3"  class="item searchOption <%= s3 %>" data-option="3">Ville/Code-Postal</a>
+          <a href="/searchoption/?searchoption=4"  class="item searchOption <%= s4 %>"  data-option="4">Nom d'utilisateur</a>
+        </div>
+      </div>
 
     </div>
 

@@ -181,3 +181,8 @@ img {vertical-align: middle;}
     padding-top: 3.9px!important;
     padding-bottom: 3.9px!important;
   }
+  .ui.dropdown.searchOptions{
+   
+    height:60%;
+    padding:1%
+  }

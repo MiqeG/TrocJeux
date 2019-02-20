@@ -10,7 +10,7 @@ var csrf = require('csurf')
 var mkdirp = require('mkdirp')
 
 const fs2 = require('fs-extra');
-let path=require('path')
+let path = require('path')
 var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
 const passport = require('passport');
@@ -40,13 +40,13 @@ var AnnonceSchema = mongoose.Schema({
   Categories: { type: Array, required: true },
   User_Id: { type: String, required: true },
   NomUitilisateur: { type: String, required: true },
-  CodePostal:{type: String,required : true},
-    Email: { type: String, required: true },
-    Ville:{type:String,required:true},
-   DatePublication: { type: Date, default: Date.now, required: true },
-  Texte:{type:String,required:true},
-  Titre:{type:String,required:true},
-  UserImages:{type:Array,required:true},
+  CodePostal: { type: String, required: true },
+  Email: { type: String, required: true },
+  Ville: { type: String, required: true },
+  DatePublication: { type: Date, default: Date.now, required: true },
+  Texte: { type: String, required: true },
+  Titre: { type: String, required: true },
+  UserImages: { type: Array, required: true },
   Active: { type: Boolean, required: true }
 
 
@@ -78,12 +78,26 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./middlewares/flash'))
+app.get('/searchoption', function (req, res) {
+  if (req.query.searchoption) {
 
-app.get('/success', (req, res) => res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories }));
+    req.session.searchoption = req.query.searchoption
+    res.redirect(req.get('referer'))
+
+  }
+})
+app.get('/success', function (req, res) {
+  let searchoption=req.session.searchoption
+  req.session.searchoption=undefined
+  res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+  
+})
 app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
-    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories,uploadAmount:configFile.serverConfigurationVariables.uploadAmount })
-
+    let searchoption=req.session.searchoption
+  req.session.searchoption=undefined
+    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, uploadAmount: configFile.serverConfigurationVariables.uploadAmount, searchoption: searchoption })
+   
   }
   else {
     req.flash('error', 'Veuillez vous authentifiez avant de déposer un annonce!')
@@ -97,53 +111,95 @@ app.get('/error', (req, res) => {
 });
 app.get('/searchApi', (req, res) => {
 
-   
-  let strRegExPatternUpper = '(?i)'+req.query.q+'(?-i)';
 
-  Annonce.find({ $and:[{"$or": [
-    { "CodePostal": req.query.q}, {  "Ville": { "$regex": strRegExPatternUpper }},{ "Titre": { "$regex": strRegExPatternUpper }},{ Categories: { "$regex": strRegExPatternUpper }},{ "NomUitilisateur": { "$regex": strRegExPatternUpper }}
-]},{"Active":true}]}, function (err, docs) {
-    if(err)throw err
+  let strRegExPatternUpper = '(?i)' + req.query.q + '(?-i)'
+  let searchWithoption
+  console.log(req.query)
+  switch (req.query.t) {
+    case '1':
+      searchWithoption = {
+        $and: [{
+          "$or": [
+           { "Titre": { "$regex": strRegExPatternUpper } }
+          ]
+        }, { "Active": true }]
+      }
+      break;
+      case '2':
+
+      searchWithoption = {
+        $and: [{
+          "$or": [
+            { Categories: { "$regex": strRegExPatternUpper } }
+          ]
+        }, { "Active": true }]
+      }
+      break
+    case '3': 
+    searchWithoption = {
+      $and: [{
+        "$or": [
+          { "CodePostal": req.query.q }, { "Ville": { "$regex": strRegExPatternUpper } }
+        ]
+      }, { "Active": true }]
+    }
+    break
+    case '4':
+    searchWithoption = {
+      $and: [{
+        "$or": [
+          { "NomUitilisateur":req.query.q  }
+        ]
+      }, { "Active": true }]
+    }
+    break
+    default:
+      break
+  }
+ 
+  Annonce.find(searchWithoption, function (err, docs) {
+    if (err) throw err
     console.log(docs.length)
-if(docs.length!=0){
-  
+    if (docs.length != 0) {
 
-    let results=[]
-    //for (let index = 0; index < docs.length; index++) {
-   for (let index = 0; index < docs.length; index++) {
-    let  result={
-      titre: docs[index].Titre,
-      imgsrc: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[0],
-      localisation: docs[index].Ville+' '+docs[index].CodePostal,
-      description:  docs[index].Categories,
-      price:  docs[index].Categories,
-      categorie:  docs[index].Categories,
-      image: '/pregistered/'+docs[index].User_Id+'/'+ docs[index]._id +'/' +docs[index].UserImages[0],
-      url: '/annonces/?' +docs[index].User_Id+'?'+ docs[index]._id
+
+      let results = []
+      //for (let index = 0; index < docs.length; index++) {
+      for (let index = 0; index < docs.length; index++) {
+        let result = {
+          titre: docs[index].Titre,
+          imgsrc: '/pregistered/' + docs[index].User_Id + '/' + docs[index]._id + '/' + docs[index].UserImages[0],
+          localisation: docs[index].Ville + ' ' + docs[index].CodePostal,
+          description: docs[index].Categories,
+          price: docs[index].Categories,
+          categorie: docs[index].Categories,
+          image: '/pregistered/' + docs[index].User_Id + '/' + docs[index]._id + '/' + docs[index].UserImages[0],
+          url: '/annonces/?' + docs[index].User_Id + '?' + docs[index]._id
+
+        }
+        results.push(result)
+
+      }
+
+      let pathToResults = "/searchresults/?q=" + req.query.q+'&t='+req.query.t
+      let action = { url: pathToResults, text: docs.length + " resultats cliquez pour parcourir" }
+      // console.log(results)
+
+      let returnArray = { results: results, action }
+
+
+
+
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(returnArray));
+
 
     }
-     results.push(result)
-     
-   }
-
-   let  pathToResults= "/searchresults?q="+req.query.q
-   let action=  { url: pathToResults, text: docs.length+ " resultats cliquez pour parcourir"} 
-  // console.log(results)
-
-   let returnArray = { results: results,action}
+  });
 
 
- 
 
-
-   res.writeHead(200, { 'Content-Type': 'application/json' });
-   res.end(JSON.stringify(returnArray));
-      
-
-  }});
-
-
- 
 })
 
 
@@ -191,8 +247,9 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/', csrfProtection, (req, res) => {
-
-  res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+  let searchoption = req.session.searchoption
+  req.session.searchoption = undefined
+  res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption:searchoption })
 
 })
 app.get('/inscription', csrfProtection, (req, res) => {
@@ -200,7 +257,9 @@ app.get('/inscription', csrfProtection, (req, res) => {
     res.redirect('/espacemembre')
     return
   }
-  res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+  let searchoption = req.session.searchoption
+  req.session.searchoption = undefined
+  res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
 
 })
 /*app.get('/connexion', csrfProtection, (req, res) => {
@@ -255,7 +314,10 @@ function isLoggedIn(req, res, next) {
 app.get('/espacemembre', isLoggedIn,
   function (req, res) {
 
-    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+    let searchoption = req.session.searchoption
+    req.session.searchoption = undefined
+    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+
   });
 app.post('/deposer', isLoggedIn, (req, res) => {
   if (req.body === undefined || req.body === '') {
@@ -275,57 +337,57 @@ app.post('/deposer', isLoggedIn, (req, res) => {
     form.keepExtensions = true;
     form.uploadDir = configFile.serverConfigurationVariables.userImageFolder + ('/temp')
     form.parse(req, function (err, fields, files) {
-        if(files.length>configFile.serverConfigurationVariables.uploadAmount)
+      if (files.length > configFile.serverConfigurationVariables.uploadAmount)
         return
-      User.findOne({ Email: fields.Email.trim() },  function (err, item) {
-      
-      var array=  fields.Categories.split(',')
-    
-    
+      User.findOne({ Email: fields.Email.trim() }, function (err, item) {
+
+        var array = fields.Categories.split(',')
+
+
         if (err) throw err
-        
+
         var annonce1 = new Annonce({
-        
+
           User_Id: item._id,
           NomUitilisateur: item.NomUitilisateur,
           Email: item.Email,
-          UserImages:[],
-         Ville:item.Ville,
-         CodePostal:item.CodePostal,
+          UserImages: [],
+          Ville: item.Ville,
+          CodePostal: item.CodePostal,
           Categories: array,
-          Titre:fields.Titre,
-          Texte:fields.Texte,
-         
+          Titre: fields.Titre,
+          Texte: fields.Texte,
+
           Active: true
 
 
 
         })
-       
-       let filearray=[]
-     
+
+        let filearray = []
+
         for (let i = 0; i < form.openedFiles.length; i++) {
           let temp_path = form.openedFiles[i].path;
           /* The file name of the uploaded file */
           let file_name = form.openedFiles[i].name;
           /* Location where we want to copy the uploaded file */
-            filearray.push( path.basename(temp_path))
-          mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/' + item._id+'/'+annonce1._id, function (err) {
+          filearray.push(path.basename(temp_path))
+          mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/' + item._id + '/' + annonce1._id, function (err) {
             if (err) throw err
             let new_location = configFile.serverConfigurationVariables.userImageFolder + '/' + item._id + '/';
             //copy from temp to folder
-            IoOp.copyFiles(temp_path, new_location, file_name,annonce1._id, function (err,callback) {
+            IoOp.copyFiles(temp_path, new_location, file_name, annonce1._id, function (err, callback) {
               if (err) throw err
-             
+
             });
           });
         }
-        annonce1.UserImages=filearray
+        annonce1.UserImages = filearray
         console.log(annonce1)
         annonce1.save(function (err, annonce) {
           if (err) return console.error(err)
           console.log(annonce.NomUitilisateur + "\r\n saved to Annonces collection.")
-       
+
 
         });
       })

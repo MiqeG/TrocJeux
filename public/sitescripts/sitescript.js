@@ -87,7 +87,7 @@
         $('.ui.search')
             .search({
                 apiSettings: {
-                    url: 'searchapi/?q={query}'
+                    url: 'searchapi/?q={query}'+'&t='+$('.item.searchOption.active.selected').attr('data-option')
                 },
                 fields: {
                     results: 'results',
