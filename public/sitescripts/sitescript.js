@@ -81,6 +81,8 @@
         })
 
 $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.active.selected').html())
+
+
         $('.LogOut').click(function () {
             window.location.href = '/logout'
         })

@@ -1,236 +1,239 @@
 <% include header %>
 <div class="ui basic modal annoncemodal">
-        <div class="ui icon header">
-          <i class="trash alternate icon"></i>
-        Effacer l'annonce?
-        </div>
+  <div class="ui icon header">
+    <i class="trash alternate icon"></i>
+    Effacer l'annonce?
+  </div>
+  <div class="content">
+    <p>Si vous confirmez l'annonce sera effacée de la base de données...</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i>
+      Non
+    </div>
+    <div class="ui green ok inverted button">
+      <i class="checkmark icon"></i>
+      Oui
+    </div>
+  </div>
+</div>
+<div class="ui inverted   asd "
+  style="border-radius: 0!important; border: 0; margin-left: 260px;padding-bottom:5%; -webkit-transition-duration: 0.1s;">
+  </i>
+  <h1> <i class="user  teal icon"></i>Espace Membre</h1>
+  <div class="ui top   attached tabular menu">
+    <a class="item active toggler1 "><i class="address card icon"></i>
+      <span style="color:rgb(36, 161, 161);">Infos</span>
+
+    </a>
+    <a class="item toggler2"><i class="list alternate outline icon"></i>
+      <span style="color:rgb(36, 161, 161);">Annonces</span>
+    </a>
+    </a>
+
+    <div class="right menu">
+      <div class="item">
+
+      </div>
+
+    </div>
+
+  </div>
+  <div class="ui bottom attached segment ">
+    <div class="togglerClass1">
+      <table class="ui   table">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="fontWeight">
+            <td><i class="address card teal icon"></i><span>Nom</span> </td>
+            <td><%= user.Nom %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="address card outline teal icon"></i> Prenom</td>
+            <td> <%= user.Prenom %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="envelope open outline teal icon"></i></i> Email</td>
+            <td> <%= user.Email %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="user teal icon"></i> Nom d'utilisateur</td>
+            <td> <%= user.NomUitilisateur %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="address card teal icon"></i></i> Adresse</td>
+            <td> <%= user.Adresse %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="address card outline teal icon"></i> Code Postal</td>
+            <td><%= user.CodePostal %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="chess rook teal icon"></i></i>Ville</td>
+            <td><%= user.Ville %></td>
+
+          </tr>
+          <tr class="fontWeight">
+            <td><i class="globe teal icon"></i> Pays</td>
+            <td><%= user.Pays %></td>
+
+          </tr>
+        </tbody>
+      </table>
+
+
+
+
+      <div class="item">
+
         <div class="content">
-          <p>Si vous confirmez l'annonce sera effacée de la base de données...</p>
-        </div>
-        <div class="actions">
-          <div class="ui red basic cancel inverted button">
-            <i class="remove icon"></i>
-            Non
-          </div>
-          <div class="ui green ok inverted button">
-            <i class="checkmark icon"></i>
-            Oui
-          </div>
+
+          <p></p>
+          <div class="ui right  teal  button"><i class=" edit  icon"></i>Modifier</div>
+
+
         </div>
       </div>
-<div class="ui inverted   asd "
-    style="border-radius: 0!important; border: 0; margin-left: 260px;padding-bottom:5%; -webkit-transition-duration: 0.1s;">
-    </i>
-    <h1> <i class="user  teal icon"></i>Espace Membre</h1>
-    <div class="ui top   attached tabular menu">
-        <a class="item active toggler1 "><i class="address card icon"></i>
-            <span style="color:rgb(36, 161, 161);">Infos</span>
 
-        </a>
-        <a class="item toggler2"><i class="list alternate outline icon"></i>
-            <span style="color:rgb(36, 161, 161);">Annonces</span>
-        </a>
-        </a>
+
+
+    </div>
+
+    <div class="ui divided demo items togglerClass2" hidden>
+      <div class="ui items">
+        <% let slideCounter=0 %>
+        <%  for(let index = 0; index < annonces.length; index++) {   %>
+
+
+
+        <div class="item">
+          <div class="image">
+            <div class="slideshow-container" style="text-align:center">
+              
+       
+          <% for(let index2 = 0; index2 < annonces[index].UserImages.length; index2++) { %>
+       
+        
+                    <div class="mySlides fade">
       
-        <div class="right menu">
-            <div class="item">
-
-            </div>
-
-        </div>
-
-    </div>
-    <div class="ui bottom attached segment ">
-        <div class="togglerClass1">
-            <table class="ui   table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="fontWeight">
-                        <td><i class="address card teal icon"></i><span>Nom</span> </td>
-                        <td><%= user.Nom %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="address card outline teal icon"></i> Prenom</td>
-                        <td> <%= user.Prenom %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="envelope open outline teal icon"></i></i> Email</td>
-                        <td> <%= user.Email %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="user teal icon"></i> Nom d'utilisateur</td>
-                        <td> <%= user.NomUitilisateur %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="address card teal icon"></i></i> Adresse</td>
-                        <td> <%= user.Adresse %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="address card outline teal icon"></i> Code Postal</td>
-                        <td><%= user.CodePostal %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="chess rook teal icon"></i></i>Ville</td>
-                        <td><%= user.Ville %></td>
-
-                    </tr>
-                    <tr class="fontWeight">
-                        <td><i class="globe teal icon"></i> Pays</td>
-                        <td><%= user.Pays %></td>
-
-                    </tr>
-                </tbody>
-            </table>
-
-
-
-
-            <div class="item">
-
-                <div class="content">
-
-                    <p></p>
-                    <div class="ui right  teal  button"><i class=" edit  icon"></i>Modifier</div>
-
-
-                </div>
-            </div>
-
-
-
-        </div>
-
-        <div class="ui divided demo items togglerClass2" hidden>
-                <div class="ui items">
-                        <div class="item">
-                          <div class="image">
-                                <div class="slideshow-container" style="text-align:center">
+                      <img src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index2] %> " style="height:115px ;width:115px">
+      
+                    </div>
+                    <% } %>
+                 
+      
+      
+      
+                  </div>
+                  <br>
+      
+                  <div style="text-align:center">
+                   <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ %>
+                   
+                    
+      
+                    <span class="dot" onclick="currentSlide(<%= slideCounter %>)">  <img src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " style="height:25px ;width:25px"> </span>
+                  
+      
+                    <% } %>
                 
-                                        <div class="mySlides fade">
-                                            
-                                            <img src="/assets/img/image.png" style="height:115px ;width:115px">
-        
-                                        </div>
-        
-                                        <div class="mySlides fade">
-                                           
-                                            <img src="/assets/img/logo.png" style="height:115px ;width:115px">
-        
-                                        </div>
-        
-                                        <div class="mySlides fade">
-                                            
-                                            <img src="/assets/img/image.png" style="height:115px ;width:115px">
-        
-                                        </div>
-        
-                                      
-        
-                                    </div>
-                                    <br>
-        
-                                    <div style="text-align:center">
-                                        <span class="dot" onclick="currentSlide(1)"></span>
-                                        <span class="dot" onclick="currentSlide(2)"></span>
-                                        <span class="dot" onclick="currentSlide(3)"></span>
-                                    </div>
-                          </div>
-                          <div class="content">
-                            <a class="header">Titre</a>
-                            <div class="meta">
-                              <span>Description</span>
-                            </div>
-                            <div class="description">
-                              <p></p>
-                            </div>
-                            <div class="extra">
-                              Additional Details
-                             
-                              
-                            </div>
-                            <div class="description">
-                                    <div class="ui right  teal  button " style="width:150px; " onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"  ></i>Modifier</div> &nbsp;
-                              <div class="ui right  red  button modalshow " style="width:150px"><i class=" delete  icon" ></i>Supprimer</div>
-                                  </div>
-                          </div>
-                        </div>
-                        <div class="item">
-                          <div class="image">
-                            <img src="">
-                          </div>
-                          <div class="content">
-                            <a class="header">Header</a>
-                            <div class="meta">
-                              <span>Description</span>
-                            </div>
-                            <div class="description">
-                              <p></p>
-                            </div>
-                            <div class="extra">
-                              Additional Details
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                              
-                              
-                              
-                              
-                         
-                                        
-                                     
-                         
-                            
-                        </div>
-                       
-                      </div>
-          
+                
+          </div>
+          </div>
+          <div class="content">
+            <a class="header"> <%= annonces[index].Titre %> </a>
+            <div class="meta">
+                <span> <%= annonces[index].NomUitilisateur + '' + annonces[index].Email %> </span>
+              </div>
+            <div class="meta">
+              <span> <%= annonces[index].Ville %> </span>
+              <span> <%= annonces[index].CodePostal %> </span>
+            </div>
+            <div class="description">
+              <p></p>
+            </div>
+            <div class="extra">
+            <%= annonces[index].Texte %>
+
+
+            </div>
+
+            <div class="description">
+              <div class="ui right  teal  button " style="width:150px; "
+                onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div> &nbsp;
+              <div class="ui right  red  button modalshow " style="width:150px"><i class=" delete  icon"></i>Supprimer
+              </div>
+            </div>
+          </div>
         </div>
 
+        <% } %>
+
+      
+
+      </div>
     </div>
+  </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 <script>
 
 
-var slideIndex = 1;
-showSlides(slideIndex);
+  var slideIndex = 1;
+  showSlides(slideIndex);
 
-function plusSlides(n) {
+  function plusSlides(n) {
     showSlides(slideIndex += n);
-}
+  }
 
-function currentSlide(n) {
+  function currentSlide(n) {
     showSlides(slideIndex = n);
-}
+  }
 
-function showSlides(n) {
+  function showSlides(n) {
     var i;
     var slides = document.getElementsByClassName("mySlides");
     var dots = document.getElementsByClassName("dot");
     if (n > slides.length) { slideIndex = 1 }
     if (n < 1) { slideIndex = slides.length }
     for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+      slides[i].style.display = "none";
     }
     for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
+      dots[i].className = dots[i].className.replace(" active", "");
     }
     slides[slideIndex - 1].style.display = "block";
     dots[slideIndex - 1].className += " active";
-}
+  }
 
 </script>
 <% include footer %>

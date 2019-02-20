@@ -86,11 +86,17 @@ app.get('/searchoption', function (req, res) {
 
   }
 })
-app.get('/success', function (req, res) {
-  let searchoption=req.session.searchoption
-  req.session.searchoption=undefined
-  res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
-  
+app.get('/success',isLoggedIn, function (req, res) {
+
+  Annonce.find({ User_Id:req.session._id }, function (err, annonces) {
+    if (err) throw err
+    console.log(annonces)
+    let searchoption = req.session.searchoption
+    req.session.searchoption = undefined
+    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption,annonces:annonces })
+
+
+  })
 })
 app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
@@ -238,7 +244,11 @@ passport.use(new LocalStrategy(
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
-    res.redirect('/success?username=' + req.user.username);
+    console.log(req.user._id)
+   
+    req.session._id=req.user._id
+    
+    res.redirect('/success?username=' + req.user.NomUitilisateur);
   });
 app.get('/logout', (req, res) => {
   res.cookie.maxAge = Date.now - 3
@@ -313,10 +323,15 @@ function isLoggedIn(req, res, next) {
 }
 app.get('/espacemembre', isLoggedIn,
   function (req, res) {
-
-    let searchoption = req.session.searchoption
-    req.session.searchoption = undefined
-    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+    Annonce.find({ User_Id: req.session._id }, function (err, annonces) {
+      if (err) throw err
+      let searchoption = req.session.searchoption
+      req.session.searchoption = undefined
+      res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption,annonces:annonces })
+  
+  
+    })
+   
 
   });
 app.post('/deposer', isLoggedIn, (req, res) => {
