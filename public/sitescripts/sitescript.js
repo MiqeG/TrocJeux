@@ -125,17 +125,15 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
         url: '/effacerannonce',
         type : 'POST',
         dataType : 'json',
-        data:{_id: $('#selection').attr('data-selection')},
+        data:{_id: $('#selection').attr('data-selection'),User_Id:$('#selection').attr('data-user')},
         success: function(data){
-         $('#annonce'+data.annonceId).remove()
-         $('.ui.form.espacemembre').removeClass('loading');
-         $('.memberbuttons').show()
+        window.location.href='/espacemembre'
         },
         error: function(err){
           alert("Erreur lors de l'effacement");
-          $('.ui.form.espacemembre').removeClass('loading');
-          $('.memberbuttons').show()
           console.log(err)
+          window.location.href='/espacemembre'
+          
         }
       });
 });

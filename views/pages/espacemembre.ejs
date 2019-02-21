@@ -1,5 +1,7 @@
 <% include header %>
-<div id="selection" data-selection="" hidden></div>
+
+
+
 <div class="ui basic modal annoncemodal">
   <div class="ui icon header">
     <i class="trash alternate icon"></i>
@@ -111,6 +113,8 @@
     <div class="ui divided demo items togglerClass2">
       <h3><i class="ui teal wpforms icon"></i>Vos annonces...</h3>
       <div class="ui   styled fluid  accordion" style="background-color:rgba(223, 215, 215,0.15);">
+        <% if(annonces[0])  { %>
+          <div id="selection" data-selection="" data-user="<%= annonces[0].User_Id %>" hidden></div>
         <% let slideCounter=0 %>
         <%  for(let index = 0; index < annonces.length; index++) {   %>
 
@@ -220,6 +224,7 @@
 
 
 
+          <% } %>
           <% } %>
 
 

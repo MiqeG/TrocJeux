@@ -8,7 +8,7 @@ var formidable = require('formidable'),
   util = require('util');
 var csrf = require('csurf')
 var mkdirp = require('mkdirp')
-
+var rimraf = require("rimraf");
 const fs2 = require('fs-extra');
 let path = require('path')
 var csrfProtection = csrf({ cookie: true })
@@ -59,7 +59,12 @@ let session = require('express-session')
 let SearchVille = require('./csvvilles/FRANCE/villes.json')
 let configFile = require('./config/server_config.json')
 app.set('view engine', 'ejs')
+app.get('/favicon.ico', function (req, res) {
 
+  res.redirect('/assets/favicon.ico')
+
+
+})
 app.use('/assets', express.static('public'))
 app.use('/pregistered', express.static('UserImages'))
 
@@ -511,17 +516,31 @@ app.post('/effacerannonce',isLoggedIn,(req,res)=>{
   console.log(req.body._id)
   Annonce.findOneAndDelete({_id:req.body._id},function(err){
     if(err){ 
-      json={error:'Un erreur est survenue!!'}
-    console.log(err)
+     
+        console.log(err)
+      
+        req.flash('error',"Erreur lors de la suppression de l'annonce: "+req.body._id)
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+     
+   
+   
+    return
   }
   else{
     json={annonceId:req.body._id}
   }
+  console.log('deleting ad from user' + req.body.User_Id)
+  console.log('deleting ad from ad id' + req.body._id)
+  console.log( 'Path: '+"/UserImages/"+req.body.User_Id+'/'+req.body._id)
+  rimraf('C:/git/trocjeux/UserImages/'+req.body.User_Id+'/'+req.body._id, function (err) { 
+    console.log('deleted ad: '+req.body.User_Id)
+  req.flash('success','Annonce : '+req.body._id+' supprimée...!')
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(json));
     return
   })
- 
+});
 })
 app.get('*', function(req, res){
   res.status(404)
@@ -532,7 +551,7 @@ app.get('*', function(req, res){
        searchoption='1'
      }
      req.flash('error','404 Not found : '+req.url )
-   res.redirect(req.get('referer'))
+   res.redirect('/')
     return;
   }
 
