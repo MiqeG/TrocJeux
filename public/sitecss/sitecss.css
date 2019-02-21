@@ -100,6 +100,25 @@ img {vertical-align: middle;}
   cursor:pointer;
  
 }
+.miniatureImg{
+  width:100px;
+  height:100px;
+}
+.hlink{
+  color:black;
+
+}
+.hlink:hover{
+  color:teal;
+}
+.ihlink{
+  color:teal;
+
+}
+.ihlink:hover{
+  color:rgb(235, 41, 27);
+  cursor:pointer
+}
 
 /* The dots/bullets/indicators */
 .dot {

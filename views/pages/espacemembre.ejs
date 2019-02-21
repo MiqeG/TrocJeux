@@ -121,8 +121,9 @@
         <div class="ui items" id="annonce<%= annonces[index]._id %>">
           <div class=" title">
             <i class="dropdown icon"></i>
-            <% let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-            <%= annonces[index].Titre +' '+annonces[index].DatePublication.toLocaleDateString('fr-FR', options) %>
+        <% let DateTimeVariable= new Date( annonces[index].DatePublication ) %>
+            <span class="hlink" > <%= annonces[index].Titre %></span>
+            <i class="ui calendar alternate teal icon"></i> <span style="color:teal;">  <%= DateTimeVariable.getDate() +' / '+DateTimeVariable.getMonth()+' / '+DateTimeVariable.getFullYear() %> <span>&nbsp<i class="ui clock teal icon"></i></span> <%= DateTimeVariable.getHours()+' : '+DateTimeVariable.getMinutes()+' : '+DateTimeVariable.getSeconds() %> </span>
 
           </div>
           <div class="content">
@@ -160,17 +161,23 @@
                       <div style="float:right;padding-right:15%;">
                       <ol class="ui list">
                         <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
-                        <li value=""><a> <%= annonces[index].Titre %> </a></li>
-                        <li value="">
+                       
+                        <li value=""><a class="ihlink "><i class="chess teal icon" style="size:100px"></i> <%= annonces[index].Titre %> </a></li>
+                        <br>
+                        <br>
+                        <li value="" ><i class="table teal icon"></i>
                           <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
                           <%= annonces[index].Categories[index4]  %>
                           <% } %>
+                          
                         </li>
-                        <li value=""> <%= annonces[index].NomUitilisateur  %></li>
+                        <br>
+                        <li value=""></li>
+                        <li value=""> <i class="user teal icon"></i> <%= annonces[index].NomUitilisateur  %></li>
 
-                        <li value=""><%= annonces[index].Email  %></li>
-                        <li value=""><%= annonces[index].Ville %></li>
-                        <li value=""><%= annonces[index].CodePostal %></li>
+                        <li value=""> <i class="envelope open teal icon "></i> <%= annonces[index].Email  %></li>
+                        <li value=""> <i class="address card teal icon"></i> <%= annonces[index].Ville %></li>
+                        <li value=""> <i class="address card outline teal icon"></i> <%= annonces[index].CodePostal %></li>
 
                       </ol>
                     </p>
