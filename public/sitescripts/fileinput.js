@@ -16,9 +16,7 @@ function readURL(input, length) {
 
                 $('.file-upload-image' + '.' + index).attr('src', e.target.result);
 
-                $('.file-upload-image' + '.' + index).on('error',function(){
-                    $(this).unbind("error").attr("src", "assets/img/image.png");
-                })
+              
 
 
             };
@@ -29,8 +27,13 @@ function readURL(input, length) {
             $('.file-upload-content').show();
 
             reader.readAsDataURL(input.files[index])
+           
         }
-
+        $('.file-upload-image').on('error',function(){
+           
+            removeUpload();
+          
+        })  
     } else {
         removeUpload();
     }
