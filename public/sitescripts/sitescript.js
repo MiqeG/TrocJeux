@@ -1,9 +1,17 @@
 {
     $(document).ready(function () {
-     
-       
-
-
+        $(function() {
+            $('.openbtn').click();
+        });
+      
+        $('.formloading').click(function(){
+            $('.ui.form').addClass('loading');
+          })
+          $('.formLoadingMembre').click(function(){
+            $('.ui.form.espacemembre').addClass('loading');
+            $('.memberbuttons').hide()
+          })
+          
     
         if ($('#sessionFlash').length) {
 
@@ -77,7 +85,7 @@
         })
         $('.modalshow').click(function () {
             $('.ui.basic.modal.annoncemodal').modal('show')
-
+          
         })
 
 $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.active.selected').html())

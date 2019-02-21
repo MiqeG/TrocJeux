@@ -12,7 +12,7 @@
       <i class="remove icon"></i>
       Non
     </div>
-    <div class="ui green ok inverted button">
+    <div class="ui green ok inverted button formLoadingMembre">
       <i class="checkmark icon"></i>
       Oui
     </div>
@@ -23,13 +23,13 @@
   </i>
   <h1> <i class="user  teal icon"></i>Espace Membre</h1>
   <div class="ui top   attached tabular menu">
-    <a class="item active toggler1 "><i class="address card icon"></i>
-      <span style="color:rgb(36, 161, 161);">Infos</span>
+    <a class="item active toggler2 "><i class="list alternate outline icon"></i>
+      <span style="color:rgb(36, 161, 161);">Annonces</span>
 
     </a>
-    <a class="item toggler2"><i class="list alternate outline icon"></i>
-      <span style="color:rgb(36, 161, 161);">Annonces</span>
-    </a>
+    <a class="item toggler1"><i class="address card icon"></i>
+      <span style="color:rgb(36, 161, 161);">Infos</span>
+  
     </a>
 
     <div class="right menu">
@@ -41,15 +41,10 @@
 
   </div>
   <div class="ui bottom attached segment ">
-    <div class="togglerClass1">
+    <div class="togglerClass1" hidden>
+      <h3> <i class="ui pencil alternate teal icon"></i> Vos coordonnées...</h3>
       <table class="ui   table">
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-
-          </tr>
-        </thead>
+     
         <tbody>
           <tr class="fontWeight">
             <td><i class="address card teal icon"></i><span>Nom</span> </td>
@@ -112,19 +107,23 @@
 
     </div>
 
-    <div class="ui divided demo items togglerClass2" hidden>
-        <div class="ui styled fluid accordion">
+    <div class="ui divided demo items togglerClass2" >
+    <h3><i class="ui teal wpforms icon"></i>Vos annonces...</h3>
+        <div class="ui   styled fluid  accordion" style="background-color:rgba(223, 215, 215,0.15);">
             <% let slideCounter=0 %>
         <%  for(let index = 0; index < annonces.length; index++) {   %>
          
           <div class="ui items">
-            <div class="active title">
+            <div class=" title">
               <i class="dropdown icon"></i>
-              What is a dog?
+        <%= annonces[index].Titre  %>
+    
             </div>
-            <div class="active content">
-                <div class="item">
+            <div class="content">
+                <div class="item ">
+                  
                     <div class="image">
+
                       <div class="slideshow-container" style="text-align:center">
                         
                  
@@ -132,7 +131,7 @@
                   
                               <div >
                 
-                                <img id="masterImg<%= index  %>" class="ui tiny rounded centered image" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> " style="height:115px ;width:115px">
+                                <img id="masterImg<%= index  %>" class="ui tiny bordered rounded  left  image" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> " style="height:115px ;width:115px ;margin:20px;">
                 
                               </div>
                             
@@ -143,49 +142,75 @@
                             </div>
                             
                 
-                            <div class="content center" style="padding-right:27%;padding-left:27%; padding-top:5%;padding-bottom:5%;" >
+                            <div class="content center">
                              <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
                             let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
                               
-                <div>   <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular center floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span></div>
+                <div>   <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular bordered center floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span></div>
                            
                            
                 
                               <% } %>
                           
-                          
+                         
                              </div>
-                             <br>
+                          
                     </div>
                    
-                    <div class="content" style="text-align:left ;padding-top:5%;padding-bottom:5%">
+                    <div class="content" >
+                      <br>
+                      <span hidden><%= annonces[index]._id  %> </span>
+                      <table class="ui teal table ">
+                        <thead>
+                          <tr>  <th> <i></i> Informations et titre...</th></tr>
+                        
+                        </thead>
+                          <tr>
+                            <td style="text-align:center";>
                      <a class="header"> <%= annonces[index].Titre %> </a>
-                      <div class="meta">
-                          <span> <%= annonces[index].NomUitilisateur + '  ' + annonces[index].Email %> </span>
-                        </div>
-                      <div class="meta">
-                        <span> <%= annonces[index].Ville %> </span>
-                        <span> <%= annonces[index].CodePostal %> </span>
-                      </div>
-                      <div class="description">
-                        <p></p>
-                      </div>
+                     <br>
+                     <br>
+                   
+                            <div class="meta">
+                                <span> <%= annonces[index].NomUitilisateur  %> </span>
+                              </div>
+                              <div class="meta">
+                                  <span> <%= annonces[index].Email  %> </span>
+                                </div>
+                            <div class="meta">
+                              <span> <%= annonces[index].Ville %> </span>
+                              <span> <%= annonces[index].CodePostal %> </span>
+                            </div>
+                       </td>
+                      </tr>
+                    </table>
+                    
+                 
+
                       <div class="extra">
-                      <%= annonces[index].Texte %>
-          
-                          <br>
+
+<div class="ui form espacemembre">
+  <div class="field" >
+    <label>Texte d'annonce</label>
+    <textarea readonly="" >       <%= annonces[index].Texte %></textarea>
+  </div>
+
+               
+                   
+                         
                       </div>
           
                       <div class="description">
-                        <div class="ui right  teal  button " style="width:150px; "
-                          onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div> &nbsp;
-                        <div class="ui right  red  button modalshow " style="width:150px"><i class=" delete  icon"></i>Supprimer
+                        <div class="ui right  teal  button memberbuttons" style="margin:10px;" 
+                          onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div>
+                        <div class="ui right  red  button modalshow memberbuttons" style="margin:10px;" ><i class=" delete  icon"></i>Supprimer
                         </div>
                       </div>
                     </div>
-                  </div>
+              
+               </div>    </div>
             </div>
-           
+         
 
       
 
@@ -194,7 +219,7 @@
 
         <% } %>
 
-      
+        
       </div>
       </div>
     </div>

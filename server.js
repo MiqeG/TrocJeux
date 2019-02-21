@@ -515,7 +515,7 @@ app.get('*', function(req, res){
        searchoption='1'
      }
      req.flash('error','404 Not found : '+req.url )
-   res.redirect('/')
+   res.redirect(req.get('referer'))
     return;
   }
 
