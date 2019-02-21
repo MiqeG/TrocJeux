@@ -114,6 +114,9 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
 
             })
             ;
+            $('.memberbuttons').click(function(){
+                $('#selection').attr('data-selection',$(this).attr('data-idannonce'))
+            })
             $("#Oui").click(function(){
      
    
@@ -122,8 +125,9 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
         url: '/effacerannonce',
         type : 'POST',
         dataType : 'json',
+        data:{_id: $('#selection').attr('data-selection')},
         success: function(data){
-         $('#'+data.annonceId).remove()
+         $('#annonce'+data.annonceId).remove()
          $('.ui.form.espacemembre').removeClass('loading');
          $('.memberbuttons').show()
         },
@@ -131,6 +135,7 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
           alert("Erreur lors de l'effacement");
           $('.ui.form.espacemembre').removeClass('loading');
           $('.memberbuttons').show()
+          console.log(err)
         }
       });
 });

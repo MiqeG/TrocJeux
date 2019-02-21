@@ -507,7 +507,21 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
 
 )
 app.post('/effacerannonce',isLoggedIn,(req,res)=>{
-  
+  let json = {}
+  console.log(req.body._id)
+  Annonce.findOneAndDelete({_id:req.body._id},function(err){
+    if(err){ 
+      json={error:'Un erreur est survenue!!'}
+    console.log(err)
+  }
+  else{
+    json={annonceId:req.body._id}
+  }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(json));
+    return
+  })
+ 
 })
 app.get('*', function(req, res){
   res.status(404)

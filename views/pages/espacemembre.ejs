@@ -1,4 +1,5 @@
 <% include header %>
+<div id="selection" data-selection="" hidden></div>
 <div class="ui basic modal annoncemodal">
   <div class="ui icon header">
     <i class="trash alternate icon"></i>
@@ -29,7 +30,7 @@
     </a>
     <a class="item toggler1"><i class="address card icon"></i>
       <span style="color:rgb(36, 161, 161);">Infos</span>
-  
+
     </a>
 
     <div class="right menu">
@@ -44,7 +45,7 @@
     <div class="togglerClass1" hidden>
       <h3> <i class="ui pencil alternate teal icon"></i> Vos coordonnées...</h3>
       <table class="ui   table">
-     
+
         <tbody>
           <tr class="fontWeight">
             <td><i class="address card teal icon"></i><span>Nom</span> </td>
@@ -107,109 +108,122 @@
 
     </div>
 
-    <div class="ui divided demo items togglerClass2" >
-    <h3><i class="ui teal wpforms icon"></i>Vos annonces...</h3>
-        <div class="ui   styled fluid  accordion" style="background-color:rgba(223, 215, 215,0.15);">
-            <% let slideCounter=0 %>
+    <div class="ui divided demo items togglerClass2">
+      <h3><i class="ui teal wpforms icon"></i>Vos annonces...</h3>
+      <div class="ui   styled fluid  accordion" style="background-color:rgba(223, 215, 215,0.15);">
+        <% let slideCounter=0 %>
         <%  for(let index = 0; index < annonces.length; index++) {   %>
-         
-          <div class="ui items" id="annonce<% index %>">
-            <div class=" title">
-              <i class="dropdown icon"></i>
-        <% let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-        <%= annonces[index].Titre +' '+annonces[index].DatePublication.toLocaleDateString('fr-FR', options) %> 
-    
-            </div>
-            <div class="content">
-                <div class="item ">
-                  
-                    <div class="image">
 
-                      <div class="slideshow-container" style="text-align:center">
-                        
-                 
-                  
-                  
-                              <div >
-                
-                                <img id="masterImg<%= index  %>" class="ui tiny bordered rounded  left  image" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> " style="height:115px ;width:115px ;margin:20px;">
-                
-                              </div>
-                            
-                            
-                
-                
-                
-                            </div>
-                            
-                
-                            <div class="content center">
-                             <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
-                            let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
-                              
-                <div>   <span id="<%= 'miniatureImg' + index + index3 %>">  <img data-masterRef="<%= index %>" src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> " class="ui  circular bordered center floated image miniatureImg <%= index %>" style="width:20px;height:20px; <%= paddingImg %>"> </span></div>
-                           
-                           
-                
-                              <% } %>
-                          
-                         
-                             </div>
-                          
-                    </div>
-                    <ol class="ui list">
-                      <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
-                      <li value="-"><a > <%= annonces[index].Titre %> </a></li>
-                      <li value="-">
-                        <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
-                           <%= annonces[index].Categories[index4]  %>
-                        <% } %>
-                      </li>
-                      <li value="-"> <%= annonces[index].NomUitilisateur  %></li>
-                    
-                      <li value="-"><%= annonces[index].Email  %></li>
-                      <li value="-"><%= annonces[index].Ville %></li>
-                      <li value="-"><%= annonces[index].CodePostal %></li>     
-                            
-                                </ol>
+        <div class="ui items" id="annonce<%= annonces[index]._id %>">
+          <div class=" title">
+            <i class="dropdown icon"></i>
+            <% let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+            <%= annonces[index].Titre +' '+annonces[index].DatePublication.toLocaleDateString('fr-FR', options) %>
 
-                    <div  >
-                      
-                  
-                      <div class="extra">
+          </div>
+          <div class="content">
+            <div class="item ">
 
-<div class="ui form espacemembre">
-  <div class="field" >
-    <label>Texte d'annonce</label>
-    <textarea readonly="" >       <%= annonces[index].Texte %></textarea>
-  </div>
+              <div class="image" style="min-height:300px;">
+
+                <div class="slideshow-container" >
+
+
+
+
+                  <div class="content left">
+
+                    <img id="masterImg<%= index  %>" class="ui tiny bordered rounded  left floated  image"
+                      src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> "
+                      style="height:115px ;width:115px ;margin:20px;">
+                      <div class="content ">
+                          <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
+                                    let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
+        
+                          <div style="margin:1%;"> <span id="<%= 'miniatureImg' + index + index3 %>"> <img data-masterRef="<%= index %>"
+                                src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> "
+                                class="ui mini rounded bordered center floated image miniatureImg <%= index %>"
+                                style=" <%= paddingImg %>"> </span></div>
+        
+        
+        
+                          <% } %>
+        
+        
+                        </div>
+        
+                    <p>
+                      <div style="float:right;padding-right:15%;">
+                      <ol class="ui list">
+                        <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
+                        <li value="-"><a> <%= annonces[index].Titre %> </a></li>
+                        <li value="-">
+                          <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
+                          <%= annonces[index].Categories[index4]  %>
+                          <% } %>
+                        </li>
+                        <li value="-"> <%= annonces[index].NomUitilisateur  %></li>
+
+                        <li value="-"><%= annonces[index].Email  %></li>
+                        <li value="-"><%= annonces[index].Ville %></li>
+                        <li value="-"><%= annonces[index].CodePostal %></li>
+
+                      </ol>
+                    </p>
+                  </div>
+                  </div>
+
+
+
+
+
+                </div>
+
 
                
-                   
-                         
-                      </div>
-          
-                      <div class="description">
-                        <div class="ui right  teal  button memberbuttons" style="margin:10px; width:100px;" 
-                          onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div>
-                        <div class="ui right  red  button modalshow memberbuttons" style="margin:10px; width:100px;" ><i class=" delete  icon"></i>Supprimer
-                        </div>
-                      </div>
+              </div>
+
+              <div>
+
+
+                <div class="extra">
+
+                  <div class="ui form espacemembre">
+                    <div class="field">
+                      <label>Texte d'annonce</label>
+                      <textarea readonly="">       <%= annonces[index].Texte %></textarea>
                     </div>
-              
-               </div>    </div>
+
+
+
+
+                  </div>
+
+                  <div class="description">
+                    <div class="ui right  teal  button memberbuttons" style="margin:10px; width:100px;"
+                      onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
+                        data-idannonce="<%= annonces[index]._id  %>"></i>Modifier</div>
+                    <div data-idannonce="<%= annonces[index]._id %>"
+                      class="ui right  red  button modalshow memberbuttons" style="margin:10px; width:100px;"><i
+                        class=" delete  icon"></i>Supprimer
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
-         
-
-      
+          </div>
 
 
-     
 
-        <% } %>
 
-        
-      </div>
+
+
+
+          <% } %>
+
+
+        </div>
       </div>
     </div>
   </div>
@@ -232,13 +246,13 @@
 
 </div>
 <script>
-$( document ).ready(function() {
+  $(document).ready(function () {
 
-$('.miniatureImg').click(function() {
- $('#masterImg'+$(this).attr('data-masterRef')).attr('src',$(this).attr('src'))
- $('.miniatureImg.'+$(this).attr('data-masterRef')).css('padding','0px')
- $(this).css('padding','5px')
-})
-})
+    $('.miniatureImg').click(function () {
+      $('#masterImg' + $(this).attr('data-masterRef')).attr('src', $(this).attr('src'))
+      $('.miniatureImg.' + $(this).attr('data-masterRef')).css('padding', '0px')
+      $(this).css('padding', '5px')
+    })
+  })
 </script>
 <% include footer %>
