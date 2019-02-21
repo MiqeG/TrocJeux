@@ -156,17 +156,17 @@
                       <div style="float:right;padding-right:15%;">
                       <ol class="ui list">
                         <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
-                        <li value="-"><a> <%= annonces[index].Titre %> </a></li>
-                        <li value="-">
+                        <li value=""><a> <%= annonces[index].Titre %> </a></li>
+                        <li value="">
                           <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
                           <%= annonces[index].Categories[index4]  %>
                           <% } %>
                         </li>
-                        <li value="-"> <%= annonces[index].NomUitilisateur  %></li>
+                        <li value=""> <%= annonces[index].NomUitilisateur  %></li>
 
-                        <li value="-"><%= annonces[index].Email  %></li>
-                        <li value="-"><%= annonces[index].Ville %></li>
-                        <li value="-"><%= annonces[index].CodePostal %></li>
+                        <li value=""><%= annonces[index].Email  %></li>
+                        <li value=""><%= annonces[index].Ville %></li>
+                        <li value=""><%= annonces[index].CodePostal %></li>
 
                       </ol>
                     </p>
