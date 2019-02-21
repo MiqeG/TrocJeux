@@ -12,7 +12,7 @@
       <i class="remove icon"></i>
       Non
     </div>
-    <div class="ui green ok inverted button formLoadingMembre">
+    <div class="ui green ok inverted button formLoadingMembre" id="Oui">
       <i class="checkmark icon"></i>
       Oui
     </div>
@@ -113,10 +113,11 @@
             <% let slideCounter=0 %>
         <%  for(let index = 0; index < annonces.length; index++) {   %>
          
-          <div class="ui items">
+          <div class="ui items" id="annonce<% index %>">
             <div class=" title">
               <i class="dropdown icon"></i>
-        <%= annonces[index].Titre  %>
+        <% let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+        <%= annonces[index].Titre +' '+annonces[index].DatePublication.toLocaleDateString('fr-FR', options) %> 
     
             </div>
             <div class="content">
@@ -135,7 +136,7 @@
                 
                               </div>
                             
-                           
+                            
                 
                 
                 
@@ -156,37 +157,25 @@
                              </div>
                           
                     </div>
-                   
-                    <div class="content" >
-                      <br>
-                      <span hidden><%= annonces[index]._id  %> </span>
-                      <table class="ui teal table ">
-                        <thead>
-                          <tr>  <th> <i></i> Informations et titre...</th></tr>
-                        
-                        </thead>
-                          <tr>
-                            <td style="text-align:center";>
-                     <a class="header"> <%= annonces[index].Titre %> </a>
-                     <br>
-                     <br>
-                   
-                            <div class="meta">
-                                <span> <%= annonces[index].NomUitilisateur  %> </span>
-                              </div>
-                              <div class="meta">
-                                  <span> <%= annonces[index].Email  %> </span>
-                                </div>
-                            <div class="meta">
-                              <span> <%= annonces[index].Ville %> </span>
-                              <span> <%= annonces[index].CodePostal %> </span>
-                            </div>
-                       </td>
-                      </tr>
-                    </table>
+                    <ol class="ui list">
+                      <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
+                      <li value="-"><a > <%= annonces[index].Titre %> </a></li>
+                      <li value="-">
+                        <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
+                           <%= annonces[index].Categories[index4]  %>
+                        <% } %>
+                      </li>
+                      <li value="-"> <%= annonces[index].NomUitilisateur  %></li>
                     
-                 
+                      <li value="-"><%= annonces[index].Email  %></li>
+                      <li value="-"><%= annonces[index].Ville %></li>
+                      <li value="-"><%= annonces[index].CodePostal %></li>     
+                            
+                                </ol>
 
+                    <div  >
+                      
+                  
                       <div class="extra">
 
 <div class="ui form espacemembre">
@@ -201,9 +190,9 @@
                       </div>
           
                       <div class="description">
-                        <div class="ui right  teal  button memberbuttons" style="margin:10px;" 
+                        <div class="ui right  teal  button memberbuttons" style="margin:10px; width:100px;" 
                           onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"></i>Modifier</div>
-                        <div class="ui right  red  button modalshow memberbuttons" style="margin:10px;" ><i class=" delete  icon"></i>Supprimer
+                        <div class="ui right  red  button modalshow memberbuttons" style="margin:10px; width:100px;" ><i class=" delete  icon"></i>Supprimer
                         </div>
                       </div>
                     </div>

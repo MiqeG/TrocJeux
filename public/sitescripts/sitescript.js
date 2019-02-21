@@ -114,6 +114,26 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
 
             })
             ;
+            $("#Oui").click(function(){
+     
+   
+   
+    $.ajax({
+        url: '/effacerannonce',
+        type : 'POST',
+        dataType : 'json',
+        success: function(data){
+         $('#'+data.annonceId).remove()
+         $('.ui.form.espacemembre').removeClass('loading');
+         $('.memberbuttons').show()
+        },
+        error: function(err){
+          alert("Erreur lors de l'effacement");
+          $('.ui.form.espacemembre').removeClass('loading');
+          $('.memberbuttons').show()
+        }
+      });
+});
     });
 
 }

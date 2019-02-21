@@ -506,6 +506,9 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
 }
 
 )
+app.post('/effacerannonce',isLoggedIn,(req,res)=>{
+  
+})
 app.get('*', function(req, res){
   res.status(404)
    // respond with html page
