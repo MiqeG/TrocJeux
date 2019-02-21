@@ -95,24 +95,24 @@ app.get('/searchoption', function (req, res) {
 
   }
 })
-app.get('/success',isLoggedIn, function (req, res) {
+app.get('/success', isLoggedIn, function (req, res) {
 
-  Annonce.find({ User_Id:req.session._id }, function (err, annonces) {
+  Annonce.find({ User_Id: req.session._id }, function (err, annonces) {
     if (err) throw err
     console.log(annonces)
     let searchoption = req.session.searchoption
     req.session.searchoption = undefined
-    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption,annonces:annonces })
+    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption, annonces: annonces })
 
 
   })
 })
 app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
-    let searchoption=req.session.searchoption
-  req.session.searchoption=undefined
+    let searchoption = req.session.searchoption
+    req.session.searchoption = undefined
     res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, uploadAmount: configFile.serverConfigurationVariables.uploadAmount, searchoption: searchoption })
-   
+
   }
   else {
     req.flash('error', 'Veuillez vous authentifiez avant de déposer un annonce!')
@@ -135,12 +135,12 @@ app.get('/searchApi', (req, res) => {
       searchWithoption = {
         $and: [{
           "$or": [
-           { "Titre": { "$regex": strRegExPatternUpper } }
+            { "Titre": { "$regex": strRegExPatternUpper } }
           ]
         }, { "Active": true }]
       }
       break;
-      case '2':
+    case '2':
 
       searchWithoption = {
         $and: [{
@@ -150,28 +150,28 @@ app.get('/searchApi', (req, res) => {
         }, { "Active": true }]
       }
       break
-    case '3': 
-    searchWithoption = {
-      $and: [{
-        "$or": [
-          { "CodePostal": req.query.q }, { "Ville": { "$regex": strRegExPatternUpper } }
-        ]
-      }, { "Active": true }]
-    }
-    break
+    case '3':
+      searchWithoption = {
+        $and: [{
+          "$or": [
+            { "CodePostal": req.query.q }, { "Ville": { "$regex": strRegExPatternUpper } }
+          ]
+        }, { "Active": true }]
+      }
+      break
     case '4':
-    searchWithoption = {
-      $and: [{
-        "$or": [
-          { "NomUitilisateur":req.query.q  }
-        ]
-      }, { "Active": true }]
-    }
-    break
+      searchWithoption = {
+        $and: [{
+          "$or": [
+            { "NomUitilisateur": req.query.q }
+          ]
+        }, { "Active": true }]
+      }
+      break
     default:
       break
   }
- 
+
   Annonce.find(searchWithoption, function (err, docs) {
     if (err) throw err
     console.log(docs.length)
@@ -196,7 +196,7 @@ app.get('/searchApi', (req, res) => {
 
       }
 
-      let pathToResults = "/searchresults/?q=" + req.query.q+'&t='+req.query.t
+      let pathToResults = "/searchresults/?q=" + req.query.q + '&t=' + req.query.t
       let action = { url: pathToResults, text: docs.length + " resultats cliquez pour parcourir" }
       // console.log(results)
 
@@ -254,9 +254,9 @@ app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
     console.log(req.user._id)
-   
-    req.session._id=req.user._id
-    
+
+    req.session._id = req.user._id
+
     res.redirect('/success?username=' + req.user.NomUitilisateur);
   });
 app.get('/logout', (req, res) => {
@@ -268,7 +268,7 @@ app.get('/logout', (req, res) => {
 app.get('/', csrfProtection, (req, res) => {
   let searchoption = req.session.searchoption
   req.session.searchoption = undefined
-  res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption:searchoption })
+  res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
 
 })
 app.get('/inscription', csrfProtection, (req, res) => {
@@ -336,11 +336,11 @@ app.get('/espacemembre', isLoggedIn,
       if (err) throw err
       let searchoption = req.session.searchoption
       req.session.searchoption = undefined
-      res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption,annonces:annonces })
-  
-  
+      res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption, annonces: annonces })
+
+
     })
-   
+
 
   });
 app.post('/deposer', isLoggedIn, (req, res) => {
@@ -512,47 +512,47 @@ app.post('/Inscription', parseForm, csrfProtection, (req, res) => {
 }
 
 )
-app.post('/effacerannonce',isLoggedIn,(req,res)=>{
+app.post('/effacerannonce', isLoggedIn, (req, res) => {
   let json = {}
   console.log(req.body._id)
-  Annonce.findOneAndDelete({_id:req.body._id},function(err){
-    if(err){ 
-     
-        console.log(err)
-      
-        req.flash('error',"Erreur lors de la suppression de l'annonce: "+req.body._id)
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(json));
-     
-   
-   
-    return
-  }
-  else{
-    json={annonceId:req.body._id}
-  }
-  console.log('deleting ad from user' + req.body.User_Id)
-  console.log('deleting ad from ad id' + req.body._id)
-  console.log( 'Path: '+"/UserImages/"+req.body.User_Id+'/'+req.body._id)
-  rimraf('C:/git/trocjeux/UserImages/'+req.body.User_Id+'/'+req.body._id, function (err) { 
-    console.log('deleted ad: '+req.body.User_Id)
-  req.flash('success','Annonce : '+req.body._id+' supprimée...!')
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(json));
-    return
-  })
-});
+  Annonce.findOneAndDelete({ _id: req.body._id }, function (err) {
+    if (err) {
+
+      console.log(err)
+
+      req.flash('error', "Erreur lors de la suppression de l'annonce: " + req.body._id)
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(json));
+
+
+
+      return
+    }
+    else {
+      json = { annonceId: req.body._id }
+    }
+    console.log('deleting ad from user' + req.body.User_Id)
+    console.log('deleting ad from ad id' + req.body._id)
+    console.log('Path: ' + "/UserImages/" + req.body.User_Id + '/' + req.body._id)
+    rimraf('C:/git/trocjeux/UserImages/' + req.body.User_Id + '/' + req.body._id, function (err) {
+      console.log('deleted ad: ' + req.body.User_Id)
+      req.flash('success', 'Annonce : ' + req.body._id + ' supprimée...!')
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(json));
+      return
+    })
+  });
 })
-app.get('*', function(req, res){
+app.get('*', function (req, res) {
   res.status(404)
-   // respond with html page
-   if (req.accepts('html')) {
-     let searchoption;
-     if(req.session.searchoption===undefined){
-       searchoption='1'
-     }
-     req.flash('error','404 Not found : '+req.url )
-   res.redirect('/')
+  // respond with html page
+  if (req.accepts('html')) {
+    let searchoption;
+    if (req.session.searchoption === undefined) {
+      searchoption = '1'
+    }
+    req.flash('error', '404 Not found : ' + req.url)
+    res.redirect('/')
     return;
   }
 

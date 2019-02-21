@@ -8,27 +8,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="assets/semantic/semantic.min.css">
   <link rel="stylesheet" type="text/css" media="screen" href="assets/sitecss/sitecss.css">
-  
+
   <script src="assets/jquery/jquery-3.3.1.min.js"></script>
   <script src="assets/semantic/semantic.min.js"></script>
   <script src="assets/sitescripts/sitescript.js"></script>
   <script src="assets/sitescripts/fileinput.js"></script>
+  
 
 </head>
 
 <body style="margin-bottom:5%">
+  <div class="ui basic modal ImageModal">
+    <div class="ui icon header">
+      <i class="images outline icon"></i>
+
+    </div>
+    <div class="content">
+      <p>
+        <div><img src="" alt="" id="ModalImage" class="ui  bordered  rounded  centered  image"
+            style="padding:2%;border-color:white"></div>
+      </p>
+
+    </div>
+    <div class="actions">
+
+      <div class="ui green ok inverted button">
+        <i class="checkmark icon"></i>
+
+      </div>
+    </div>
+  </div>
   <div class="ui sidebar vertical left menu overlay visible inverted"
     style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
-   
+
     <div class="item logo">
       <div class="paddingLogo">
-          <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" styled="width:content;" /> 
+        <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" styled="width:content;" />
 
       </div>
       <img class="frontlogo" onclick="window.location.href='/'" src="/assets/img/logo.png" style="display: none" />
     </div>
     <div class="ui accordion sidebarpage">
-        <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="/"></i><b>Troc'Jeux!</b></a>
+      <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="/"></i><b>Troc'Jeux!</b></a>
 
       <% if(auth==false){ %>
       <a class="item button" style="color:rgb(50, 240, 240)" href="/inscription"><i class="users icon"
@@ -36,12 +57,12 @@
       <a class="item Connexion" style="color:rgb(50, 240, 240)"><i class="sign-in alternate icon"
           style="color:white"></i><b>Se connecter!</b> </a> &nbsp
       <% }else if(auth==true){ %>
-      <a class="item tealColor" href="/espacemembre" style="color:white"><i class="user  icon"
-        ></i><b style="color:rgb(50, 240, 240)"> Bonjour &nbsp <%= user.Prenom %> !</b></a>
-      <a class="item tealColor" href="/deposer" style="color:white"><i class="tasks  icon"
-        ></i><b style="color:rgb(50, 240, 240)"> Déposer une annonce...</b></a>
-      <a class="item LogOut" style="color:white"><i class="sign-out alternate icon"
-       ></i><b  style="color:rgb(50, 240, 240)">Se &nbsp deconnecter!</b> </a> &nbsp
+      <a class="item tealColor" href="/espacemembre" style="color:white"><i class="user  icon"></i><b
+          style="color:rgb(50, 240, 240)"> Bonjour &nbsp <%= user.Prenom %> !</b></a>
+      <a class="item tealColor" href="/deposer" style="color:white"><i class="tasks  icon"></i><b
+          style="color:rgb(50, 240, 240)"> Déposer une annonce...</b></a>
+      <a class="item LogOut" style="color:white"><i class="sign-out alternate icon"></i><b
+          style="color:rgb(50, 240, 240)">Se &nbsp deconnecter!</b> </a> &nbsp
       <% } %>
 
       <div class="title item" style="color:white">
@@ -135,13 +156,13 @@
           <input id="headerSearchBar" class="prompt" type="text" placeholder="Rechercher...dans Titre">
           <i class="search icon"></i>
         </div>
-      
-        <div class="results" ></div>
+
+        <div class="results"></div>
       </div>
       <div class="ui dropdown item">
-         <i class="dropdown icon"></i>
-        <div  class="menu">
-      <%
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <%
       let s1='';
       let s2='';
       let s3='';
@@ -151,14 +172,16 @@
       else if(locals.searchoption=='3'){s3='active selected'}
       else if(locals.searchoption=='4'){s4='active selected'}
       %>
-        
-           
-          
-          
+
+
+
+
           <a href="/searchoption/?searchoption=1" class="item searchOption <%= s1 %>" data-option="1">Titre</a>
-          <a href="/searchoption/?searchoption=2"  class="item searchOption <%= s2 %>" data-option="2">Catégorie</a>
-          <a href="/searchoption/?searchoption=3"  class="item searchOption <%= s3 %>" data-option="3">Ville/Code-Postal</a>
-          <a href="/searchoption/?searchoption=4"  class="item searchOption <%= s4 %>"  data-option="4">Nom d'utilisateur</a>
+          <a href="/searchoption/?searchoption=2" class="item searchOption <%= s2 %>" data-option="2">Catégorie</a>
+          <a href="/searchoption/?searchoption=3" class="item searchOption <%= s3 %>"
+            data-option="3">Ville/Code-Postal</a>
+          <a href="/searchoption/?searchoption=4" class="item searchOption <%= s4 %>" data-option="4">Nom
+            d'utilisateur</a>
         </div>
       </div>
 
@@ -177,7 +200,7 @@
       <div class="column">
         <h2 class="ui image content">
           <div class="content">
-           <i class="thumbs up outline
+            <i class="thumbs up outline
            teal icon"></i> Connectez Vous...
           </div>
         </h2>
@@ -210,30 +233,30 @@
   </div>
   </div>
   <div class="ui main container  ">
-      <div class="ui basic modal" id="inscriptionmodal" >
-          <div class="ui icon header">
-           
-            <div class="cetered">
-                <% if(locals.flash && locals.flash.error){ %>
-                  <div class="ui     red basic cancel inverted" style= "color:rgb(219, 77, 77)" >
-                    <i class="meh outline icon"></i><span id="sessionFlash"><%= flash.error %></span> 
-                  </div>
-              
-                  <% } %>
-                  <% if(locals.flash && locals.flash.success){ %>
-                  <div class="ui  green ok inverted" style= "color:rgb(53, 207, 104)">
-                    <i class="smile outline icon"></i><span id="sessionFlash"><%= flash.success %></span>
-                  </div>
-              
-                  <% } %>
-            </div>
+    <div class="ui basic modal" id="inscriptionmodal">
+      <div class="ui icon header">
+
+        <div class="cetered">
+          <% if(locals.flash && locals.flash.error){ %>
+          <div class="ui     red basic cancel inverted" style="color:rgb(219, 77, 77)">
+            <i class="meh outline icon"></i><span id="sessionFlash"><%= flash.error %></span>
           </div>
-        
-          <div class="actions">
-           
-            <div class="ui green ok inverted button">
-              <i class="checkmark icon"></i>
-              Ok
-            </div>
+
+          <% } %>
+          <% if(locals.flash && locals.flash.success){ %>
+          <div class="ui  green ok inverted" style="color:rgb(53, 207, 104)">
+            <i class="smile outline icon"></i><span id="sessionFlash"><%= flash.success %></span>
           </div>
+
+          <% } %>
         </div>
+      </div>
+
+      <div class="actions">
+
+        <div class="ui green ok inverted button">
+          <i class="checkmark icon"></i>
+          Ok
+        </div>
+      </div>
+    </div>

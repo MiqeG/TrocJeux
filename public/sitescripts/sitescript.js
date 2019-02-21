@@ -1,18 +1,19 @@
 {
     $(document).ready(function () {
-        $(function() {
+        $(function () {
+           
             $('.openbtn').click();
         });
-      
-        $('.formloading').click(function(){
+
+        $('.formloading').click(function () {
             $('.ui.form').addClass('loading');
-          })
-          $('.formLoadingMembre').click(function(){
+        })
+        $('.formLoadingMembre').click(function () {
             $('.ui.form.espacemembre').addClass('loading');
             $('.memberbuttons').hide()
-          })
-          
-    
+        })
+
+
         if ($('#sessionFlash').length) {
 
             $('#inscriptionmodal').modal('show')
@@ -85,10 +86,10 @@
         })
         $('.modalshow').click(function () {
             $('.ui.basic.modal.annoncemodal').modal('show')
-          
+
         })
 
-$('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.active.selected').html())
+        $('#headerSearchBar').attr('placeholder', 'Recherche par ' + $('.item.searchOption.active.selected').html())
 
 
         $('.LogOut').click(function () {
@@ -97,7 +98,7 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
         $('.ui.search')
             .search({
                 apiSettings: {
-                    url: 'searchapi/?q={query}'+'&t='+$('.item.searchOption.active.selected').attr('data-option')
+                    url: 'searchapi/?q={query}' + '&t=' + $('.item.searchOption.active.selected').attr('data-option')
                 },
                 fields: {
                     results: 'results',
@@ -110,33 +111,38 @@ $('#headerSearchBar').attr('placeholder','Recherche par '+$('.item.searchOption.
 
                 },
                 minCharacters: 3,
-                maxResults:10,
+                maxResults: 10,
 
             })
             ;
-            $('.memberbuttons').click(function(){
-                $('#selection').attr('data-selection',$(this).attr('data-idannonce'))
-            })
-            $("#Oui").click(function(){
-     
-   
-   
-    $.ajax({
-        url: '/effacerannonce',
-        type : 'POST',
-        dataType : 'json',
-        data:{_id: $('#selection').attr('data-selection'),User_Id:$('#selection').attr('data-user')},
-        success: function(data){
-        window.location.href='/espacemembre'
-        },
-        error: function(err){
-          alert("Erreur lors de l'effacement");
-          console.log(err)
-          window.location.href='/espacemembre'
-          
-        }
-      });
-});
+        $('.memberbuttons').click(function () {
+            $('#selection').attr('data-selection', $(this).attr('data-idannonce'))
+        })
+        $('.ZoomImage').click(function () {
+            $('.ui.basic.modal.ImageModal').modal('show')
+            $('#ModalImage').attr('src', $(this).attr('src'))
+        })
+       
+        $("#Oui").click(function () {
+
+
+
+            $.ajax({
+                url: '/effacerannonce',
+                type: 'POST',
+                dataType: 'json',
+                data: { _id: $('#selection').attr('data-selection'), User_Id: $('#selection').attr('data-user') },
+                success: function (data) {
+                    window.location.href = '/espacemembre'
+                },
+                error: function (err) {
+                    alert("Erreur lors de l'effacement");
+                    console.log(err)
+                    window.location.href = '/espacemembre'
+
+                }
+            });
+        });
     });
 
 }

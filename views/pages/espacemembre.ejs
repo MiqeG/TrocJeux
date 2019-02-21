@@ -114,16 +114,20 @@
       <h3><i class="ui teal wpforms icon"></i>Vos annonces...</h3>
       <div class="ui   styled fluid  accordion" style="background-color:rgba(223, 215, 215,0.15);">
         <% if(annonces[0])  { %>
-          <div id="selection" data-selection="" data-user="<%= annonces[0].User_Id %>" hidden></div>
+        <div id="selection" data-selection="" data-user="<%= annonces[0].User_Id %>" hidden></div>
         <% let slideCounter=0 %>
         <%  for(let index = 0; index < annonces.length; index++) {   %>
 
         <div class="ui items" id="annonce<%= annonces[index]._id %>">
           <div class=" title">
             <i class="dropdown icon"></i>
-        <% let DateTimeVariable= new Date( annonces[index].DatePublication ) %>
-            <span class="hlink" > <%= annonces[index].Titre %></span>
-            <i class="ui calendar alternate teal icon"></i> <span style="color:teal;">  <%= DateTimeVariable.getDate() +' / '+DateTimeVariable.getMonth()+' / '+DateTimeVariable.getFullYear() %> <span>&nbsp<i class="ui clock teal icon"></i></span> <%= DateTimeVariable.getHours()+' : '+DateTimeVariable.getMinutes()+' : '+DateTimeVariable.getSeconds() %> </span>
+            <% let DateTimeVariable= new Date( annonces[index].DatePublication ) %>
+            <span class="hlink"> <%= annonces[index].Titre %></span>
+            <i class="ui calendar alternate teal icon"></i> <span style="color:teal;">
+              <%= DateTimeVariable.getDate() +' / '+DateTimeVariable.getMonth()+' / '+DateTimeVariable.getFullYear() %>
+              <span>&nbsp<i class="ui clock teal icon"></i></span>
+              <%= DateTimeVariable.getHours()+' : '+DateTimeVariable.getMinutes()+' : '+DateTimeVariable.getSeconds() %>
+            </span>
 
           </div>
           <div class="content">
@@ -131,114 +135,113 @@
 
               <div class="image" style="min-height:300px;">
 
-                <div class="slideshow-container" >
+                <div class="slideshow-container">
 
 
 
 
-                  <div class="content left">
+                  <div class="content left" style="overflow-y: scroll">
 
-                    <img id="masterImg<%= index  %>" class="ui tiny bordered rounded  left floated  image"
-                      src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[0] %> "
-                      style="height:115px ;width:115px ;margin:20px;">
-                      <div class="content ">
-                          <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
+
+                    <div class="content ">
+                      <% for(let index3 = 0; index3 < annonces[index].UserImages.length; index3++) { slideCounter++ 
                                     let paddingImg=''; if(index3==0){paddingImg='padding:5px;'} %>
-        
-                          <div style="margin:1%;"> <span id="<%= 'miniatureImg' + index + index3 %>"> <img data-masterRef="<%= index %>"
-                                src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> "
-                                class="ui mini rounded bordered center floated image miniatureImg <%= index %>"
-                                style=" <%= paddingImg %>"> </span></div>
-        
-        
-        
-                          <% } %>
-        
-        
-                        </div>
-        
+
+                      <div style="margin:1%;"> <span id="<%= 'miniatureImg' + index + index3 %>"> <img
+                            id="masterImg<%= index  %>" class="ui tiny bordered rounded  left floated  image ZoomImage"
+                            src=" <%= '/pregistered/' + annonces[index].User_Id+'/' + annonces[index]._id +'/'+ annonces[index].UserImages[index3] %> "
+                            onerror="this.src=imgError(this)" style="width:50px ;margin:5px;"> </span></div>
+
+
+
+                      <% } %>
+
+
+                    </div>
+
                     <p>
                       <div style="float:right;padding-right:15%;">
-                      <ol class="ui list">
-                        <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
-                       
-                        <li value=""><a class="ihlink "><i class="chess teal icon" style="size:100px"></i> <%= annonces[index].Titre %> </a></li>
-                        <br>
-                        <br>
-                        <li value="" ><i class="table teal icon"></i>
-                          <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
-                          <%= annonces[index].Categories[index4]  %>
-                          <% } %>
-                          
-                        </li>
-                        <br>
-                        <li value=""></li>
-                        <li value=""> <i class="user teal icon"></i> <%= annonces[index].NomUitilisateur  %></li>
+                        <ol class="ui list">
+                          <div hidden id="<%= annonces[index]._id  %>"><%= annonces[index]._id  %> </div>
 
-                        <li value=""> <i class="envelope open teal icon "></i> <%= annonces[index].Email  %></li>
-                        <li value=""> <i class="address card teal icon"></i> <%= annonces[index].Ville %></li>
-                        <li value=""> <i class="address card outline teal icon"></i> <%= annonces[index].CodePostal %></li>
+                          <li value=""><a class="ihlink "><i class="chess teal icon" style="size:100px"></i>
+                              <%= annonces[index].Titre %> </a></li>
+                          <br>
+                          <br>
+                          <li value=""><i class="table teal icon"></i>
+                            <% for(let index4 = 0; index4 < annonces[index].Categories.length; index4++) { %>
+                            <%= annonces[index].Categories[index4]  %>
+                            <% } %>
 
-                      </ol>
+                          </li>
+                          <br>
+                          <li value=""></li>
+                          <li value=""> <i class="user teal icon"></i> <%= annonces[index].NomUitilisateur  %></li>
+
+                          <li value=""> <i class="envelope open teal icon "></i> <%= annonces[index].Email  %></li>
+                          <li value=""> <i class="address card teal icon"></i> <%= annonces[index].Ville %></li>
+                          <li value=""> <i class="address card outline teal icon"></i> <%= annonces[index].CodePostal %>
+                          </li>
+
+                        </ol>
                     </p>
                   </div>
-                  </div>
+                </div>
 
+
+
+
+
+              </div>
+
+
+
+            </div>
+
+            <div>
+
+
+              <div class="extra">
+
+                <div class="ui form espacemembre">
+                  <div class="field">
+                    <label>Texte d'annonce</label>
+                    <textarea readonly="">       <%= annonces[index].Texte %></textarea>
+                  </div>
 
 
 
 
                 </div>
 
-
-               
-              </div>
-
-              <div>
-
-
-                <div class="extra">
-
-                  <div class="ui form espacemembre">
-                    <div class="field">
-                      <label>Texte d'annonce</label>
-                      <textarea readonly="">       <%= annonces[index].Texte %></textarea>
-                    </div>
-
-
-
-
-                  </div>
-
-                  <div class="description">
-                    <div class="ui right  teal  button memberbuttons" style="margin:10px; width:100px;"
-                      onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
-                        data-idannonce="<%= annonces[index]._id  %>"></i>Modifier</div>
-                    <div data-idannonce="<%= annonces[index]._id %>"
-                      class="ui right  red  button modalshow memberbuttons" style="margin:10px; width:100px;"><i
-                        class=" delete  icon"></i>Supprimer
-                    </div>
+                <div class="description">
+                  <div class="ui right  teal  button memberbuttons" style="margin:10px; width:100px;"
+                    onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
+                      data-idannonce="<%= annonces[index]._id  %>"></i>Modifier</div>
+                  <div data-idannonce="<%= annonces[index]._id %>" class="ui right  red  button modalshow memberbuttons"
+                    style="margin:10px; width:100px;"><i class=" delete  icon"></i>Supprimer
                   </div>
                 </div>
-
               </div>
+
             </div>
           </div>
-
-
-
-
-
-
-
-          <% } %>
-          <% } %>
-
-
         </div>
+
+
+
+
+
+
+
+        <% } %>
+        <% } %>
+
+
       </div>
     </div>
   </div>
+</div>
 
 
 

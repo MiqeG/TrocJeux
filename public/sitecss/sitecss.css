@@ -210,3 +210,12 @@ img {vertical-align: middle;}
     height:60%;
     padding:1%
   }
+.ZoomImage:hover{
+  cursor:pointer;
+  background: rgba(39,62,84,0.82);
+}
+
+.imgerror {
+   background-image: url('assets/img/image.png')
+}
+
