@@ -2,6 +2,8 @@
     $(document).ready(function () {
         $(function () {
            
+           
+            
             $('.openbtn').click();
         });
 
@@ -94,6 +96,9 @@
 
         $('.LogOut').click(function () {
             window.location.href = '/logout'
+        })
+        $('.result:first-child').on('error',function(){
+            $(this).unbind("error").attr("src", "assets/img/image.png");
         })
         $('.ui.search')
             .search({
