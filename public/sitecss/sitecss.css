@@ -98,7 +98,7 @@ img {vertical-align: middle;}
 }
 .miniatureImg:hover{
   cursor:pointer;
- 
+ padding:2%;
 }
 .miniatureImg{
   width:100px;
@@ -133,8 +133,8 @@ img {vertical-align: middle;}
   float:left;
 }
 .ImageTable{
-    height:315px;
-    min-height:315px;
+    max-height:content;
+   
 }
 .activet, .dot:hover {
   background-color: #717171;
@@ -218,4 +218,5 @@ img {vertical-align: middle;}
 .imgerror {
    background-image: url('assets/img/image.png')
 }
-
+.Zoomed {
+  max-height: 70vh; }

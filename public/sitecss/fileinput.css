@@ -45,8 +45,8 @@ body {
      border: 4px dashed #ffffff;
   }
   .dynamicImage{
-   width:150px;
-   
+  
+   max-height:70px;
   }
   .file-upload-input {
     position: absolute;

@@ -189,7 +189,7 @@ app.get('/searchApi', (req, res) => {
           price: docs[index].Categories,
           categorie: docs[index].Categories,
           image: '/pregistered/' + docs[index].User_Id + '/' + docs[index]._id + '/' + docs[index].UserImages[0],
-          url: '/annonces/?' + docs[index].User_Id + '?' + docs[index]._id
+          url: '/?a='+ docs[index]._id
 
         }
         results.push(result)
@@ -266,11 +266,24 @@ app.get('/logout', (req, res) => {
 })
 
 app.get('/', csrfProtection, (req, res) => {
-  let searchoption = req.session.searchoption
-  req.session.searchoption = undefined
-  res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+  if(req.query.a){
+    Annonce.findOne({ _id:req.query.a }, function (err, annonce) {
+      if (err) throw err
+    
+      let searchoption = req.session.searchoption
+    req.session.searchoption = undefined
+    res.render('pages/annonce', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption,annonce:annonce })
+  return
+    })
+  }else{
+    let searchoption = req.session.searchoption
+    req.session.searchoption = undefined
+    res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+  }
+ 
 
 })
+
 app.get('/inscription', csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
     res.redirect('/espacemembre')
@@ -281,13 +294,7 @@ app.get('/inscription', csrfProtection, (req, res) => {
   res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
 
 })
-/*app.get('/connexion', csrfProtection, (req, res) => {
 
-  res.query.Email
-  res.query.MotDePasse
-  res.render('pages/espacemembre', { csrfToken: req.csrfToken() })
-
-})*/
 app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   let arrayFound = ''
   if (req.query.Pays == '-' || req.query.Pays == '') { req.query.CodePostal = ''; req.query.Ville = '' }
