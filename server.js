@@ -129,7 +129,7 @@ app.get('/searchApi', (req, res) => {
 
   let strRegExPatternUpper = '(?i)' + req.query.q + '(?-i)'
   let searchWithoption
-  console.log(req.query)
+  
   switch (req.query.t) {
     case '1':
       searchWithoption = {

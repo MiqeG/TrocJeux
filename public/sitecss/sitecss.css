@@ -214,7 +214,7 @@ img {vertical-align: middle;}
     padding:1%
   }
 .ZoomImage:hover{
-  cursor:pointer;
+  cursor: zoom-in ;
   background: rgba(39,62,84,0.82);
 }
 

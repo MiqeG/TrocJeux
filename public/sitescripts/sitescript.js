@@ -2,7 +2,10 @@
     $(document).ready(function () {
         $(function () {
            
-           
+           $('.miniImage').mouseover(function(){
+            $(this).transition('jiggle')
+          ;
+           })
             
             $('.openbtn').click();
         });

@@ -1,6 +1,6 @@
 <% include header %>
 
-<div style="padding:1%">
+<div class="asd" style="padding:1%">
 
   <link rel="stylesheet" href="assets/sitecss/fileinput.css">
   <script src="/assets/formvalidation/imageformvalidation.js"></script>
@@ -12,7 +12,7 @@
 
 
 
-    <form class="ui form imageform  " style="margin-bottom: 10%;" action="/deposer" method="POST"
+    <form class="ui form imageform asd " style="margin-bottom: 10%;max-width:620px" action="/deposer" method="POST"
       enctype="multipart/form-data">
       <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
