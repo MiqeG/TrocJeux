@@ -2,6 +2,18 @@
     $(document).ready(function () {
         $(function () {
            
+            $('.formloading').hide()
+          
+            $('.searchCategorie')
+              .dropdown({
+                allowAdditions: false,
+                clearable: true,
+                maxSelections: 3,
+        
+        
+        
+              })
+
            $('.miniImage').mouseover(function(){
             $(this).transition('jiggle')
           ;
@@ -11,7 +23,12 @@
         });
 
         $('.formloading').click(function () {
-            $('.ui.form').addClass('loading');
+            if($('.ui.error.message').is(':visible')){
+                $('.ui.form').addClass('loading');
+               
+            }
+            else
+            $('.ui.form').removeClass('loading');
         })
         $('.formLoadingMembre').click(function () {
             $('.ui.form.espacemembre').addClass('loading');

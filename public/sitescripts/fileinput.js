@@ -1,7 +1,13 @@
 function readURL(input, length) {
+    if(input.files.length!=0){
+        $('.formloading')
+        .transition('jiggle')
+    }
     if (input.files && input.files[0]) {
         if (input.files.length > length) {
             alert('Maximum ' + length + ' images.')
+            $('.formloading')
+            .fadeOut()
             return
         }
 
@@ -16,7 +22,7 @@ function readURL(input, length) {
 
                 $('.file-upload-image' + '.' + index).attr('src', e.target.result);
 
-              
+
 
 
             };
@@ -26,23 +32,32 @@ function readURL(input, length) {
             $('.image-upload-wrap').hide();
             $('.file-upload-content').show();
 
-            reader.readAsDataURL(input.files[index])
-           
-        }
-        $('.file-upload-image').on('error',function(){
-           
-            removeUpload();
           
-        })  
+           
+
+            reader.readAsDataURL(input.files[index])
+
+        }
+       
+        $('.file-upload-image').on('error', function () {
+          
+            removeUpload();
+
+        })
     } else {
+       
         removeUpload();
     }
 }
 
 function removeUpload() {
+  
     $('.file-upload-input').replaceWith($('.file-upload-input').clone());
     $('.file-upload-content').hide();
     $('.image-upload-wrap').show();
+    $('.formloading')
+    .fadeOut()
+    
 }
 $('.image-upload-wrap').bind('dragover', function () {
     $('.image-upload-wrap').addClass('image-dropping');

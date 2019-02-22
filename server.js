@@ -99,7 +99,7 @@ app.get('/success', isLoggedIn, function (req, res) {
 
   Annonce.find({ User_Id: req.session._id }, function (err, annonces) {
     if (err) throw err
-    console.log(annonces)
+  
     let searchoption = req.session.searchoption
     req.session.searchoption = undefined
     res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption, annonces: annonces })

@@ -13,7 +13,7 @@
 
 
     <form class="ui form imageform asd " style="margin-bottom: 10%;max-width:620px" action="/deposer" method="POST"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" autocomplete="on">
       <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="two fields">
@@ -118,7 +118,7 @@
 
 
                             <div class="image-upload-wrap">
-                              <input class="file-upload-input" name="Categories" type='file'
+                              <input id="uploadInput" class="file-upload-input" name="Categories" type='file'
                                 onchange="readURL(this,<%= uploadAmount %>);" accept="image/*" multiple required />
                               <div class="drag-text">
 
@@ -128,8 +128,8 @@
                             <div class="file-upload-content">
                               <% for(let i=0;i<uploadAmount;i++){ %>
                               <img
-                                class="ui rounded  bordered left floated mini image file-upload-image  <%= i %> dynamicImage ZoomImage"
-                                src="#"  alt="" />
+                                class="ui rounded  bordered left floated mini image file-upload-image  <%= i %> dynamicImage ZoomImage miniImage"
+                                src="#"  alt="" style="width:40px;height:40px" />
 
 
                               <% } %>
@@ -175,22 +175,6 @@
 
 </div>
 
-<script>
-  $(document).ready(function () {
 
-
-    $('.searchCategorie')
-      .dropdown({
-        allowAdditions: false,
-        clearable: true,
-        maxSelections: 3,
-
-
-
-      })
-  })
-
-    ;
-  ;</script>
 
 <% include footer %>
