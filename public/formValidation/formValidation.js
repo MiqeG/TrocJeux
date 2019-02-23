@@ -189,8 +189,14 @@ $(document).ready(function () {
         console.log(result)
         $("#Ville").val(result.Ville);
         $("#CodePostal").val(result.CodePostal);
-
-
+        if(result.CodePostal!=undefined){
+          $('.formloading').show()
+        }
+      
+          else if(result.CodePostal==undefined||result.CodePostal==''){
+          
+            $('.formloading').hide()
+          }
       },
       error: function (err) {
 
@@ -199,10 +205,14 @@ $(document).ready(function () {
       }
     });
   }
+
   $("#CodePostal").change(function (event) {
+   
     ajaxGO('CodePostal')
   });
   $("#Ville").change(function (event) {
+
+ 
     ajaxGO('Ville')
   })
 });

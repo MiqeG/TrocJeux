@@ -1,3 +1,84 @@
 <% include header %>
-qsdqsdqsd
-<% include footer %>
+<div class="asd">
+    <div class="ui inverted  asd "
+        style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
+<div class=container>
+    <div style="margin:20px">
+     <i class="ui big red meh icon"></i> 404 Url:  <%= referrer %>  not found!
+    </div>
+    <img class="ui rounded  image AnimatedImage"  src="assets/img/error.gif" alt="">
+</div>
+<script>
+    function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+    let switcher=0;
+ setInterval(function notFound(){
+    
+    switcher= getRandomInt(8)
+   
+     switch (switcher) {
+        
+             case 0:
+             $('.AnimatedImage')
+  .transition('shake')
+;
+             break;
+             case 1:
+             $('.AnimatedImage')
+  .transition('flash')
+;
+             break;
+             case 2:
+             $('.AnimatedImage')
+  .transition('tada')
+;
+             break;
+             case 3:
+             $('.AnimatedImage')
+  .transition('jiggle')
+;
+             break;
+             case 4:
+             $('.AnimatedImage')
+  .transition('fly left')
+; $('.AnimatedImage')
+  .transition('fly right')
+;
+             break;
+             case 5:
+
+             break;
+             case 6:
+             $('.AnimatedImage')
+  .transition('swing left')
+;             $('.AnimatedImage')
+  .transition('swing right')
+;
+             break;
+             case 7:
+             $('.AnimatedImage')
+  .transition('swing up')
+;             $('.AnimatedImage')
+  .transition('swing down')
+;
+             break;
+             case 8:
+             $('.AnimatedImage')
+  .transition('browse')
+; $('.AnimatedImage')
+  .transition('browse right')
+;
+             break;
+           
+
+
+
+            
+         default:
+             break;
+     }
+ },3000);
+ 
+</script>
+    <% include footer %>

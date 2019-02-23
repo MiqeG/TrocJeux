@@ -59,14 +59,14 @@
                 <label for="MotDePasse"><i class="key icon teal"></i> Mot de passe</label>
                 <% if(locals.formdata && locals.formdata.MotDePasse ){ %>
                 <input name="MotDePasse" id="MotDePasse" type="password" value="<%= locals.formdata.MotDePasse %>"
-                    maxlength="40"></input>
+                    maxlength="40" autocomplete="off"></input>
                 <% }else{ %>
-                <input name="MotDePasse" id="MotDePasse" type="password" maxlength="40"></input>
+                <input name="MotDePasse" id="MotDePasse" type="password" maxlength="40" autocomplete="off"></input>
                 <% } %>
             </div>
             <div class="field">
                 <label for="MotDePasse"><i class="keyboard outline teal icon"></i> Verification mot de passe</label>
-                <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password" maxlength="40"></input>
+                <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password" maxlength="40" autocomplete="off"></input>
             </div>
         </div>
         <div class="two fields">
@@ -103,26 +103,26 @@
         </div>
         <div class="two fields">
             <div class="field unhide" hidden>
-                <label for="Ville"><i class="chess rook teal icon"></i> Ville</label>
+                <label  for="Ville"><i class="chess rook teal icon"></i> Ville</label>
                 <% if(locals.formdata &&locals.formdata.Ville && locals.flash.code!="villeIntrouvable" ){ %>
-                <input type="text" name="Ville" id="Ville" value="<%= locals.formdata.Ville %>"></input>
+                <input class="showsend" type="text" name="Ville" id="Ville" value="<%= locals.formdata.Ville %>"></input>
                 <% }else{ %>
-                <input type="text" name="Ville" id="Ville"></input>
+                <input class="showsend" type="text" name="Ville" id="Ville"></input>
                 <% } %>
             </div>
             <div class="field unhide" hidden>
                 <label for="CodePostal"><i class="address card outline teal icon"></i> Code Postal</label>
                 <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.code!="villeIntrouvable" ){ %>
-                <input name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>"
+                <input class="showsend" name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>"
                     maxlength="5"></input>
                 <% }else{ %>
-                <input name="CodePostal" id="CodePostal" maxlength="5"></input>
+                <input class="showsend" name="CodePostal" id="CodePostal" maxlength="5"></input>
                 <% } %>
             </div>
         </div>
 
-        <button type="submit" class="ui teal labeled submit icon button formloading"><i
-                class="icon edit"></i>Envoyer</button>
+        <button id="inscriptionSubmit" type="submit" class="ui teal labeled submit icon button formloading"><i
+                class="icon edit" hidden></i>Envoyer</button>
         <div class="ui error message"></div>
     </form>
 

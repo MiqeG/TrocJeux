@@ -1,8 +1,12 @@
 {
     $(document).ready(function () {
         $(function () {
-           
-            $('.formloading').hide()
+           if($('#Ville').val()!=''){
+               $('#inscriptionSubmit').fadeIn()
+           }else{
+            $('#inscriptionSubmit').hide()
+           }
+          $('#deposerform').hide()
           
             $('.searchCategorie')
               .dropdown({
@@ -13,18 +17,21 @@
         
         
               })
-
-           $('.miniImage').mouseover(function(){
+            
+           $('.miniImage').mouseenter(function(){
             $(this).transition('jiggle')
           ;
            })
-            
+           $('.button').mouseenter(function(){
+            $(this).transition('pulse')
+          ;
+           })
             $('.openbtn').click();
         });
 
         $('.formloading').click(function () {
             if($('.ui.error.message').is(':visible')){
-                $('.ui.form').addClass('loading');
+                $('.ui.form').removeClass('loading');
                
             }
             else
@@ -34,7 +41,11 @@
             $('.ui.form.espacemembre').addClass('loading');
             $('.memberbuttons').hide()
         })
-
+        $('#inscriptionSubmit').click(function(){
+            if($('.ui.error.message').is(':visible')){
+              $('.ui.form').removeClass('loading')
+            }
+          })
 
         if ($('#sessionFlash').length) {
 
@@ -118,7 +129,7 @@
             window.location.href = '/logout'
         })
         $('.result:first-child').on('error',function(){
-            $(this).unbind("error").attr("src", "assets/img/image.png");
+            $(this).unbind("error").attr("src", "assets/img/error.gif");
         })
         $('.ui.search')
             .search({

@@ -1,7 +1,7 @@
 
 function imgError(image) {
         image.onerror = "";
-        image.src = "assets/img/image.png";
+        image.src = "assets/img/error.gif";
         return image.src;
     }
  

@@ -330,7 +330,7 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
 
 })
 function isLoggedIn(req, res, next) {
-  console.log('here is Authenticated', req.isAuthenticated())
+ 
   if (req.isAuthenticated()) {
     return next();
   }
@@ -558,8 +558,8 @@ app.get('*', function (req, res) {
     if (req.session.searchoption === undefined) {
       searchoption = '1'
     }
-    req.flash('error', '404 Not found : ' + req.url)
-    res.redirect('/')
+console.log(req.get('referer'))
+    res.render('pages/404', {  auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption ,referrer : req.header('Referrer') })
     return;
   }
 
