@@ -1,6 +1,5 @@
-module.exports= 
-    function (User) {
-      User.findOne({
+module.exports= function(User,username,password,done){
+    User.findOne({
         Email: username
       }, function (err, user) {
         if (err) {
@@ -16,7 +15,8 @@ module.exports=
         }
         return done(null, user);
       });
-    }
-    module.exports = function(passport, LocalStrategy){
 
-    };
+}
+   
+     
+   
