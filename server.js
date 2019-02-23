@@ -15,47 +15,15 @@ var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
 const passport = require('passport');
 let IoOp = require('./securescripts/Io/copyformfiles.js')
+let routeHandler=require('./middlewares/routehandler')
 
-mongoose.connect('mongodb://localhost:27017/NewTest', { useNewUrlParser: true })
-var db = mongoose.connection;
+//MongoDB
 
-db.on('error', console.error.bind(console, 'connection error:'))
+let mongoConnection=require('./middlewares/mongoConnection',mongoose)
 
-var UserSchema = mongoose.Schema({
-  Type: { type: String, required: true },
-  NomUitilisateur: { type: String, required: true },
-  Nom: { type: String, required: true },
-  Prenom: { type: String, required: true },
-  Email: { type: String, required: true },
-  MotDePasse: { type: String, required: true },
-  Adresse: { type: String, required: true },
-  CodePostal: { type: Number, required: true },
-  Ville: { type: String, required: true },
-  Pays: { type: String, required: true },
-  DateInscription: { type: Date, default: Date.now, required: true },
-  Actif: { type: Boolean, required: true }
-
-
-}, { collection: 'Users' })
-var AnnonceSchema = mongoose.Schema({
-  Categories: { type: Array, required: true },
-  User_Id: { type: String, required: true },
-  NomUitilisateur: { type: String, required: true },
-  CodePostal: { type: String, required: true },
-  Email: { type: String, required: true },
-  Ville: { type: String, required: true },
-  DatePublication: { type: Date, default: Date.now, required: true },
-  Texte: { type: String, required: true },
-  Titre: { type: String, required: true },
-  UserImages: { type: Array, required: true },
-  Active: { type: Boolean, required: true }
-
-
-}, { collection: 'Annonces' })
-var User = mongoose.model('User', UserSchema, 'Users')
-var Annonce = mongoose.model('Annonce', AnnonceSchema, 'Annonces')
-db.once('open', function () { console.log("Connection to database NewTest Successful!") })
-
+mongoConnection(mongoose)
+var User = mongoose.model('User', require('./Schemas/UserSchema'), 'Users')
+var Annonce = mongoose.model('Annonce',require('./Schemas/AnnonceSchema'),'Annonces')
 let session = require('express-session')
 let SearchVille = require('./csvvilles/FRANCE/villes.json')
 let configFile = require('./config/server_config.json')
@@ -222,7 +190,7 @@ passport.serializeUser(function (user, cb) {
   cb(null, user.id);
 });
 
-passport.deserializeUser(function (id, cb) {
+passport.deserializeUser(function (id, cb,) {
   User.findById(id, function (err, user) {
     cb(err, user);
   });
@@ -265,24 +233,7 @@ app.get('/logout', (req, res) => {
   res.redirect('/')
 })
 
-app.get('/', csrfProtection, (req, res) => {
-  if(req.query.a){
-    Annonce.findOne({ _id:req.query.a }, function (err, annonce) {
-      if (err) throw err
-    
-      let searchoption = req.session.searchoption
-    req.session.searchoption = undefined
-    res.render('pages/annonce', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, ServerUrl:configFile.ServerUrl,categories: configFile.categories, searchoption: searchoption,annonce:annonce })
-  return
-    })
-  }else{
-    let searchoption = req.session.searchoption
-    req.session.searchoption = undefined
-    res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(),ServerUrl:configFile.ServerUrl ,user: req.user, categories: configFile.categories, searchoption: searchoption })
-  }
- 
-
-})
+app.get('/', csrfProtection,(req,res)=>{ routeHandler.indexRoute(req,res,configFile)})
 
 app.get('/inscription', csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
