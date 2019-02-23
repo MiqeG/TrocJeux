@@ -28,24 +28,22 @@
            })
             $('.openbtn').click();
         });
-
-        $('.formloading').click(function () {
-            if($('.ui.error.message').is(':visible')){
-                $('.ui.form').removeClass('loading');
-               
-            }
-            else
+        $(".ui.error.message").bind("DOMNodeInserted",function(){
             $('.ui.form').removeClass('loading');
+        });
+        $(".ui.error.message").bind("DOMNodeRemoved",function(){
+            $('.ui.form').addClass('loading');
+        });
+       
+        $('.formloading').click(function () {
+        
+            $('.ui.form').addClass('loading');
         })
         $('.formLoadingMembre').click(function () {
             $('.ui.form.espacemembre').addClass('loading');
             $('.memberbuttons').hide()
         })
-        $('#inscriptionSubmit').click(function(){
-            if($('.ui.error.message').is(':visible')){
-              $('.ui.form').removeClass('loading')
-            }
-          })
+      
 
         if ($('#sessionFlash').length) {
 

@@ -1,13 +1,16 @@
 <% include header %>
+
+
 <div class="asd">
     <div class="ui inverted  asd "
         style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
 <div class=container>
     <div style="margin:20px">
-     <i class="ui big red meh icon"></i> 404 Url:  <%= referrer %>  not found!
+     <i class="ui big red meh icon"></i>   <%= referrer %> 
     </div>
-    <img class="ui rounded  image AnimatedImage"  src="assets/img/error.gif" alt="">
+    <img class="ui rounded  image AnimatedImage"  src="<% ServerUrl %>/assets/img/error.gif" alt="">
 </div>
+<% include footer %>
 <script>
     function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -81,4 +84,4 @@
  },3000);
  
 </script>
-    <% include footer %>
+

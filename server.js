@@ -102,7 +102,7 @@ app.get('/success', isLoggedIn, function (req, res) {
   
     let searchoption = req.session.searchoption
     req.session.searchoption = undefined
-    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption, annonces: annonces })
+    res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user,ServerUrl:configFile.ServerUrl, categories: configFile.categories, searchoption: searchoption, annonces: annonces })
 
 
   })
@@ -111,11 +111,11 @@ app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
   if (req.isAuthenticated() == true) {
     let searchoption = req.session.searchoption
     req.session.searchoption = undefined
-    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, uploadAmount: configFile.serverConfigurationVariables.uploadAmount, searchoption: searchoption })
+    res.render('pages/deposer', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, ServerUrl:configFile.ServerUrl,categories: configFile.categories, uploadAmount: configFile.serverConfigurationVariables.uploadAmount, searchoption: searchoption })
 
   }
   else {
-    req.flash('error', 'Veuillez vous authentifiez avant de déposer un annonce!')
+    req.flash('error', 'Veuillez vous authentifier avant de déposer un annonce!')
     res.redirect('/')
     return
   }
@@ -272,13 +272,13 @@ app.get('/', csrfProtection, (req, res) => {
     
       let searchoption = req.session.searchoption
     req.session.searchoption = undefined
-    res.render('pages/annonce', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption,annonce:annonce })
+    res.render('pages/annonce', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, ServerUrl:configFile.ServerUrl,categories: configFile.categories, searchoption: searchoption,annonce:annonce })
   return
     })
   }else{
     let searchoption = req.session.searchoption
     req.session.searchoption = undefined
-    res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+    res.render('pages/index', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(),ServerUrl:configFile.ServerUrl ,user: req.user, categories: configFile.categories, searchoption: searchoption })
   }
  
 
@@ -291,7 +291,7 @@ app.get('/inscription', csrfProtection, (req, res) => {
   }
   let searchoption = req.session.searchoption
   req.session.searchoption = undefined
-  res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption })
+  res.render('pages/inscription', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, ServerUrl:configFile.ServerUrl,categories: configFile.categories, searchoption: searchoption })
 
 })
 
@@ -343,7 +343,7 @@ app.get('/espacemembre', isLoggedIn,
       if (err) throw err
       let searchoption = req.session.searchoption
       req.session.searchoption = undefined
-      res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption, annonces: annonces })
+      res.render('pages/espacemembre', { auth: req.isAuthenticated(), user: req.user,ServerUrl:configFile.ServerUrl, categories: configFile.categories, searchoption: searchoption, annonces: annonces })
 
 
     })
@@ -550,26 +550,27 @@ app.post('/effacerannonce', isLoggedIn, (req, res) => {
     })
   });
 })
-app.get('*', function (req, res) {
-  res.status(404)
-  // respond with html page
-  if (req.accepts('html')) {
+app.use(function(req, res, next) {
+
     let searchoption;
     if (req.session.searchoption === undefined) {
       searchoption = '1'
     }
-console.log(req.get('referer'))
-    res.render('pages/404', {  auth: req.isAuthenticated(), user: req.user, categories: configFile.categories, searchoption: searchoption ,referrer : req.header('Referrer') })
-    return;
-  }
+   
+console.log(req.url)
+if(res.status(404)){
 
-  // respond with json
-  if (req.accepts('json')) {
-    res.send({ error: 'Not found' });
-    return;
-  }
+  res.status(404).render('pages/error', {  auth: req.isAuthenticated(), user: req.user,ServerUrl:configFile.ServerUrl ,categories: configFile.categories, searchoption: searchoption ,referrer : '404 Url : '+req.url+' not found' })
 
-  // default to plain-text. send()
-  res.type('txt').send('Not found');
+}
+else if(req.status(500)){
+  res.status(500).render('pages/error', {  auth: req.isAuthenticated(), user: req.user,ServerUrl:configFile.ServerUrl, categories: configFile.categories, searchoption: searchoption ,referrer : 'Internal server error' })
+}
+
+ 
+  
+
+ 
 });
+
 app.listen(configFile.serverConfigurationVariables.port)

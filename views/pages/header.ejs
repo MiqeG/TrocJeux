@@ -6,15 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Troc'Jeux</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" media="screen" href="assets/semantic/semantic.min.css">
-  <link rel="stylesheet" type="text/css" media="screen" href="assets/sitecss/sitecss.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="<% ServerUrl %>/assets/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="<% ServerUrl %>/assets/sitecss/sitecss.css">
 
 
-  <script src="assets/jquery/jquery-3.3.1.min.js"></script>
+  <script src="<% ServerUrl %>/assets/jquery/jquery-3.3.1.min.js"></script>
 
-  <script src="assets/semantic/semantic.min.js"></script>
-  <script src="assets/sitescripts/sitescript.js"></script>
-  <script src="assets/sitescripts/fileinput.js"></script>
+  <script src="<% ServerUrl %>/assets/semantic/semantic.min.js"></script>
+  <script src="<% ServerUrl %>/assets/sitescripts/sitescript.js"></script>
+  <script src="<% ServerUrl %>/assets/sitescripts/fileinput.js"></script>
 
 
 </head>
@@ -48,20 +48,20 @@
         <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="/assets/img/logo.png" styled="width:content;" />
 
       </div>
-      <img class="frontlogo"  src="/assets/img/logo.png" style="display: none" />
+      <img class="frontlogo"  src="<% ServerUrl %>/assets/img/logo.png" style="display: none" />
     </div>
     <div class="ui accordion sidebarpage">
-      <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="/"></i><b>Troc'Jeux!</b></a>
+      <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="<% ServerUrl %>"></i><b>Troc'Jeux!</b></a>
 
       <% if(auth==false){ %>
-      <a class="item " style="color:rgb(50, 240, 240)" href="/inscription"><i class="users icon"
+      <a class="item " style="color:rgb(50, 240, 240)" href="<% ServerUrl %>/inscription"><i class="users icon"
           style="color:white"></i><b>Rejoignez nous!</b></a>
       <a class="item Connexion" style="color:rgb(50, 240, 240)"><i class="sign-in alternate icon"
           style="color:white"></i><b>Se connecter!</b> </a> &nbsp
       <% }else if(auth==true){ %>
-      <a class="item tealColor" href="/espacemembre" style="color:white"><i class="user  icon"></i><b
+      <a class="item tealColor" href="<% ServerUrl %>/espacemembre" style="color:white"><i class="user  icon"></i><b
           style="color:rgb(50, 240, 240)"> Bonjour &nbsp <%= user.Prenom %> !</b></a>
-      <a class="item tealColor" href="/deposer" style="color:white"><i class="tasks  icon"></i><b
+      <a class="item tealColor" href="<% ServerUrl %>/deposer" style="color:white"><i class="tasks  icon"></i><b
           style="color:rgb(50, 240, 240)"> Déposer une annonce...</b></a>
       <a class="item LogOut" style="color:white"><i class="sign-out alternate icon"></i><b
           style="color:rgb(50, 240, 240)">Se &nbsp deconnecter!</b> </a> &nbsp
@@ -108,11 +108,11 @@
 
         <div class="ui divider"></div>
         <% if(auth==false){ %>
-        <a class="item " href="/inscription"><i class="users teal  icon"></i><b>Rejoignez nous!</b></a>
+        <a class="item " href="<% ServerUrl %>/inscription"><i class="users teal  icon"></i><b>Rejoignez nous!</b></a>
         <a class="item Connexion"><i class="sign-in alternate teal icon"></i><b>Se connecter!</b> </a> &nbsp
         <% }else if(auth==true){ %>
-        <a class="item " href="/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %> !</b></a>
-        <a class="item " href="/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
+        <a class="item " href="<% ServerUrl %>/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %> !</b></a>
+        <a class="item " href="<% ServerUrl %>/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
         <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se deconnecter!</b> </a> &nbsp
         <% } %>
       </div>
@@ -178,11 +178,11 @@
 
 
 
-          <a href="/searchoption/?searchoption=1" class="item searchOption <%= s1 %>" data-option="1">Titre</a>
-          <a href="/searchoption/?searchoption=2" class="item searchOption <%= s2 %>" data-option="2">Catégorie</a>
-          <a href="/searchoption/?searchoption=3" class="item searchOption <%= s3 %>"
+          <a href="<% ServerUrl %>/searchoption/?searchoption=1" class="item searchOption <%= s1 %>" data-option="1">Titre</a>
+          <a href="<% ServerUrl %>/searchoption/?searchoption=2" class="item searchOption <%= s2 %>" data-option="2">Catégorie</a>
+          <a href="<% ServerUrl %>/searchoption/?searchoption=3" class="item searchOption <%= s3 %>"
             data-option="3">Ville/Code-Postal</a>
-          <a href="/searchoption/?searchoption=4" class="item searchOption <%= s4 %>" data-option="4">Nom
+          <a href="<% ServerUrl %>/searchoption/?searchoption=4" class="item searchOption <%= s4 %>" data-option="4">Nom
             d'utilisateur</a>
         </div>
       </div>
@@ -228,7 +228,7 @@
         </form>
 
         <div class="ui message">
-          S'Inscrire? <a style="color:teal" href="/inscription">Inscription</a>
+          S'Inscrire? <a style="color:teal" href="<% ServerUrl %>/inscription">Inscription</a>
         </div>
       </div>
     </div>

@@ -7,7 +7,8 @@
         "maxFieldSize:":20,
         "maxFields":50
     },
-    "session": {
+    "ServerUrl":"http://theroxxors.ml",
+        "session": {
         "cookieKey": "trocjeuxclef"
     },
     "categories": [
