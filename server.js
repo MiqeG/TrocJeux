@@ -188,23 +188,43 @@ app.use(require('./middlewares/flash'))
 ///////////////////////////////////////
 //Routes
 ///////////////////////////////////////
+//parse password retrieval form
+app.post('/send',  (req, res) =>{
+  
+  User.findOne({ Email: req.body.Email }, function (err,user) {
+    if (err) return
+    else {
+      let link = 'http://theroxxors.ml'
+      const output = `
+      <p>Vous avez demandé a réinitialiser votre mot de passe</p>
+      <h3>Cliquez sur ce lien pour réinitialiser votre mot de passe</h3>
+      <ul>  
+        <a href="${link}">Name: ${link}</a>
+      
+      </ul>
+     `;
 
-app.get('/send', function (req, res) {
-  var mailOptions = {
-    from: 'trocjeux@gmail.com',
-    to: 'mggkkpp@gmail.com',
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
-  };
+      let mailOptions = {
+        from: 'trocjeux@gmail.com', // sender address
+        to: user.Email, // list of receivers
+        subject: 'Réinitialisation mot de passe', // Subject line
+        text: "Troc'Jeux", // plain text body
+        html: output // html body
+      };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
     }
-  });
+  })
+  req.flash('success','un email va vous être renvoyé prochainement')
+res.render('/')
 })
+
 
 //favicon icon
 app.get('/favicon.ico', function (req, res) {
@@ -285,6 +305,7 @@ app.get('/espacemembre', isLoggedIn, function (req, res) {
 
 
 });
+
 //parse incoming ad post
 app.post('/deposer', isLoggedIn, (req, res) => {
   deposer(req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp)
