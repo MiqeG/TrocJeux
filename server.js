@@ -1,7 +1,7 @@
 
 /*
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-            TrocJeux
+           TROC'JEUX
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 */
@@ -25,21 +25,30 @@ var parseForm = express.urlencoded({ extended: true })
 const passport = require('passport');
 let session = require('express-session')
 
-//City json file
-
-let SearchVille = require('./csvvilles/FRANCE/villes.json')
-
 //Configuration file
 
 let configFile = require('./config/server_config.json')
 
-//Create temp folder if it doesnt exist
 
-mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
-  if (err) throw err
-  console.log('Temp folder empty!')
-});
+//http server to send to https in case someone requests http instead of https
 
+const clearserver = http.createServer(function (req, res) {
+
+  res.writeHead(302, {
+    'Location': configFile.ServerUrl + req.url
+  });
+  res.end(); 
+}).listen(configFile.serverConfigurationVariables.clearport) 
+
+//certificates
+
+const privateKey = fs2.readFileSync(configFile.serverConfigurationVariables.keyPath, 'utf8');
+const certificate = fs2.readFileSync(configFile.serverConfigurationVariables.certPath, 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+const server = require('https').createServer(credentials, app);
+//json file of french cities
+
+let SearchVille = require('./csvvilles/FRANCE/villes.json')
 
 // I/o operations
 
@@ -62,6 +71,37 @@ let errorNotFound = require('./routes/errornotfound')
 let searchApi = require('./routes/searchapi')
 let successValidation = require('./routes/successvalidation')
 
+//Empty temp folder on startup
+
+mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
+  if (err) throw err
+  console.log('Temp folder empty!')
+});
+///////////////////////////////////////
+//Nodemailer in order to send messages to users
+///////////////////////////////////////
+
+//use self signed certificate 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'trocjeux@gmail.com',
+    pass: 'Peon8216'
+  }
+});
+
+var mailOptions = {
+  from: 'trocjeux@gmail.com',
+  to: 'mggkkpp@gmail.com',
+  subject: 'Sending Email using Node.js',
+  text: 'That was easy!'
+};
+
 
 ///////////////////////////////////////
 //MongoDB
@@ -73,13 +113,11 @@ mongoConnection(mongoose)
 var User = mongoose.model('User', require('./Schemas/UserSchema'), 'Users')
 var Annonce = mongoose.model('Annonce', require('./Schemas/AnnonceSchema'), 'Annonces')
 
-
-//App
-
+///////////////////////////////////////
 //View engine
+///////////////////////////////////////
 
 app.set('view engine', 'ejs')
-
 
 ///////////////////////////////////////
 //Static folders
@@ -151,6 +189,22 @@ app.use(require('./middlewares/flash'))
 //Routes
 ///////////////////////////////////////
 
+app.get('/send', function (req, res) {
+  var mailOptions = {
+    from: 'trocjeux@gmail.com',
+    to: 'mggkkpp@gmail.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+})
 
 //favicon icon
 app.get('/favicon.ico', function (req, res) {
@@ -256,14 +310,13 @@ app.use(function (req, res, next) {
 
 //listen on port specified in config file
 
-app.listen(configFile.serverConfigurationVariables.port)
-
-
+server.listen(configFile.serverConfigurationVariables.port, function () {
+  console.log('server started')
+})
 
 ///////////////////////////////////////
 //Functions
 ///////////////////////////////////////
-
 
 // function in case session searchoption does not exist
 

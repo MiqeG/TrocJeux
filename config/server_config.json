@@ -1,15 +1,20 @@
 {
     "serverConfigurationVariables": {
-        "port": 80,
+        "port": 443,
+        "clearport":80,
         "maxFile:": 100,
-        "userImageFolder":"C:/git/TrocJeux/UserImages",
-        "uploadAmount":10,
-        "maxFieldSize:":20,
-        "maxFields":50
+        "userImageFolder": "C:/git/TrocJeux/UserImages",
+        "uploadAmount": 10,
+        "maxFieldSize:": 20,
+        "maxFields": 50,
+        "keyPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-key.pem",
+        "certPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-crt.pem"
+       
+        
     },
-    "ServerUrl":"http://theroxxors.ml",
-        "session": {
-        "cookieKey": "trocjeuxclef"
+    "ServerUrl": "https://theroxxors.ml",
+    "session": {
+        "cookieKey": "@@53d7bd1b0b420ff92556a188d9da6ef259d0650dcd7a58e27805d18090d8dda8@@"
     },
     "categories": [
         "Plateau",
