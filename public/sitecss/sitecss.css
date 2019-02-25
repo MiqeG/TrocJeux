@@ -165,7 +165,10 @@ img {vertical-align: middle;}
 @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
 }
-
+.linker:hover{
+  cursor:pointer;
+  color:rgb(46, 169, 173);
+}
 
 .main.container{
     margin-top: 7em;

@@ -110,7 +110,7 @@
                 }
             });
 
-
+            $('.ui.modal.reinitialise').modal({allowMultiple:true})
         $('.Connexion').click(function () {
             $('#connexionmodal').modal('show')
 
@@ -119,9 +119,19 @@
             $('.ui.basic.modal.annoncemodal').modal('show')
 
         })
+        $('#retourconnexion').click(function(){
+         
+            $('#connexionmodal').modal('show')
 
+        })
+            $('.reinitialiser').click(function(){
+                $('.ui.modal.reinitialise')
+      .modal('show')
+        })
+      
         $('#headerSearchBar').attr('placeholder', 'Recherche par ' + $('.item.searchOption.active.selected').html())
 
+        
 
         $('.LogOut').click(function () {
             window.location.href = '/logout'

@@ -8,7 +8,8 @@
         "maxFieldSize:": 20,
         "maxFields": 50,
         "keyPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-key.pem",
-        "certPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-crt.pem"
+        "certPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-crt.pem",
+        "serverKey":"trocjeuxclef"
        
         
     },

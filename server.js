@@ -24,7 +24,7 @@ var csrfProtection = csrf({ cookie: true })
 var parseForm = express.urlencoded({ extended: true })
 const passport = require('passport');
 let session = require('express-session')
-
+const CryptoJS = require("crypto-js");
 //Configuration file
 
 let configFile = require('./config/server_config.json')
@@ -95,12 +95,7 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-var mailOptions = {
-  from: 'trocjeux@gmail.com',
-  to: 'mggkkpp@gmail.com',
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
-};
+
 
 
 ///////////////////////////////////////
@@ -189,43 +184,107 @@ app.use(require('./middlewares/flash'))
 //Routes
 ///////////////////////////////////////
 //parse password retrieval form
-app.post('/send',  (req, res) =>{
-  
-  User.findOne({ Email: req.body.Email }, function (err,user) {
+app.post('/reinitialiser',  (req, res) =>{
+
+  User.findOne({ Email: req.body.userEmail }, function (err,user) {
+    
     if (err) return
     else {
-      let link = 'http://theroxxors.ml'
-      const output = `
-      <p>Vous avez demandé a réinitialiser votre mot de passe</p>
-      <h3>Cliquez sur ce lien pour réinitialiser votre mot de passe</h3>
-      <ul>  
-        <a href="${link}">Name: ${link}</a>
-      
-      </ul>
-     `;
-
-      let mailOptions = {
-        from: 'trocjeux@gmail.com', // sender address
-        to: user.Email, // list of receivers
-        subject: 'Réinitialisation mot de passe', // Subject line
-        text: "Troc'Jeux", // plain text body
-        html: output // html body
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
+      if(user&&user._id){
+       
+       
+        let ciphertext = CryptoJS.AES.encrypt(user._id.toString(),configFile.serverConfigurationVariables.serverKey).toString();
+        console.log(ciphertext)
+        let array=ciphertext.split('')
+        for (let i = 0; i < array.length; i++) {
+         if(array[i]=='+'){  array[i]=    '⺈'      }
+         else if(array[i]=='/'){  array[i]=    '⺋'      }
+         else if(array[i]=='='){  array[i]=    '⺜'      }
+          
         }
-      });
+        
+        // Decrypt
+    
+         let deplaced=array.join('');
+        console.log(deplaced);
+       
+              
+        let link = 'https://theroxxors.ml/secureinitilisation?s='+deplaced
+        const output = `
+        <p>Vous avez demandé une réinitialisation de votre mot de passe</p>
+        <h3></h3>
+        <ul>  
+        <li>
+        <a href="${link}">Cliquez sur ce lien pour procéder a la réinitialisation</a>
+        </li>
+        </ul>
+       `;
+  
+        let mailOptions = {
+          from: 'trocjeux@gmail.com', // sender address
+          to: user.Email, // list of receivers
+          subject: 'Réinitialisation mot de passe', // Subject line
+          text: "Troc'Jeux", // plain text body
+          html: output // html body
+        };
+  
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      }
+   
     }
   })
-  req.flash('success','un email va vous être renvoyé prochainement')
-res.render('/')
+
+  req.flash('success','un email va vous être envoyé prochainement...')
+res.redirect('/')
 })
 
+// reset user password
+app.get('/secureinitilisation',function(req,res){
+  console.log(req.query.s)
 
+  var dereplaced= req.query.s
+  let array2=dereplaced.split('')
+  for (let i = 0; i < array2.length; i++) {
+    if(array2[i]=='⺈'){  array2[i]=    '+'      }
+    else if(array2[i]=='⺋'){  array2[i]=    '/'      }
+    else if(array2[i]=='⺜'){  array2[i]=    '='      }
+     
+   }
+
+   let rereplaced=array2.join('');
+  console.log(rereplaced)
+        try {
+          var bytes  = CryptoJS.AES.decrypt(rereplaced, configFile.serverConfigurationVariables.serverKey);
+          var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+          console.log(plaintext)
+          User.findOne({_id:plaintext},function(err,user){
+           if(err){
+            req.flash('error','Une erreur est survenue!')
+            res.redirect('/')
+            return
+           }
+           else if(user){
+              res.render('pages/secureform')
+              return
+            }
+           else{
+           
+           }
+  
+          })
+        } catch (error) {
+          console.log('bad link or crypto problem')
+          req.flash('error','Une erreur est survenue!')
+          res.redirect('/')
+        }
+
+    })
 //favicon icon
 app.get('/favicon.ico', function (req, res) {
 
@@ -351,4 +410,22 @@ function getSearchOption(req) {
     searchoption = req.session.searchoption
     return searchoption
   }
+}
+
+//encryption
+
+function aes_encrypt(password, content) {
+  
+ let ciphertext= CryptoJS.AES.encrypt(content, password).toString();
+ // ciphertext.toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
+ console.log(ciphertext)
+  return ciphertext
+}
+
+function aes_decrypt(password, encrypted) {
+  console.log(encrypted)
+  encrypted.toString().replace('xMl3Jk', '+' ).replace('Por21Ld', '/').replace('Ml32', '=');
+let decrypted=CryptoJS.AES.decrypt(encrypted, password).toString(CryptoJS.enc.Utf8);
+
+  return decrypted
 }

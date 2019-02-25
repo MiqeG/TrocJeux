@@ -15,11 +15,54 @@
   <script src="<% ServerUrl %>/assets/semantic/semantic.min.js"></script>
   <script src="<% ServerUrl %>/assets/sitescripts/sitescript.js"></script>
   <script src="<% ServerUrl %>/assets/sitescripts/fileinput.js"></script>
-
+  <script src="<% ServerUrl %>/assets/sitescripts/fileinput.js"></script>
+  <script src="<% ServerUrl %>/assets/formvalidation/rvalidation.js"></script>
 
 </head>
 
 <body style="margin-bottom:5%">
+  <div class="ui modal reinitialise" style="background-color:rgb(224, 215, 215)">
+
+    <i class="close icon"></i>
+    <div class="header">
+      <i class="key teal icon"></i> Reinitilisation du mot de passe
+    </div>
+    <div class="image content">
+      <div class="ui medium image">
+        <img src="assets/img/logoinverted.png">
+      </div>
+      <form class="ui form rvalidation" action="/reinitialiser" method="POST">
+        <div class="description">
+          <div class="ui header"><i class="mail teal icon "></i> Saisissez votre E-mail</div>
+          <div class="field">
+              <p>Un E-mail de réinitialisaiton va vous être envoyé dans quelques minutes...</p>
+            <input name="userEmail" type="text" placeholder="Email">
+          </div>
+          <div class="field">
+           
+          </div>
+        </div>
+        <div class="field">
+            <div class="ui error message"></div>
+        </div>
+  
+    </div>
+    
+    <div class="actions">
+      <div class="ui black deny button " id="retourconnexion">
+        Retour
+      </div>
+      <button type="submit" class="ui  right labeled teal icon button">
+        <i class="checkmark icon"></i>
+        Envoyer!
+
+
+      </button>
+
+      </form>
+    </div>
+
+  </div>
   <div class="ui basic modal ImageModal">
     <div class="ui icon header">
       <i class="images outline icon"></i>
@@ -45,13 +88,15 @@
 
     <div class="item logo">
       <div class="paddingLogo">
-        <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="/assets/img/logo.png" styled="width:content;" />
+        <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="/assets/img/logo.png"
+          styled="width:content;" />
 
       </div>
-      <img class="frontlogo"  src="<% ServerUrl %>/assets/img/logo.png" style="display: none" />
+      <img class="frontlogo" src="<% ServerUrl %>/assets/img/logo.png" style="display: none" />
     </div>
     <div class="ui accordion sidebarpage">
-      <a class="item button" style="color:rgb(50, 240, 240);text-align: center;" href="<% ServerUrl %>"></i><b>Troc'Jeux!</b></a>
+      <a class="item button" style="color:rgb(50, 240, 240);text-align: center;"
+        href="<% ServerUrl %>"></i><b>Troc'Jeux!</b></a>
 
       <% if(auth==false){ %>
       <a class="item " style="color:rgb(50, 240, 240)" href="<% ServerUrl %>/inscription"><i class="users icon"
@@ -111,7 +156,8 @@
         <a class="item " href="<% ServerUrl %>/inscription"><i class="users teal  icon"></i><b>Rejoignez nous!</b></a>
         <a class="item Connexion"><i class="sign-in alternate teal icon"></i><b>Se connecter!</b> </a> &nbsp
         <% }else if(auth==true){ %>
-        <a class="item " href="<% ServerUrl %>/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %> !</b></a>
+        <a class="item " href="<% ServerUrl %>/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %>
+            !</b></a>
         <a class="item " href="<% ServerUrl %>/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
         <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se deconnecter!</b> </a> &nbsp
         <% } %>
@@ -148,7 +194,7 @@
     <div class="ui inverted menu asd fixed borderless inverted teal "
       style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
 
-      <a class="item openbtn" >
+      <a class="item openbtn">
         <i class="icon content"></i>
       </a>
 
@@ -178,8 +224,10 @@
 
 
 
-          <a href="<% ServerUrl %>/searchoption/?searchoption=1" class="item searchOption <%= s1 %>" data-option="1">Titre</a>
-          <a href="<% ServerUrl %>/searchoption/?searchoption=2" class="item searchOption <%= s2 %>" data-option="2">Catégorie</a>
+          <a href="<% ServerUrl %>/searchoption/?searchoption=1" class="item searchOption <%= s1 %>"
+            data-option="1">Titre</a>
+          <a href="<% ServerUrl %>/searchoption/?searchoption=2" class="item searchOption <%= s2 %>"
+            data-option="2">Catégorie</a>
           <a href="<% ServerUrl %>/searchoption/?searchoption=3" class="item searchOption <%= s3 %>"
             data-option="3">Ville/Code-Postal</a>
           <a href="<% ServerUrl %>/searchoption/?searchoption=4" class="item searchOption <%= s4 %>" data-option="4">Nom
@@ -217,7 +265,8 @@
             <div class="field">
               <div class="ui left icon input">
                 <i class="lock teal  icon"></i>
-                <input type="password" name="password" id="password" placeholder="Mot de passe" required autocomplete="off">
+                <input type="password" name="password" id="password" placeholder="Mot de passe" required
+                  autocomplete="off">
               </div>
             </div>
             <input type="submit" class="ui fluid large teal submit button" id="LogIn" value="Connexion"></input>
@@ -228,7 +277,8 @@
         </form>
 
         <div class="ui message">
-          S'Inscrire? <a style="color:teal" href="<% ServerUrl %>/inscription">Inscription</a>
+          S'Inscrire? <a class="linker" href="<% ServerUrl %>/inscription">Inscription</a> Mot de passe oublié? <a
+            class="reinitialiser linker">Réinitialiser</a>
         </div>
       </div>
     </div>
