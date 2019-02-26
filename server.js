@@ -37,8 +37,8 @@ const clearserver = http.createServer(function (req, res) {
   res.writeHead(302, {
     'Location': configFile.ServerUrl + req.url
   });
-  res.end(); 
-}).listen(configFile.serverConfigurationVariables.clearport) 
+  res.end();
+}).listen(configFile.serverConfigurationVariables.clearport)
 
 //certificates
 
@@ -184,32 +184,32 @@ app.use(require('./middlewares/flash'))
 //Routes
 ///////////////////////////////////////
 //parse password retrieval form
-app.post('/reinitialiser',  (req, res) =>{
+app.post('/reinitialiser', (req, res) => {
 
-  User.findOne({ Email: req.body.userEmail }, function (err,user) {
-    
+  User.findOne({ Email: req.body.userEmail }, function (err, user) {
+
     if (err) return
     else {
-      if(user&&user._id){
-       
-       
-        let ciphertext = CryptoJS.AES.encrypt(user._id.toString(),configFile.serverConfigurationVariables.serverKey).toString();
+      if (user && user._id) {
+
+
+        let ciphertext = CryptoJS.AES.encrypt(user._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
         console.log(ciphertext)
-        let array=ciphertext.split('')
+        let array = ciphertext.split('')
         for (let i = 0; i < array.length; i++) {
-         if(array[i]=='+'){  array[i]=    '⺈'      }
-         else if(array[i]=='/'){  array[i]=    '⺋'      }
-         else if(array[i]=='='){  array[i]=    '⺜'      }
-          
+          if (array[i] == '+') { array[i] = '⺈' }
+          else if (array[i] == '/') { array[i] = '⺋' }
+          else if (array[i] == '=') { array[i] = '⺜' }
+
         }
-        
+
         // Decrypt
-    
-         let deplaced=array.join('');
+
+        let deplaced = array.join('');
         console.log(deplaced);
-       
-              
-        let link = 'https://theroxxors.ml/secureinitilisation?s='+deplaced
+
+
+        let link = 'https://theroxxors.ml/secureinitilisation?s=' + deplaced
         const output = `
         <p>Vous avez demandé une réinitialisation de votre mot de passe</p>
         <h3></h3>
@@ -219,7 +219,7 @@ app.post('/reinitialiser',  (req, res) =>{
         </li>
         </ul>
        `;
-  
+
         let mailOptions = {
           from: 'trocjeux@gmail.com', // sender address
           to: user.Email, // list of receivers
@@ -227,7 +227,7 @@ app.post('/reinitialiser',  (req, res) =>{
           text: "Troc'Jeux", // plain text body
           html: output // html body
         };
-  
+
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
             console.log(error);
@@ -236,55 +236,55 @@ app.post('/reinitialiser',  (req, res) =>{
           }
         });
       }
-   
+
     }
   })
 
-  req.flash('success','un email va vous être envoyé prochainement...')
-res.redirect('/')
+  req.flash('success', 'un email va vous être envoyé prochainement...')
+  res.redirect('/')
 })
 
 // reset user password
-app.get('/secureinitilisation',function(req,res){
+app.get('/secureinitilisation', function (req, res) {
   console.log(req.query.s)
 
-  var dereplaced= req.query.s
-  let array2=dereplaced.split('')
+  var dereplaced = req.query.s
+  let array2 = dereplaced.split('')
   for (let i = 0; i < array2.length; i++) {
-    if(array2[i]=='⺈'){  array2[i]=    '+'      }
-    else if(array2[i]=='⺋'){  array2[i]=    '/'      }
-    else if(array2[i]=='⺜'){  array2[i]=    '='      }
-     
-   }
+    if (array2[i] == '⺈') { array2[i] = '+' }
+    else if (array2[i] == '⺋') { array2[i] = '/' }
+    else if (array2[i] == '⺜') { array2[i] = '=' }
 
-   let rereplaced=array2.join('');
+  }
+
+  let rereplaced = array2.join('');
   console.log(rereplaced)
-        try {
-          var bytes  = CryptoJS.AES.decrypt(rereplaced, configFile.serverConfigurationVariables.serverKey);
-          var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-          console.log(plaintext)
-          User.findOne({_id:plaintext},function(err,user){
-           if(err){
-            req.flash('error','Une erreur est survenue!')
-            res.redirect('/')
-            return
-           }
-           else if(user){
-              res.render('pages/secureform')
-              return
-            }
-           else{
-           
-           }
-  
-          })
-        } catch (error) {
-          console.log('bad link or crypto problem')
-          req.flash('error','Une erreur est survenue!')
-          res.redirect('/')
-        }
+  try {
+    var bytes = CryptoJS.AES.decrypt(rereplaced, configFile.serverConfigurationVariables.serverKey);
+    var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+    console.log(plaintext)
+    User.findOne({ _id: plaintext }, function (err, user) {
+      if (err) {
+        req.flash('error', 'Une erreur est survenue!')
+        res.redirect('/')
+        return
+      }
+      else if (user) {
+        res.render('pages/secureform')
+        return
+      }
+      else {
+
+      }
 
     })
+  } catch (error) {
+    console.log('bad link or crypto problem')
+    req.flash('error', 'Une erreur est survenue!')
+    res.redirect('/')
+  }
+
+})
 //favicon icon
 app.get('/favicon.ico', function (req, res) {
 
@@ -415,17 +415,17 @@ function getSearchOption(req) {
 //encryption
 
 function aes_encrypt(password, content) {
-  
- let ciphertext= CryptoJS.AES.encrypt(content, password).toString();
- // ciphertext.toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
- console.log(ciphertext)
+
+  let ciphertext = CryptoJS.AES.encrypt(content, password).toString();
+  // ciphertext.toString().replace('+','xMl3Jk').replace('/','Por21Ld').replace('=','Ml32');
+  console.log(ciphertext)
   return ciphertext
 }
 
 function aes_decrypt(password, encrypted) {
   console.log(encrypted)
-  encrypted.toString().replace('xMl3Jk', '+' ).replace('Por21Ld', '/').replace('Ml32', '=');
-let decrypted=CryptoJS.AES.decrypt(encrypted, password).toString(CryptoJS.enc.Utf8);
+  encrypted.toString().replace('xMl3Jk', '+').replace('Por21Ld', '/').replace('Ml32', '=');
+  let decrypted = CryptoJS.AES.decrypt(encrypted, password).toString(CryptoJS.enc.Utf8);
 
   return decrypted
 }
