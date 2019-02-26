@@ -132,7 +132,7 @@
               <div class="content">
                 <div class="item ">
                   
-                  <div class="image centered" style="min-height:60px;max-height:150px ;overflow-y: scroll; ">
+                  <div class="image centered" style="min-height:60px;max-height:150px ;overflow-y: auto; ">
 
                   <!-- Full-width images with number and caption text -->
                   
@@ -152,7 +152,7 @@
                   </div>
 
                 </div>
-                    <div class="ui celled list" style="margin-right:10px;">
+                    <div class="ui celled list" style="margin-right:10px;overflow-x:auto ">
                       
                        
                         <div class="item">
@@ -197,17 +197,19 @@
                           </div>
                         </div>
                         <p>
-                            <div class="ui left floated  teal  button memberbuttons"
-                        onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
-                          data-idannonce="<%= annonces[index]._id  %>"></i></div>
-                      <div data-idannonce="<%= annonces[index]._id %>"
-                        class="ui left floated  red  button modalshow memberbuttons" ><i
-                          class=" delete  icon"></i>
-                        
-                      </div> 
+                          
                           </p>
                       </div>
-                      
+                      <div class="field">
+                          <div class="ui left floated  teal  button memberbuttons"
+                          onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
+                            data-idannonce="<%= annonces[index]._id  %>"></i></div>
+                        <div data-idannonce="<%= annonces[index]._id %>"
+                          class="ui left floated  red  button modalshow memberbuttons" ><i
+                            class=" delete  icon"></i>
+                          
+                        </div> 
+                      </div>
                       <div class="field">
                           <label>Texte d'annonce</label>
                           <textarea readonly="">       <%= annonces[index].Texte %></textarea>
