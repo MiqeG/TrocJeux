@@ -110,7 +110,7 @@
                 }
             });
 
-            $('.ui.modal.reinitialise').modal({allowMultiple:true})
+            $('.coupled.modal').modal({allowMultiple:false})
         $('.Connexion').click(function () {
             $('#connexionmodal').modal('show')
 
