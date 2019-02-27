@@ -1,5 +1,6 @@
 let sendEmail = require('../securescripts/nodemailer/sendEmail')
-module.exports = function (req, res, User, SearchVille) {
+let masterReplace=require('../middlewares/masterreplace')
+module.exports = function (req, res, User, SearchVille,CryptoJS) {
     if (req.body === undefined || req.body === '') {
         req.flash('error', 'formulaire vide', 'vide')
         res.redirect('/inscription')
@@ -44,7 +45,21 @@ module.exports = function (req, res, User, SearchVille) {
                             res.redirect('/inscription')
                             return
                         }
-
+                        let formated = new Date
+                        formated.setHours(formated.getHours()+1)
+                        formated=formated.toISOString()
+                        let ciphertext = CryptoJS.AES.encrypt(user._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
+                        let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
+                        console.log(ciphertext)
+                        let array = ciphertext.split('')
+                        let arrayDate=ciphertextDate.split('')
+                        array=masterReplace(array)
+                        arrayDate=masterReplace(arrayDate)
+                        // Decrypt
+                
+                        let deplaced = array.join('');
+                        let deplacedDate=arrayDate.join('')
+                        console.log(deplaced);
                         var user1 = new User({
                             Type: "User",
                             NomUitilisateur: req.body.NomUitilisateur,
@@ -58,14 +73,14 @@ module.exports = function (req, res, User, SearchVille) {
                             Pays: req.body.Pays,
                             Actif: false
                         });
-
+         
                         // save model to database
                         user1.save(function (err, user) {
                             if (err) return console.error(err)
                             console.log(user.Email + "\r\n saved to Users collection.")
 
                            
-                            let link = 'https://theroxxors.ml/inscriptionval?u=' + user1._id
+                            let link = 'https://theroxxors.ml/inscriptionval?u=' +deplaced+'&d='+deplacedDate
                             const output = `
                             
                             <h3>Bienvenue parmi nous!</h3>

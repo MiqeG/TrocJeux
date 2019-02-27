@@ -282,7 +282,7 @@ app.post('/deposer', isLoggedIn, (req, res) => {
 })
 // parse incoming user subscription
 app.post('/inscription', parseForm, csrfProtection, (req, res) => {
-  inscriptionPost(req, res, User, SearchVille)
+  inscriptionPost(req, res, User, SearchVille,CryptoJS)
 })
 //remove ad
 app.post('/effacerannonce', isLoggedIn, (req, res) => {
