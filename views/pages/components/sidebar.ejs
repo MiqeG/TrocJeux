@@ -1,0 +1,139 @@
+<div class="ui sidebar vertical left menu overlay visible inverted"
+style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
+
+<div class="item logo">
+  <div class="paddingLogo">
+    <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="/assets/img/logo.png"
+      styled="width:content;" />
+
+  </div>
+  <img class="frontlogo" src="<% ServerUrl %>/assets/img/logo.png" style="display: none" />
+</div>
+<div class="ui accordion sidebarpage">
+  <a class="item button" style="color:rgb(50, 240, 240);text-align: center;"
+    href="<% ServerUrl %>"></i><b>Troc'Jeux!</b></a>
+
+  <% if(auth==false){ %>
+  <a class="item " style="color:rgb(50, 240, 240)" href="<% ServerUrl %>/inscription"><i class="users icon"
+      style="color:white"></i><b>Rejoignez nous!</b></a>
+  <a class="item Connexion" style="color:rgb(50, 240, 240)"><i class="sign-in alternate icon"
+      style="color:white"></i><b>Se connecter!</b> </a> &nbsp
+  <% }else if(auth==true){ %>
+  <a class="item tealColor" href="<% ServerUrl %>/espacemembre" style="color:white"><i class="user  icon"></i><b
+      style="color:rgb(50, 240, 240)"> Bonjour &nbsp <%= user.Prenom %> !</b></a>
+  <a class="item tealColor" href="<% ServerUrl %>/deposer" style="color:white"><i class="tasks  icon"></i><b
+      style="color:rgb(50, 240, 240)"> Déposer une annonce...</b></a>
+  <a class="item LogOut" style="color:white"><i class="sign-out alternate icon"></i><b
+      style="color:rgb(50, 240, 240)">Se &nbsp deconnecter!</b> </a> &nbsp
+  <% } %>
+
+  <div class="title item" style="color:white">
+    <i class="dropdown icon tealColor"></i> Catégories
+  </div>
+  <div class="content">
+    <% categories.forEach(element => { %>
+    <a class="item" style="color:rgb(50, 240, 240)"><%= element %>
+    </a>
+    <% }); %>
+
+  </div>
+
+  <div class="title item" style="color:white">
+    <i class="dropdown icon tealColor"></i> Pages
+  </div>
+  <div class="content">
+    <a class="item" style="color:rgb(50, 240, 240)" href="profile.html">Profile
+    </a>
+
+    <a class="item" style="color:rgb(50, 240, 240)" href="settings.html">Settings
+    </a>
+  </div>
+
+</div>
+<div class="ui dropdown item   displaynone inverted teal">
+  <z></z>
+  <i class="icon demo-icon user icon-heart "></i>
+
+  <div class="menu">
+
+    <div class="ui divider"></div>
+    <% if(auth==false){ %>
+    <a class="item " href="<% ServerUrl %>/inscription"><i class="users teal  icon"></i><b>Rejoignez nous!</b></a>
+    <a class="item Connexion"><i class="sign-in alternate teal icon"></i><b>Se connecter!</b> </a> &nbsp
+    <% }else if(auth==true){ %>
+    <a class="item " href="<% ServerUrl %>/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %>
+        !</b></a>
+    <a class="item " href="<% ServerUrl %>/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
+    <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se deconnecter!</b> </a> &nbsp
+    <% } %>
+  </div>
+</div>
+<div class="ui dropdown item displaynone inverted teal">
+  <z>Catégories</z>
+  <i class="icon demo-icon gamepad icon-globe "></i>
+
+  <div class="menu blackColor">
+    <div class="header">
+      Catégories
+    </div>
+    <div class="ui divider " style="background-color:rgb(50, 240, 240)"></div>
+    <% categories.forEach(element => { %>
+    <a class="item "><b><%= element %></b>
+    </a>
+    <% }); %>
+
+  </div>
+</div>
+<div class="ui dropdown item displaynone">
+  <z></z>
+  <i class="icon demo-icon  icon-params alarm"></i>
+
+</div>
+</div>
+</div>
+<div class="pusher">
+
+<div class="ui inverted menu asd fixed borderless inverted teal "
+  style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
+
+  <a class="item openbtn">
+    <i class="icon content"></i>
+  </a>
+
+
+  <div class="ui  left aligned category search">
+    <div class="ui icon input">
+      <input id="headerSearchBar" class="prompt" type="text" placeholder="Rechercher...par Titre">
+      <i class="search icon"></i>
+    </div>
+
+    <div class="results"></div>
+  </div>
+  <div class="ui dropdown item">
+    <i class="dropdown icon"></i>
+    <div class="menu">
+      <%
+  let s1='';
+  let s2='';
+  let s3='';
+  let s4='';
+  if(locals.searchoption==undefined||locals.searchoption=='1'){s1='active selected'}
+  else if(locals.searchoption=='2'){s2='active selected'}
+  else if(locals.searchoption=='3'){s3='active selected'}
+  else if(locals.searchoption=='4'){s4='active selected'}
+  %>
+      <a href="<% ServerUrl %>/searchoption/?searchoption=1" class="item searchOption <%= s1 %>"
+        data-option="1">Titre</a>
+      <a href="<% ServerUrl %>/searchoption/?searchoption=2" class="item searchOption <%= s2 %>"
+        data-option="2">Catégorie</a>
+      <a href="<% ServerUrl %>/searchoption/?searchoption=3" class="item searchOption <%= s3 %>"
+        data-option="3">Ville/Code-Postal</a>
+      <a href="<% ServerUrl %>/searchoption/?searchoption=4" class="item searchOption <%= s4 %>" data-option="4">Nom
+        d'utilisateur</a>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>

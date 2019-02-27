@@ -79,13 +79,6 @@ mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', functi
   if (err) throw err
   console.log('Temp folder empty!')
 });
-///////////////////////////////////////
-//Nodemailer in order to send messages to users
-///////////////////////////////////////
-
-
-
-
 
 
 ///////////////////////////////////////
