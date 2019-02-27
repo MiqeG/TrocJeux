@@ -1,4 +1,5 @@
 let sendEmail = require('../securescripts/nodemailer/sendEmail')
+let masterReplace=require('../middlewares/masterreplace')
 
 module.exports=function(req,res,User,configFile,CryptoJS){
     User.findOne({ Email: req.body.userEmail }, function (err, user) {
@@ -6,26 +7,25 @@ module.exports=function(req,res,User,configFile,CryptoJS){
         if (err) return
         else {
           if (user && user._id) {
-    
-    
+            
+            let formated = new Date
+            formated.setHours(formated.getHours()+1)
+            formated=formated.toISOString()
             let ciphertext = CryptoJS.AES.encrypt(user._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
+            let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
             console.log(ciphertext)
             let array = ciphertext.split('')
-            for (let i = 0; i < array.length; i++) {
-              if (array[i] == '+') { array[i] = '⺈' }
-              else if (array[i] == '/') { array[i] = '⺋' }
-              else if (array[i] == '=') { array[i] = '⺜' }
-    
-            }
-    
+            let arrayDate=ciphertextDate.split('')
+            array=masterReplace(array)
+            arrayDate=masterReplace(arrayDate)
             // Decrypt
     
             let deplaced = array.join('');
+            let deplacedDate=arrayDate.join('')
             console.log(deplaced);
         
-            let formated = new Date
-            formated=formated.toISOString()
-            let link = 'https://theroxxors.ml/secureinitilisation?s=' + deplaced +'&d='+formated
+           
+            let link = 'https://theroxxors.ml/secureinitilisation?s=' + deplaced +'&d='+deplacedDate
             const output = `
             <p>Vous avez demandé une réinitialisation de votre mot de passe</p>
             <h3></h3>

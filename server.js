@@ -71,6 +71,7 @@ let errorNotFound = require('./routes/errornotfound')
 let searchApi = require('./routes/searchapi')
 let reinitialiser = require('./routes/reinitialiser')
 let successValidation = require('./routes/successvalidation')
+let secureReinitialisation= require('./routes/securereinitialisation')
 
 //Empty temp folder on startup
 
@@ -198,50 +199,8 @@ app.post('/reinitialiser', (req, res) => {
 app.get('/secureinitilisation', function (req, res) {
   console.log(req.query.s)
   console.log(req.query.d)
-  let linkDate = new Date(req.query.d)
-  let DateNow = new Date
-  DateNow.setHours(DateNow.getHours() + 1)
-  if (DateNow.getTime() > linkDate.getTime()) {
-    req.flash('error', 'Le lien a expiré vuillez réiterer votre demande')
-    res.redirect('/')
-    return
-  }
-  var dereplaced = req.query.s
-  let array2 = dereplaced.split('')
-  for (let i = 0; i < array2.length; i++) {
-    if (array2[i] == '⺈') { array2[i] = '+' }
-    else if (array2[i] == '⺋') { array2[i] = '/' }
-    else if (array2[i] == '⺜') { array2[i] = '=' }
-
-  }
-
-  let rereplaced = array2.join('');
-  console.log(rereplaced)
-  try {
-    var bytes = CryptoJS.AES.decrypt(rereplaced, configFile.serverConfigurationVariables.serverKey);
-    var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-    console.log(plaintext)
-    User.findOne({ _id: plaintext }, function (err, user) {
-      if (err) {
-        req.flash('error', 'Une erreur est survenue!')
-        res.redirect('/')
-        return
-      }
-      else if (user) {
-        res.render('pages/secureform')
-        return
-      }
-      else {
-
-      }
-
-    })
-  } catch (error) {
-    console.log('bad link or crypto problem')
-    req.flash('error', 'Une erreur est survenue!')
-    res.redirect('/')
-  }
-
+  secureReinitialisation(req,res,User)
+ 
 })
 //favicon icon
 app.get('/favicon.ico', function (req, res) {
