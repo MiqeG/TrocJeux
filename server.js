@@ -69,6 +69,7 @@ let passportLocalStrategy = require('./middlewares/passportLocalStrategy')
 let effacerAnnonce = require('./routes/effacerannonce')
 let errorNotFound = require('./routes/errornotfound')
 let searchApi = require('./routes/searchapi')
+let reinitialiser = require('./routes/reinitialiser')
 let successValidation = require('./routes/successvalidation')
 
 //Empty temp folder on startup
@@ -81,19 +82,7 @@ mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', functi
 //Nodemailer in order to send messages to users
 ///////////////////////////////////////
 
-//use self signed certificate 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-
-var nodemailer = require('nodemailer');
-
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'trocjeux@gmail.com',
-    pass: 'Peon8216'
-  }
-});
 
 
 
@@ -184,70 +173,39 @@ app.use(require('./middlewares/flash'))
 //Routes
 ///////////////////////////////////////
 //parse password retrieval form
+app.get('/inscriptionval', (req, res) => {
+  console.log(req.query.u)
+
+  User.findOneAndUpdate(
+    { _id: req.query.u },
+    { $set: { Actif: true } },
+    { new: true },
+    (err, data) => {
+      if (err) return;
+      else if (data.Email === undefined) return
+      console.log('User: ' + data.NomUitilisateur + ' Activated')
+      req.session.flash('success', 'Inscription validée! Connectez vous pour commencer a troquer...')
+      res.redirect('/')
+    }
+  );
+})
 app.post('/reinitialiser', (req, res) => {
 
-  User.findOne({ Email: req.body.userEmail }, function (err, user) {
-
-    if (err) return
-    else {
-      if (user && user._id) {
-
-
-        let ciphertext = CryptoJS.AES.encrypt(user._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
-        console.log(ciphertext)
-        let array = ciphertext.split('')
-        for (let i = 0; i < array.length; i++) {
-          if (array[i] == '+') { array[i] = '⺈' }
-          else if (array[i] == '/') { array[i] = '⺋' }
-          else if (array[i] == '=') { array[i] = '⺜' }
-
-        }
-
-        // Decrypt
-
-        let deplaced = array.join('');
-        console.log(deplaced);
-
-
-        let link = 'https://theroxxors.ml/secureinitilisation?s=' + deplaced
-        const output = `
-        <p>Vous avez demandé une réinitialisation de votre mot de passe</p>
-        <h3></h3>
-        <ul>  
-        <li>
-        <a href="${link}">Cliquez sur ce lien pour procéder a la réinitialisation</a>
-        </li>
-        </ul>
-       `;
-
-        let mailOptions = {
-          from: 'trocjeux@gmail.com', // sender address
-          to: user.Email, // list of receivers
-          subject: 'Réinitialisation mot de passe', // Subject line
-          text: "Troc'Jeux", // plain text body
-          html: output // html body
-        };
-
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
-      }
-
-    }
-  })
-
-  req.flash('success', 'un email va vous être envoyé prochainement...')
-  res.redirect('/')
+  reinitialiser(req, res, User, configFile, CryptoJS)
 })
 
 // reset user password
 app.get('/secureinitilisation', function (req, res) {
   console.log(req.query.s)
-
+  console.log(req.query.d)
+  let linkDate = new Date(req.query.d)
+  let DateNow = new Date
+  DateNow.setHours(DateNow.getHours() + 1)
+  if (DateNow.getTime() > linkDate.getTime()) {
+    req.flash('error', 'Le lien a expiré vuillez réiterer votre demande')
+    res.redirect('/')
+    return
+  }
   var dereplaced = req.query.s
   let array2 = dereplaced.split('')
   for (let i = 0; i < array2.length; i++) {
@@ -429,3 +387,4 @@ function aes_decrypt(password, encrypted) {
 
   return decrypted
 }
+
