@@ -1,3 +1,4 @@
+let sendEmail = require('../securescripts/nodemailer/sendEmail')
 module.exports = function (req, res, User, SearchVille) {
     if (req.body === undefined || req.body === '') {
         req.flash('error', 'formulaire vide', 'vide')
@@ -55,14 +56,31 @@ module.exports = function (req, res, User, SearchVille) {
                             CodePostal: req.body.CodePostal.trim(),
                             Ville: arrayFound[0].NomCommune.toUpperCase().trim(),
                             Pays: req.body.Pays,
-                            Actif: true
+                            Actif: false
                         });
 
                         // save model to database
                         user1.save(function (err, user) {
                             if (err) return console.error(err)
                             console.log(user.Email + "\r\n saved to Users collection.")
-                            req.flash('success', "Merci pour votre inscription", "SuccessCode")
+
+                           
+                            let link = 'https://theroxxors.ml/inscriptionval?u=' + user1._id
+                            const output = `
+                            
+                            <h3>Bienvenue parmi nous!</h3>
+                            <p>Cliquez sur le lien ci-dessous pour valider votre inscription...</p>
+                            <ul>  
+                            <li>
+                            <a href="${link}">Valider</a>
+                            </li>
+                            </ul>
+                           `;
+                            let subject = "Bienvenue sur Troc'Jeux!!!"
+
+
+                            sendEmail(subject, output, user.Email)
+                            req.flash('success', "Merci pour votre inscription, un e-mail de confimation va vous etre envoyé dans quelques minutes...", "SuccessCode")
                             res.redirect('/')
 
                         });
