@@ -1,0 +1,27 @@
+<div class="ui basic modal" id="inscriptionmodal">
+    <div class="ui icon header">
+
+      <div class="cetered">
+        <% if(locals.flash && locals.flash.error){ %>
+        <div class="ui     red basic cancel inverted" style="color:rgb(219, 77, 77)">
+          <i class="meh outline icon"></i><span id="sessionFlash"><%= flash.error %></span>
+        </div>
+
+        <% } %>
+        <% if(locals.flash && locals.flash.success){ %>
+        <div class="ui  green ok inverted" style="color:rgb(53, 207, 104)">
+          <i class="smile outline icon"></i><span id="sessionFlash"><%= flash.success %></span>
+        </div>
+
+        <% } %>
+      </div>
+    </div>
+
+    <div class="actions">
+
+      <div class="ui green ok inverted button">
+        <i class="checkmark icon"></i>
+        Ok
+      </div>
+    </div>
+  </div>

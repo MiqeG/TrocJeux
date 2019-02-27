@@ -1,0 +1,41 @@
+<div class="ui coupled basic modal" id="connexionmodal">
+
+
+
+    <div class="ui middle aligned center aligned grid">
+      <div class="column">
+        <h2 class="ui image content">
+          <div class="content">
+            <i class="thumbs up outline
+           teal icon"></i> Connectez Vous...
+          </div>
+        </h2>
+        <form action="/connexion" method="POST" class="ui large form">
+          <div class="ui stacked secondary  segment">
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="user  teal icon"></i>
+                <input type="text" name="username" id="username" placeholder="E-mail" required autocomplete="on">
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="lock teal  icon"></i>
+                <input type="password" name="password" id="password" placeholder="Mot de passe" required
+                  autocomplete="off">
+              </div>
+            </div>
+            <input type="submit" class="ui fluid large teal submit button" id="LogIn" value="Connexion"></input>
+          </div>
+
+
+
+        </form>
+
+        <div class="ui message">
+          S'Inscrire? <a class="linker" href="<% ServerUrl %>/inscription">Inscription</a> Mot de passe oublié? <a
+            class="reinitialiser linker">Réinitialiser</a>
+        </div>
+      </div>
+    </div>
+  </div>
