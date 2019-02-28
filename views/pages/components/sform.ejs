@@ -1,4 +1,9 @@
+
+
 <form class="ui form mdpsecure asd" action="/nmdp" method="POST" style="max-width:620px;">
+<h1><i class="ui teal key icon"></i> Réinitialisation de votre mot de passe... </h1>
+
+<h3>Bonjour <%= userName %> </h3>
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <input type="hidden" name="user" value="<%= user %>" >
   <div class="field">
@@ -9,6 +14,7 @@
     <label>Verification mot de passe</label>
     <input type="text" name="VerificationMotDePasse" placeholder="">
   </div>
- 
+  
   <button class="ui teal button" type="submit"><i class="ui white check icon"></i> Envoyer!</button>
+  <div class="ui error message"></div>
 </form>
