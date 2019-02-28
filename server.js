@@ -75,6 +75,7 @@ let secureReinitialisation= require('./routes/securereinitialisation')
 let inscriptionval= require('./routes/inscriptionval')
 //Empty temp folder on startup
 let tempUsers={};
+let tempReinit={};
 mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
   if (err) throw err
   console.log('Temp folder empty!')
@@ -182,7 +183,9 @@ app.post('/reinitialiser', (req, res) => {
 app.get('/secureinitilisation', function (req, res) {
   console.log(req.query.s)
   console.log(req.query.d)
-  secureReinitialisation(req,res,User)
+  secureReinitialisation(req,res,User,tempReinit,function(returnedReinit){
+    tempReinit=returnedReinit
+  })
  
 })
 //favicon icon
