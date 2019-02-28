@@ -74,7 +74,7 @@ let successValidation = require('./routes/successvalidation')
 let secureReinitialisation= require('./routes/securereinitialisation')
 let inscriptionval= require('./routes/inscriptionval')
 //Empty temp folder on startup
-
+let tempUsers={};
 mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
   if (err) throw err
   console.log('Temp folder empty!')
@@ -270,11 +270,15 @@ app.post('/deposer', isLoggedIn, (req, res) => {
 })
 // parse incoming user subscription
 app.post('/inscription', parseForm, csrfProtection, (req, res) => {
-  inscriptionPost(req, res, User, SearchVille,CryptoJS,configFile)
+  inscriptionPost(req, res, User, SearchVille,CryptoJS,configFile,tempUsers,function(returnerUder){
+   tempUsers=returnerUder
+   console.log(tempUsers)
+  })
+  
 })
 //remove ad
 app.post('/effacerannonce', isLoggedIn, (req, res) => {
-  effacerAnnonce(req, res, Annonce, rimraf)
+effacerAnnonce(req, res, Annonce, rimraf)
 
 })
 

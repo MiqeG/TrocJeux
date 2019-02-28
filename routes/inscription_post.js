@@ -1,7 +1,7 @@
 let sendEmail = require('../securescripts/nodemailer/sendEmail')
 let masterReplace=require('../middlewares/masterreplace')
 
-module.exports = function (req, res, User, SearchVille,CryptoJS,configFile) {
+module.exports = function (req, res, User, SearchVille,CryptoJS,configFile,tempUsers,callback) {
     if (req.body === undefined || req.body === '') {
         req.flash('error', 'formulaire vide', 'vide')
         res.redirect('/inscription')
@@ -62,6 +62,17 @@ module.exports = function (req, res, User, SearchVille,CryptoJS,configFile) {
                         });
 
                         // save model to database
+                        
+                      if( tempUsers[user1.Email]){
+                        req.flash('error', "Vous vous etes deja inscrit...vérifiez vos e-mails et validez votre inscription...")
+                        res.redirect('/')
+                        return
+                      }
+                        tempUsers[user1.Email]=user1
+                       
+                       
+                       callback(tempUsers)
+                        return 
                         user1.save(function (err, user) {
                             if (err) return console.error(err)
                             console.log(user.Email + "\r\n saved to Users collection.")
@@ -69,7 +80,7 @@ module.exports = function (req, res, User, SearchVille,CryptoJS,configFile) {
                                 let formated = new Date
                                 formated.setHours(formated.getHours()+1)
                                 formated=formated.toISOString()
-                                let ciphertext = CryptoJS.AES.encrypt(user1._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
+                                let ciphertext = CryptoJS.AES.encrypt(user1.Email.toString(), configFile.serverConfigurationVariables.serverKey).toString();
                                 let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
                                 console.log(ciphertext)
                                 let array = ciphertext.split('')
@@ -100,7 +111,7 @@ module.exports = function (req, res, User, SearchVille,CryptoJS,configFile) {
                             sendEmail(subject, output, user.Email)
                             req.flash('success', "Merci pour votre inscription, un e-mail de confimation va vous etre envoyé dans quelques minutes...", "SuccessCode")
                             res.redirect('/')
-
+                            return tempUsers
                         });
                     }
                 })
