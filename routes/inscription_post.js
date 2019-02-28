@@ -1,6 +1,7 @@
 let sendEmail = require('../securescripts/nodemailer/sendEmail')
 let masterReplace=require('../middlewares/masterreplace')
-module.exports = function (req, res, User, SearchVille,CryptoJS) {
+
+module.exports = function (req, res, User, SearchVille,CryptoJS,configFile,tempUsers,callback) {
     if (req.body === undefined || req.body === '') {
         req.flash('error', 'formulaire vide', 'vide')
         res.redirect('/inscription')
@@ -48,7 +49,7 @@ module.exports = function (req, res, User, SearchVille,CryptoJS) {
                         let formated = new Date
                         formated.setHours(formated.getHours()+1)
                         formated=formated.toISOString()
-                        let ciphertext = CryptoJS.AES.encrypt(user._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
+                        let ciphertext = CryptoJS.AES.encrypt(req.body.Email.toString(), configFile.serverConfigurationVariables.serverKey).toString();
                         let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
                         console.log(ciphertext)
                         let array = ciphertext.split('')
@@ -71,16 +72,24 @@ module.exports = function (req, res, User, SearchVille,CryptoJS) {
                             CodePostal: req.body.CodePostal.trim(),
                             Ville: arrayFound[0].NomCommune.toUpperCase().trim(),
                             Pays: req.body.Pays,
-                            Actif: false
+                            Actif: true
                         });
          
                         // save model to database
-                        user1.save(function (err, user) {
-                            if (err) return console.error(err)
-                            console.log(user.Email + "\r\n saved to Users collection.")
-
+                        
+                      if( tempUsers[user1.Email]){
+                        req.flash('error', "Vous vous etes deja inscrit...vérifiez vos e-mails et validez votre inscription...")
+                        res.redirect('/')
+                        return
+                      }
+                        tempUsers[user1.Email]=user1
+                                                                      
                            
-                            let link = 'https://theroxxors.ml/inscriptionval?u=' +deplaced+'&d='+deplacedDate
+                           
+                            let link = 'https://theroxxors.ml/inscriptionval?u=' + deplaced +'&d='+deplacedDate
+                            console.log(link)
+                            callback(tempUsers)
+                            return
                             const output = `
                             
                             <h3>Bienvenue parmi nous!</h3>
@@ -97,8 +106,8 @@ module.exports = function (req, res, User, SearchVille,CryptoJS) {
                             sendEmail(subject, output, user.Email)
                             req.flash('success', "Merci pour votre inscription, un e-mail de confimation va vous etre envoyé dans quelques minutes...", "SuccessCode")
                             res.redirect('/')
-
-                        });
+                            
+                      
                     }
                 })
 
