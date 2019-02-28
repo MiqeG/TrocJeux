@@ -71,11 +71,11 @@ let errorNotFound = require('./routes/errornotfound')
 let searchApi = require('./routes/searchapi')
 let reinitialiser = require('./routes/reinitialiser')
 let successValidation = require('./routes/successvalidation')
-let secureReinitialisation= require('./routes/securereinitialisation')
-let inscriptionval= require('./routes/inscriptionval')
+let secureReinitialisation = require('./routes/securereinitialisation')
+let inscriptionval = require('./routes/inscriptionval')
 //Empty temp folder on startup
-let tempUsers={};
-let tempReinit={};
+let tempUsers = {};
+let tempReinit = {};
 mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
   if (err) throw err
   console.log('Temp folder empty!')
@@ -169,8 +169,8 @@ app.use(require('./middlewares/flash'))
 ///////////////////////////////////////
 //parse password retrieval form
 app.get('/inscriptionval', (req, res) => {
-  inscriptionval(req,res,User,CryptoJS,configFile,tempUsers,function(returnedUsers){
-    tempUsers=returnedUsers
+  inscriptionval(req, res, User, CryptoJS, configFile, tempUsers, function (returnedUsers) {
+    tempUsers = returnedUsers
   })
 
 })
@@ -180,13 +180,29 @@ app.post('/reinitialiser', (req, res) => {
 })
 
 // reset user password
-app.get('/secureinitilisation', function (req, res) {
+app.get('/secureinitilisation', csrfProtection, function (req, res) {
   console.log(req.query.s)
   console.log(req.query.d)
-  secureReinitialisation(req,res,User,tempReinit,function(returnedReinit){
-    tempReinit=returnedReinit
+  secureReinitialisation(req, res, User, tempReinit, configFile, function (returnedReinit) {
+    tempReinit = returnedReinit
   })
- 
+
+})
+app.post('/nmdp', parseForm, csrfProtection, function (req, res) {
+  console.log(req.body.MotDePasse)
+  console.log(req.body.user)
+  User.findOneAndUpdate({ _id: req.body.user }, { $set: { MotDePasse: req.body.MotDePasse } }, function (err, user) {
+    if (err) {
+      console.log("Erreur d'update du mdp de l'user: " + req.body.user);
+      req.flash('error', 'Erreur de réinitialisation veuillez nous contacter!')
+      res.redirect('/')
+    }
+
+    console.log('updated user password of: ' + user._id + ' value= ' + user.MotDePasse);
+    req.flash('success', 'Mot de passe réinitialisé')
+    res.redirect('/')
+  })
+
 })
 //favicon icon
 app.get('/favicon.ico', function (req, res) {
@@ -246,7 +262,7 @@ app.get('/logout', (req, res) => {
 })
 //index
 app.get('/', csrfProtection, (req, res) => {
-  index(req, res, configFile)
+  index(req, res, configFile, Annonce)
 })
 //display subsciption page
 app.get('/inscription', csrfProtection, (req, res) => {
@@ -275,15 +291,15 @@ app.post('/deposer', isLoggedIn, (req, res) => {
 })
 // parse incoming user subscription
 app.post('/inscription', parseForm, csrfProtection, (req, res) => {
-  inscriptionPost(req, res, User, SearchVille,CryptoJS,configFile,tempUsers,function(returnerUder){
-   tempUsers=returnerUder
-   console.log(tempUsers)
+  inscriptionPost(req, res, User, SearchVille, CryptoJS, configFile, tempUsers, function (returnerUder) {
+    tempUsers = returnerUder
+    console.log(tempUsers)
   })
-  
+
 })
 //remove ad
 app.post('/effacerannonce', isLoggedIn, (req, res) => {
-effacerAnnonce(req, res, Annonce, rimraf)
+  effacerAnnonce(req, res, Annonce, rimraf)
 
 })
 

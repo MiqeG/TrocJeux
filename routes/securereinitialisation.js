@@ -2,7 +2,7 @@ let masterReplace = require('../middlewares/masterreplace')
 const CryptoJS = require("crypto-js");
 let configFile = require('../config/server_config.json')
 
-module.exports = function (req, res, User, tempReinit, callback) {
+module.exports = function (req, res, User, tempReinit,configFile, callback) {
 
 
   var dereplaced = req.query.s
@@ -63,7 +63,8 @@ module.exports = function (req, res, User, tempReinit, callback) {
       }
       else if (user) {
 
-        res.render('pages/secureform')
+        res.render('pages/secureform', { csrfToken: req.csrfToken(), auth: req.isAuthenticated(),user:user._id,userName:user.NomUitilisateur,ServerUrl: configFile.ServerUrl, categories: configFile.categories, searchoption: '1'})
+        
         callback(tempReinit)
         return
       }

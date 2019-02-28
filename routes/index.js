@@ -1,7 +1,11 @@
-module.exports = function (req, res, configFile) {
+module.exports = function (req, res, configFile,Annonce) {
     if (req.query.a) {
         Annonce.findOne({ _id: req.query.a }, function (err, annonce) {
-            if (err) throw err
+            if (err) {
+                req.flash('error','Annonce introuvable...')
+                res.redirect('/')
+                return
+            }
 
             let searchoption = req.session.searchoption
             req.session.searchoption = undefined

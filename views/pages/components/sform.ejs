@@ -1,0 +1,14 @@
+<form class="ui form mdpsecure asd" action="/nmdp" method="POST" style="max-width:620px;">
+<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+<input type="hidden" name="user" value="<%= user %>" >
+  <div class="field">
+    <label>Mot de passe</label>
+    <input type="text" name="MotDePasse" placeholder="">
+  </div>
+  <div class="field">
+    <label>Verification mot de passe</label>
+    <input type="text" name="VerificationMotDePasse" placeholder="">
+  </div>
+ 
+  <button class="ui teal button" type="submit"><i class="ui white check icon"></i> Envoyer!</button>
+</form>
