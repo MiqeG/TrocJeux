@@ -72,7 +72,7 @@ let searchApi = require('./routes/searchapi')
 let reinitialiser = require('./routes/reinitialiser')
 let successValidation = require('./routes/successvalidation')
 let secureReinitialisation= require('./routes/securereinitialisation')
-
+let inscriptionval= require('./routes/inscriptionval')
 //Empty temp folder on startup
 
 mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
@@ -168,20 +168,8 @@ app.use(require('./middlewares/flash'))
 ///////////////////////////////////////
 //parse password retrieval form
 app.get('/inscriptionval', (req, res) => {
-  console.log(req.query.u)
+  inscriptionval(req,res,User,CryptoJS,configFile)
 
-  User.findOneAndUpdate(
-    { _id: req.query.u },
-    { $set: { Actif: true } },
-    { new: true },
-    (err, data) => {
-      if (err) return;
-      else if (data.Email === undefined) return
-      console.log('User: ' + data.NomUitilisateur + ' Activated')
-      req.session.flash('success', 'Inscription validée! Connectez vous pour commencer a troquer...')
-      res.redirect('/')
-    }
-  );
 })
 app.post('/reinitialiser', (req, res) => {
 
@@ -282,7 +270,7 @@ app.post('/deposer', isLoggedIn, (req, res) => {
 })
 // parse incoming user subscription
 app.post('/inscription', parseForm, csrfProtection, (req, res) => {
-  inscriptionPost(req, res, User, SearchVille)
+  inscriptionPost(req, res, User, SearchVille,CryptoJS,configFile)
 })
 //remove ad
 app.post('/effacerannonce', isLoggedIn, (req, res) => {

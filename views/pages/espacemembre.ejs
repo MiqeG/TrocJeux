@@ -72,26 +72,14 @@
             </tbody>
           </table>
 
-
-
-
           <div class="item">
-
             <div class="content">
-
               <p></p>
               <div class="ui right  teal  button"><i class=" edit  icon"></i>Modifier</div>
-
-
             </div>
           </div>
-
-
-
         </div>
-
         <div class="ui divided demo items togglerClass2">
-
           <h3><i class="ui teal wpforms icon"></i>Vos annonces...</h3>
           <div class="ui   styled fluid  accordion" style="background-color:rgba(223, 215, 215,0.15); ">
             <% if(annonces[0])  { %>
@@ -105,7 +93,13 @@
                   <% let DateTimeVariable= new Date( annonces[index].DatePublication ) %>
                   <span class="hlink"> <%= annonces[index].Titre %></span>
                   <i class="ui calendar alternate teal icon"></i> <span style="color:teal;">
-                    <%= DateTimeVariable.getDate() +' / '+DateTimeVariable.getMonth()+' / '+DateTimeVariable.getFullYear() %>
+                <div hidden> 
+                 
+                   <% let month=DateTimeVariable.getMonth(); %>
+                  <%= month=month+1 %>
+                  
+                </div>  
+                    <%= DateTimeVariable.getDate() +' / '+month+' / '+DateTimeVariable.getFullYear() %>
                     <span>&nbsp<i class="ui clock teal icon"></i></span>
                     <%= DateTimeVariable.getHours()+' : '+DateTimeVariable.getMinutes()+' : '+DateTimeVariable.getSeconds() %>
                   </span>
@@ -135,7 +129,7 @@
                       </div>
 
                     </div>
-            <% include components/userdetails %>
+                    <% include components/userdetails %>
                     <div class="field">
                       <div class="ui left floated  teal  button memberbuttons"
                         onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
@@ -150,8 +144,7 @@
                       <textarea readonly="">       <%= annonces[index].Texte %></textarea>
 
                     </div>
-
-
+                  
                   </div>
                 </div>
               </div>

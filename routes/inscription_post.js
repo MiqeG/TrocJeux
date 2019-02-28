@@ -1,5 +1,7 @@
 let sendEmail = require('../securescripts/nodemailer/sendEmail')
-module.exports = function (req, res, User, SearchVille) {
+let masterReplace=require('../middlewares/masterreplace')
+
+module.exports = function (req, res, User, SearchVille,CryptoJS,configFile) {
     if (req.body === undefined || req.body === '') {
         req.flash('error', 'formulaire vide', 'vide')
         res.redirect('/inscription')
@@ -63,9 +65,25 @@ module.exports = function (req, res, User, SearchVille) {
                         user1.save(function (err, user) {
                             if (err) return console.error(err)
                             console.log(user.Email + "\r\n saved to Users collection.")
-
+                                //secure activation link
+                                let formated = new Date
+                                formated.setHours(formated.getHours()+1)
+                                formated=formated.toISOString()
+                                let ciphertext = CryptoJS.AES.encrypt(user1._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
+                                let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
+                                console.log(ciphertext)
+                                let array = ciphertext.split('')
+                                let arrayDate=ciphertextDate.split('')
+                                array=masterReplace(array)
+                                arrayDate=masterReplace(arrayDate)
+                                // Decrypt
+                        
+                                let deplaced = array.join('');
+                                let deplacedDate=arrayDate.join('')
+                                //send confirmation e-mail
                            
-                            let link = 'https://theroxxors.ml/inscriptionval?u=' + user1._id
+                            let link = 'https://theroxxors.ml/inscriptionval?u=' + deplaced +'&d='+deplacedDate
+                            console.log(link)
                             const output = `
                             
                             <h3>Bienvenue parmi nous!</h3>
