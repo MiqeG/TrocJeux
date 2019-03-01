@@ -224,8 +224,20 @@ app.get('/searchoption', function (req, res) {
 
 //display ad form
 app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
-
-  deposerGet(req, res, configFile)
+ Annonce.find({User_Id:req.user._id},function(err,annonces){
+if(err){
+  req.flash('error',"Erreur inconnue!")
+  res.redirect('/')
+  return
+}
+else if(annonces.length>configFile.serverConfigurationVariables.maxAnnonces){
+  req.flash('error',"Vous avez atteint le nombre maximal d'annonces! Veuillez en supprimer pour en publier de nouvelles...")
+  res.redirect('/')
+  return
+}
+deposerGet(req, res, configFile)
+ })
+ 
 
 })
 // on wrong password or email
@@ -267,7 +279,7 @@ app.get('/inscription', csrfProtection, (req, res) => {
 //ajax for postal code retrieval
 app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   ajaxCodePostal(req, res, SearchVille)
-
+ 
 })
 
 
@@ -279,7 +291,75 @@ app.get('/espacemembre', isLoggedIn,csrfProtection, function (req, res) {
 
 
 });
+app.post('/ajaxmdp',function(req,res){
+  console.log(req.body)
+  if(req.body&&req.body.Email,req.body.Password){
+    User.findOne({Email:req.body.Email},function(err,user){
+      if (err){
+        let json = { message: "erreur!"}
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+        return
+      }
+      else if(user&&(user.MotDePasse.trim()==req.body.Password.trim())){
+        let json = { message: "mot de pass verifié"}
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+        return
+      }
+      else if(user&&(user.MotDePasse.trim()!=req.body.Password.trim())){
+        let json = { message: "mauvais mot de passe"}
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+        return
+      }
+      else {
+        let json = { message: "erreur!"}
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+        return
+      }
+    })
+  }
+  else{
+    let json = { message: "erreur!"}
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(json));
+    return
+  }
+})
+app.post('/upduserinfo',isLoggedIn,parseForm,csrfProtection,function(req,res){
+  if(req.body&&req.body.Email){
+    User.findOneAndUpdate({Email:req.body.Email},{$set:{MotDePasse:req.body.MotDePasse,Adresse:req.body.Adresse,Pays:req.body.Pays,Ville:req.body.Ville,CodePostal:req.body.CodePostal}},function(err,data){
+      if(err){
+        req.flash('error',"Erreur! Les informations n'ont pas pu être modifées! Veuillez contacter le webmaster...")
+      res.redirect('/espacemembre')
+      return
+      }
+      console.log('user updated')
+      Annonce.updateMany({Email:req.body.Email}, { $set:{Ville:req.body.Ville,CodePostal:req.body.CodePostal} },function(err,data){
+        if(err){
+          req.flash('error',"Erreur! Les informations des annonces n'ont pas pu être modifées! Veuillez contacter le webmaster...")
+          res.redirect('/espacemembre')
+          return
+        }
+      
+        console.log('user ads updated')
+        
+        req.flash('success','Informations modifées avec succès!')
+        res.redirect('/espacemembre')
+  
+      })
+    
+    })
 
+  }
+ else{
+  req.flash('error','Erreur lors de la soumission du formulaire!')
+  res.redirect('/espacemembre')
+ }
+ console.log(req.body)
+})
 //parse incoming ad post
 app.post('/deposer', isLoggedIn, (req, res) => {
   deposer(req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp)

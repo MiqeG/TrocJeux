@@ -166,6 +166,19 @@
             $('.ui.basic.modal.ImageModal').modal('show')
             $('#ModalImage').attr('src', $(this).attr('src'))
         })
+
+        //manage loading event on keypress enter and cancel enter key
+        document.addEventListener("keydown", keyDownTextField, false);
+
+function keyDownTextField(e) {
+  var keyCode = e.keyCode;
+  if(keyCode==13&&$('.ui.error.message').is(':visible')) {
+ 
+    $('.ui.form').removeClass('loading')
+  } else {
+  
+  }
+}
        $('.modifUserData').click(function(){
       
 $('.ui.basic.modal.modifmodal')
@@ -190,8 +203,8 @@ $('.ui.basic.modal.modifmodal')
                     window.location.href = '/espacemembre'
 
                 }
-            });
-        });
-    });
+            })
+        })
+    })
 
 }

@@ -10,8 +10,6 @@ module.exports = function (req, res, Annonce, rimraf) {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(json));
 
-
-
             return
         }
         else {
