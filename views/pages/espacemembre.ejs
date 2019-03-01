@@ -1,6 +1,8 @@
 <% include header %>
 
 <% include components/annoncemodal %>
+
+<%- include('components/modifmodal',{csrfToken:csrfToken}) %>
 <div class="asd" style="padding-bottom:20em">
   <div class="ui inverted  asd "
     style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
@@ -75,7 +77,8 @@
           <div class="item">
             <div class="content">
               <p></p>
-              <div class="ui right  teal  button"><i class=" edit  icon"></i>Modifier</div>
+              <div class="ui right  teal  button modifUserData"><i class=" edit  icon"></i>Modifier</div>
+             
             </div>
           </div>
         </div>

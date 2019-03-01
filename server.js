@@ -222,8 +222,8 @@ app.get('/searchoption', function (req, res) {
   }
 })
 //on auth success diplay user ads
-app.get('/success', isLoggedIn, function (req, res) {
-  successValidation(req, res, Annonce, configFile)
+app.get('/success', isLoggedIn,csrfProtection, function (req, res) {
+  successValidation(req, res, Annonce, configFile,csrfProtection)
 
 })
 //display ad form
@@ -276,10 +276,10 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
 
 
 //member area
-app.get('/espacemembre', isLoggedIn, function (req, res) {
+app.get('/espacemembre', isLoggedIn,csrfProtection, function (req, res) {
 
   let searchoption = getSearchOption(req)
-  espacemembre(req, res, Annonce, configFile, searchoption)
+  espacemembre(req, res, Annonce, configFile, searchoption,csrfProtection)
 
 
 });

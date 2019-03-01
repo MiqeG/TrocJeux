@@ -166,7 +166,12 @@
             $('.ui.basic.modal.ImageModal').modal('show')
             $('#ModalImage').attr('src', $(this).attr('src'))
         })
-       
+       $('.modifUserData').click(function(){
+      
+$('.ui.basic.modal.modifmodal')
+  .modal('show')
+;
+       })
         $("#Oui").click(function () {
 
 
