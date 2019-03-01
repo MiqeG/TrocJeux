@@ -6,6 +6,7 @@ module.exports = function (req, res, next) {
         req.session.flash = undefined
     }
     if (req.session.formdata) {
+       
         res.locals.formdata = req.session.formdata
         req.session.formdata = undefined
     }
@@ -17,7 +18,7 @@ module.exports = function (req, res, next) {
         if (req.session.formdata === undefined) {
             req.session.formdata = {}
         }
-
+        console.log(req.body)
         req.session.formdata = req.body
         req.session.flash.code = code;
         req.session.flash[type] = content

@@ -70,7 +70,6 @@ let effacerAnnonce = require('./routes/effacerannonce')
 let errorNotFound = require('./routes/errornotfound')
 let searchApi = require('./routes/searchapi')
 let reinitialiser = require('./routes/reinitialiser')
-let successValidation = require('./routes/successvalidation')
 let secureReinitialisation = require('./routes/securereinitialisation')
 let inscriptionval = require('./routes/inscriptionval')
 //Empty temp folder on startup
@@ -221,11 +220,8 @@ app.get('/searchoption', function (req, res) {
 
   }
 })
-//on auth success diplay user ads
-app.get('/success', isLoggedIn,csrfProtection, function (req, res) {
-  successValidation(req, res, Annonce, configFile,csrfProtection)
 
-})
+
 //display ad form
 app.get('/deposer', isLoggedIn, csrfProtection, (req, res) => {
 
@@ -251,7 +247,7 @@ app.post('/connexion',
 
     req.session._id = req.user._id
 
-    res.redirect('/success?username=' + req.user.NomUitilisateur);
+    res.redirect('/espacemembre')
   });
 
 //logout user
@@ -279,7 +275,7 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
 app.get('/espacemembre', isLoggedIn,csrfProtection, function (req, res) {
 
   let searchoption = getSearchOption(req)
-  espacemembre(req, res, Annonce, configFile, searchoption,csrfProtection)
+  espacemembre(req, res, Annonce, configFile,User, searchoption,csrfProtection)
 
 
 });
