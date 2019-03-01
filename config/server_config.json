@@ -1,5 +1,6 @@
 {
     "serverConfigurationVariables": {
+        "installationPath":"C:/git/TrocJeux",
         "port": 443,
         "clearport":80,
         "maxFile:": 100,
@@ -10,7 +11,7 @@
         "keyPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-key.pem",
         "certPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-crt.pem",
         "serverKey":"trocjeuxclef",
-        "maxAnnonces":4
+        "maxAnnonces":9
         
     },
     "ServerUrl": "https://theroxxors.ml",

@@ -1,4 +1,4 @@
-module.exports = function (req, res, Annonce, rimraf) {
+module.exports = function (req, res, Annonce, rimraf,configFile) {
     let json = {}
     console.log(req.body._id)
     Annonce.findOneAndDelete({ _id: req.body._id }, function (err) {
@@ -15,10 +15,15 @@ module.exports = function (req, res, Annonce, rimraf) {
         else {
             json = { annonceId: req.body._id }
         }
-        console.log('deleting ad from user' + req.body.User_Id)
-        console.log('deleting ad from ad id' + req.body._id)
-        console.log('Path: ' + "/UserImages/" + req.body.User_Id + '/' + req.body._id)
-        rimraf(__dirname + '/UserImages/' + req.body.User_Id + '/' + req.body._id, function (err) {
+       
+       
+        console.log('Path: '+configFile.serverConfigurationVariables.installationPath + '/UserImages/' + req.body.User_Id + '/' + req.body._id)
+
+        rimraf(configFile.serverConfigurationVariables.installationPath + '/UserImages/' + req.body.User_Id + '/' + req.body._id, function (err) {
+            if(err){
+                req.flash('error',"une erreur est survenue lors de l'effacement! Contactez un webmaster...")
+                res.redirect('/espacemembre')
+            }
             console.log('deleted ad: ' + req.body.User_Id)
             req.flash('success', 'Annonce : ' + req.body._id + ' supprimée...!')
             res.writeHead(200, { 'Content-Type': 'application/json' });
