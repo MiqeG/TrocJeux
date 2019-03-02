@@ -3,7 +3,7 @@
         "installationPath":"C:/git/TrocJeux",
         "port": 443,
         "clearport":80,
-        "maxFile:": 100,
+        "maxFile:": 1,
         "userImageFolder": "C:/git/TrocJeux/UserImages",
         "uploadAmount": 10,
         "maxFieldSize:": 20,

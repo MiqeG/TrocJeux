@@ -42,7 +42,7 @@
             $('.unhide').fadeIn(400)
         })
         if ($('#PaysTexte').text() != '') {
-            console.log($('#PaysTexte').text())
+           
             $('.unhide').fadeIn(400)
         }
         $('.toggler1').click(function () {
@@ -99,9 +99,10 @@
                 }
             });
 
-            $('.coupled.modal').modal({allowMultiple:false})
+           
         $('.Connexion').click(function () {
             $('#connexionmodal').modal('show')
+            
 
         })
         $('.modalshow').click(function () {
@@ -155,17 +156,7 @@
             $('.ui.basic.modal.ImageModal').modal('show')
             $('#ModalImage').attr('src', $(this).attr('src'))
         })
-
-      
-       
-      
-       $('.modifUserData').click(function(){
-      
-$('.ui.basic.modal.modifmodal')
-  .modal('show')
-
-       })
-
+                          
     })
 
 }

@@ -173,7 +173,21 @@
 <script src="assets/sitescripts/imod.js"></script>
 <script>
   $(document).ready(function () {
+    $('.modifUserData').click(function(){
+      
+      
+        
+        $('.ui.basic.modal.modifmodal').modal({
+        onHide: function(){
+            $('#imod').hide()
+            $('#ajaxmdp').show()
+            $('#actualmdp').val('')
 
+        }
+       
+    }).modal('show');
+             })
+             
     $('.miniatureImg').click(function () {
       $('#masterImg' + $(this).attr('data-masterRef')).attr('src', $(this).attr('src'))
       $('.miniatureImg.' + $(this).attr('data-masterRef')).css('padding', '0px')
@@ -194,7 +208,7 @@ $.ajax({
     },
     error: function (err) {
         alert("Erreur lors de l'effacement");
-        console.log(err)
+        console.log("Erreur lors de l'effacement")
         window.location.href = '/espacemembre'
 
     }

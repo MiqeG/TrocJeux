@@ -186,7 +186,7 @@ $(document).ready(function () {
       },
       success: function (result) {
         //Do Something
-        console.log(result)
+       
         $("#Ville").val(result.Ville);
         $("#CodePostal").val(result.CodePostal);
         if(result.CodePostal!=undefined){
@@ -200,7 +200,7 @@ $(document).ready(function () {
       },
       error: function (err) {
 
-        console.log('error')
+        console.log('ajax cp query error')
 
       }
     });

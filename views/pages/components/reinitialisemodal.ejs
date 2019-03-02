@@ -8,7 +8,7 @@
       <div class="ui medium image">
         <img src="assets/img/logoinverted.png">
       </div>
-      <form class="ui form rvalidation" id="rform" action="/reinitialiser" method="POST">
+      <form class="ui form rvalidation " id="rform" action="/reinitialiser" method="POST">
         <div class="description">
           <div class="ui header"><i class="mail teal icon "></i> Saisissez votre E-mail</div>
           <div class="field">
@@ -43,9 +43,7 @@
 <script>
 $(document).ready(function(){
  
-  $('#rloading').click(function(){
-    $('#rform').addClass('loading')
-  })
+
   $('#rform').keypress(function(e){
     if(e.which==13){
       if($('#rform').form('is valid')){
