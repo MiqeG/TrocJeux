@@ -8,16 +8,25 @@ module.exports = function (req, res, User, Annonce, configFile, IoOp, formidable
 
     //get user images
     let form = new formidable.IncomingForm();
-    form.maxFieldsSize = configFile.serverConfigurationVariables.maxFieldsSize * 1024 * 1024;
+    form.maxFieldsSize = configFile.serverConfigurationVariables.maxFieldsSize* 1024 * 1024;
     form.maxFields = configFile.serverConfigurationVariables.maxFields;
-    form.maxFileSize = configFile.serverConfigurationVariables.maxFile * 1024 * 1024;
+
+    form.maxFileSize = configFile.serverConfigurationVariables.maxFileSize* 1024 * 1024;
     form.uploadDir = configFile.serverConfigurationVariables.userImageFolder;
     form.hash = 'md5';
     form.keepExtensions = true;
     form.uploadDir = configFile.serverConfigurationVariables.userImageFolder + ('/temp')
     form.parse(req, function (err, fields, files) {
+      if(err){
+       
+        console.log('FORM PARSE ERROR')
+        req.flash('error',"Erreur lors de la soumission...taille maximale d'un fichier limité a 1MB")
+        res.redirect('/deposer')
+        return
+      }
       if (files.length > configFile.serverConfigurationVariables.uploadAmount)
         return
+        
       User.findOne({ Email: fields.Email.trim() }, function (err, item) {
 
         var array = fields.Categories.split(',')

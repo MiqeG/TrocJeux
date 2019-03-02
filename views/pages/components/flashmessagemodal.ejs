@@ -1,7 +1,23 @@
 <div class="ui basic modal" id="inscriptionmodal">
     <div class="ui icon header">
 
-      <div class="cetered">
+      <div  class="cetered">
+          <div id="mehdiv"></div>
+        <div  id="modaltitleError" style="color:rgb(212, 28, 28)" hidden>
+           
+             <div id="modaltitlecontentError"  ></div>
+            
+             
+        </div>
+        <div  id="modaltitleSuccess" style="color:rgb(53, 207, 104)" hidden>
+           
+            <div id="modaltitlecontentSuccess"  ></div>
+           
+            
+       </div>
+        <br>
+        <div id="modalcontent" hidden>
+        </div>
         <% if(locals.flash && locals.flash.error){ %>
         <div class="ui     red basic cancel inverted" style="color:rgb(219, 77, 77)">
           <i class="meh outline icon"></i><span id="sessionFlash"><%= flash.error %></span>

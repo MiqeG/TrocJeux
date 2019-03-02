@@ -3,15 +3,15 @@
         "installationPath":"C:/git/TrocJeux",
         "port": 443,
         "clearport":80,
-        "maxFile:": 1,
+        "maxFileSize": 1,
         "userImageFolder": "C:/git/TrocJeux/UserImages",
         "uploadAmount": 10,
-        "maxFieldSize:": 20,
-        "maxFields": 50,
+        "maxFieldSize": 10,
+        "maxFields": 10,
         "keyPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-key.pem",
         "certPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-crt.pem",
         "serverKey":"trocjeuxclef",
-        "maxAnnonces":9
+        "maxAnnonces":4
         
     },
     "ServerUrl": "https://theroxxors.ml",

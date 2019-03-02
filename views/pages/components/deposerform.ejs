@@ -2,6 +2,7 @@
     enctype="multipart/form-data" autocomplete="on">
     <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+ 
     <div class="two fields">
         <div class="field">
             <label for="NomUitilisateur"> <i class="user teal icon"></i>Nom d'utilisateur</label>
@@ -92,7 +93,7 @@
 
                                                 <div class="image-upload-wrap">
                                                     <input id="uploadInput" class="file-upload-input" name="Categories"
-                                                        type='file' onchange="readURL(this,<%= uploadAmount %>);"
+                                                        type='file' onchange="readURL(this,<%= uploadAmount %>,<%= maxFileSize %>);"
                                                         accept="image/*" multiple required />
                                                     <div class="drag-text">
 
