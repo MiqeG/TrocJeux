@@ -2,15 +2,16 @@
 
 
 
-    <div class="ui middle aligned center aligned grid">
-      <div class="column">
-        <h2 class="ui image content">
-          <div class="content">
-            <i class="thumbs up outline
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+      <h2 class="ui image content">
+        <div class="content">
+          <i class="thumbs up outline
            teal icon"></i> Connectez Vous...
-          </div>
-        </h2>
-        <form action="/connexion" method="POST" class="ui large form">
+        </div>
+      </h2>
+      <form action="/connexion" method="POST">
+        <div class="ui form cform">
           <div class="ui stacked secondary  segment">
             <div class="field">
               <div class="ui left icon input">
@@ -25,17 +26,23 @@
                   autocomplete="off">
               </div>
             </div>
-            <input type="submit" class="ui fluid large teal submit button" id="LogIn" value="Connexion"></input>
+            <input type="submit" class="ui fluid large teal submit button formloading" id="LogIn"
+              value="Connexion"></input>
           </div>
 
 
 
-        </form>
 
-        <div class="ui message">
-          S'Inscrire? <a class="linker" href="<% ServerUrl %>/inscription">Inscription</a> Mot de passe oublié? <a
-            class="reinitialiser linker">Réinitialiser</a>
+          <div class="ui error message div" id="cerror"><i class="meh red icon"></i> Saisissez un mot de passe et un E-mail</div>
+          
+          <div class="ui message">
+            S'Inscrire? <a class="linker" href="<% ServerUrl %>/inscription">Inscription</a> Mot de passe oublié? <a
+              class="reinitialiser linker">Réinitialiser</a>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
+</div>
+
+<script src="<% ServerUrl %>/assets/formvalidation/cformvalidation.js"></script>

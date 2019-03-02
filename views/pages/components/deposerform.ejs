@@ -1,4 +1,4 @@
-<form class="ui form imageform asd " style="margin-bottom: 10%;max-width:620px" action="/deposer" method="POST"
+<form class="ui form imageform asd " style="margin-bottom: 10%;max-width:620px" id="depfor" action="/deposer" method="POST"
     enctype="multipart/form-data" autocomplete="on">
     <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -136,12 +136,20 @@
 
 </form>
 
-<script> var target = document.querySelector('#deposererror')
-    var observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            $('.ui.form').removeClass('loading')
-        });
-    });
-    var config = { attributes: true, childList: true, characterData: true }
-    observer.observe(target, config);</script>
+
+<script>
+    $(document).ready(function(){
+      
+          $('.formloading').click(function () {
+           
+            if($('#depfor').form('is valid')){
+                $('#depfor').addClass('loading')
+              }
+              else{
+                $('#depfor').removeClass('loading')
+              }
+               
+           
+        })
+    })
 </script>

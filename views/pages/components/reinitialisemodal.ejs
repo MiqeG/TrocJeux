@@ -1,4 +1,4 @@
-  <div class="ui coupled modal reinitialise" style="background-color:rgb(224, 215, 215)">
+  <div class="ui coupled modal reinitialise"  style="background-color:rgb(224, 215, 215)">
 
     <i class="close icon"></i>
     <div class="header">
@@ -8,7 +8,7 @@
       <div class="ui medium image">
         <img src="assets/img/logoinverted.png">
       </div>
-      <form class="ui form rvalidation" action="/reinitialiser" method="POST">
+      <form class="ui form rvalidation" id="rform" action="/reinitialiser" method="POST">
         <div class="description">
           <div class="ui header"><i class="mail teal icon "></i> Saisissez votre E-mail</div>
           <div class="field">
@@ -29,7 +29,7 @@
       <div class="ui black deny button " id="retourconnexion">
         Retour
       </div>
-      <button type="submit" class="ui  right labeled teal icon button">
+      <button id="rloading" type="submit" class="ui right labeled teal icon button">
         <i class="checkmark icon"></i>
         Envoyer!
 
@@ -40,3 +40,34 @@
     </div>
 
   </div>
+<script>
+$(document).ready(function(){
+ 
+  $('#rloading').click(function(){
+    $('#rform').addClass('loading')
+  })
+  $('#rform').keypress(function(e){
+    if(e.which==13){
+      if($('#rform').form('is valid')){
+          $('#rform').addClass('loading')
+        }
+        else{
+          $('#rform').removeClass('loading')
+        }
+    }
+   
+})
+$('#rloading').click(function () {
+ 
+  if($('#rform').form('is valid')){
+      $('#rform').addClass('loading')
+    }
+    else{
+      $('#rform').removeClass('loading')
+    }
+     
+ 
+})
+})
+ 
+</script>

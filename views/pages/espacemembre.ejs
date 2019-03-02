@@ -138,7 +138,7 @@
                         onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
                           data-idannonce="<%= annonces[index]._id  %>"></i></div>
                       <div data-idannonce="<%= annonces[index]._id %>"
-                        class="ui left floated  red  button modalshow memberbuttons"><i class=" delete  icon"></i>
+                        class="ui left floated  red  button modalshow memberbuttons deleteloading"><i class=" delete  icon"></i>
 
                       </div>
                     </div>
@@ -180,5 +180,26 @@
       $(this).css('padding', '5px')
     })
   })
+  $("#Oui").click(function () {
+
+    $('.espacemembre').addClass('loading')
+
+$.ajax({
+    url: '/effacerannonce',
+    type: 'POST',
+    dataType: 'json',
+    data: { _id: $('#selection').attr('data-selection'), User_Id: $('#selection').attr('data-user') },
+    success: function (data) {
+        window.location.href = '/espacemembre'
+    },
+    error: function (err) {
+        alert("Erreur lors de l'effacement");
+        console.log(err)
+        window.location.href = '/espacemembre'
+
+    }
+})
+})
+
 </script>
 <% include footer %>

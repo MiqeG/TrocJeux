@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 
-    $('.ui.form.mdpsecure')
+    $('#mdpsecure')
       .form({
         on: 'blur',
         fields: {
@@ -40,4 +40,5 @@ $(document).ready(function () {
           },
         }
       })
+
     })

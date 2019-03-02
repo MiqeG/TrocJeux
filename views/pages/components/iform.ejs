@@ -1,29 +1,29 @@
-<form class="ui form asd iform hiddeniformdiv" action="/Inscription" method="POST">
-    <h1 class="head hidehead"><i class="users teal icon"></i>Rejoignez nous... </h1>
+<form class="ui form asd iform" id="iform1" action="/Inscription" method="POST">
+    <h1 class="head"><i class="users teal icon"></i>Rejoignez nous... </h1>
 
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
 
     <div class="two fields">
         <div class="field">
-            <label class="whiteclasstitle" for="NomUitilisateur"> <i class="user teal icon"></i>Nom
+            <label  for="NomUitilisateur"> <i class="user teal icon"></i>Nom
                 d'utilisateur</label>
             <% if(locals.formdata && locals.formdata.NomUitilisateur && locals.flash.code!="nUdejaSoumis"){ %>
 
-            <input class="readOl" name="NomUitilisateur" id="NomUitilisateur"
+            <input  name="NomUitilisateur" id="NomUitilisateur"
                 value="<%= locals.formdata.NomUitilisateur %>" maxlength="20" minlength="4"></input>
             <% }else{ %>
 
-            <input class="readOl" name="NomUitilisateur" id="NomUitilisateur" maxlength="20" minlength="4"></input>
+            <input  name="NomUitilisateur" id="NomUitilisateur" maxlength="20" minlength="4"></input>
             <% } %>
         </div>
         <div class="field">
-            <label class="whiteclasstitle" for="Nom"><i class="address card teal icon"></i> Nom</label>
+            <label  for="Nom"><i class="address card teal icon"></i> Nom</label>
             <% if(locals.formdata && locals.formdata.Nom){ %>
-            <input class="readOl" name="Nom" id="Nom" value="<%= locals.formdata.Nom %>" maxlength="35"
+            <input  name="Nom" id="Nom" value="<%= locals.formdata.Nom %>" maxlength="35"
                 minlength="2"></input>
             <% }else{ %>
-            <input class="readOl" name="Nom" id="Nom" maxlength="35" minlength="2"></input>
+            <input  name="Nom" id="Nom" maxlength="35" minlength="2"></input>
             <% } %>
 
         </div>
@@ -31,29 +31,29 @@
     <div class="two fields">
         <div class="field">
 
-            <label class="whiteclasstitle" for="Prenom"><i class="address card outline teal icon"></i>
+            <label  for="Prenom"><i class="address card outline teal icon"></i>
                 Prenom</label>
             <% if(locals.formdata && locals.formdata.Prenom ){ %>
-            <input class="readOl" name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>" maxlength="35"
+            <input  name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>" maxlength="35"
                 minlength="2"></input>
             <% }else{ %>
-            <input class="readOl" name="Prenom" id="Prenom" maxlength="35" minlength="2"></input>
+            <input  name="Prenom" id="Prenom" maxlength="35" minlength="2"></input>
             <% } %>
         </div>
         <div class="field">
 
-            <label class="whiteclasstitle" for="Email"><i class="envelope open outline teal icon"></i>Email</label>
+            <label  for="Email"><i class="envelope open outline teal icon"></i>Email</label>
             <% if(locals.formdata && locals.formdata.Email && locals.flash.code!="eDejaSoumis"){ %>
-            <input class="readOl" name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50"></input>
+            <input  name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50"></input>
             <% }else{ %>
-            <input class="readOl" name="Email" id="Email" maxlength="50"></input>
+            <input  name="Email" id="Email" maxlength="50"></input>
             <% } %>
         </div>
     </div>
 
     <div class="two fields">
         <div class="field">
-            <label class="whiteclasstitle" for="MotDePasse"><i class="key icon teal"></i> Mot de passe</label>
+            <label  for="MotDePasse"><i class="key icon teal"></i> Mot de passe</label>
             <% if(locals.formdata && locals.formdata.MotDePasse ){ %>
             <input class="changer" name="MotDePasse" id="MotDePasse" type="password"
                 value="<%= locals.formdata.MotDePasse %>" maxlength="40" autocomplete="off"></input>
@@ -63,7 +63,7 @@
             <% } %>
         </div>
         <div class="field">
-            <label class="whiteclasstitle" for="MotDePasse"><i class="keyboard outline teal icon"></i> Verification
+            <label  for="MotDePasse"><i class="keyboard outline teal icon"></i> Verification
                 mot
                 de passe</label>
             <input name="VerificationMotDePasse" id="VerificationMotDePasse" type="password" maxlength="40"
@@ -72,21 +72,21 @@
     </div>
     <div class="two fields">
         <div class="field">
-            <label class="whiteclasstitle" for=" Adresse"><i class="address card teal icon"></i> Adresse</label>
+            <label  for=" Adresse"><i class="address card teal icon"></i> Adresse</label>
             <% if(locals.formdata && locals.formdata.Adresse ){ %>
-            <input class="changer" name="Adresse" id="Adresse" value="<%= locals.formdata.Adresse %>" maxlength="400"
+            <input  name="Adresse" id="Adresse" value="<%= locals.formdata.Adresse %>" maxlength="400"
                 minlength="4"></input>
             <% }else{ %>
-            <input class="changer" name="Adresse" id="Adresse" maxlength="400" minlength="4"></input>
+            <input  name="Adresse" id="Adresse" maxlength="400" minlength="4"></input>
             <% } %>
         </div>
         <div class="field">
-            <label class="whiteclasstitle"><i class="globe teal icon"></i> Pays</label>
+            <label ><i class="globe teal icon"></i> Pays</label>
             <div class="ui fluid selection dropdown">
                 <% if(locals.formdata &&locals.formdata.Pays  ){ %>
-                <input class="changer" type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
+                <input  type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
                 <% }else{ %>
-                <input class="changer" type="hidden" name="Pays" id="Pays">
+                <input  type="hidden" name="Pays" id="Pays">
                 <% } %>
                 <% if(locals.formdata &&locals.formdata.Pays  ){ %>
                 <div class="default text  " style="color:black" id="PaysTexte"><%= locals.formdata.Pays  %></div>
@@ -104,7 +104,7 @@
     </div>
     <div class="two fields">
         <div class="field unhide" hidden>
-            <label class="whiteclasstitle" for="Ville"><i class="chess rook teal icon"></i> Ville</label>
+            <label  for="Ville"><i class="chess rook teal icon"></i> Ville</label>
             <% if(locals.formdata &&locals.formdata.Ville && locals.flash.code!="villeIntrouvable" ){ %>
             <input class="showsend changer" type="text" name="Ville" id="Ville"
                 value="<%= locals.formdata.Ville %>"></input>
@@ -113,7 +113,7 @@
             <% } %>
         </div>
         <div class="field unhide" hidden>
-            <label class="whiteclasstitle" for="CodePostal"><i class="address card outline teal icon"></i> Code
+            <label  for="CodePostal"><i class="address card outline teal icon"></i> Code
                 Postal</label>
             <% if(locals.formdata &&locals.formdata.CodePostal  && locals.flash.code!="villeIntrouvable" ){ %>
             <input class="showsend changer" name="CodePostal" id="CodePostal" value="<%= locals.formdata.CodePostal %>"
@@ -124,20 +124,35 @@
         </div>
     </div>
     <div id="updformcontrol">
-        <button id="inscriptionSubmit" class="ui teal labeled submit icon button formloading "><i class="icon edit"
-                hidden></i>Envoyer</button></div>
+        <div  id="inscriptionSubmit" class="ui teal labeled submit icon button formloading "><i class="icon edit"
+                hidden></i>Envoyer</div></div>
     <div class="ui error message" id="iformerror"></div>
 
 
 </form>
 <script>
-    var target = document.querySelector('#iformerror')
-    var observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            $('.ui.form').removeClass('loading')
-        });
-    });
-    var config = { attributes: true, childList: true, characterData: true }
-    observer.observe(target, config);
-
+    $(document).ready(function(){
+        $('#iform1').keypress(function(e){
+              if(e.which==13){
+                if($('#iform1').form('is valid')){
+                    $('#iform1').addClass('loading')
+                  }
+                  else{
+                    $('#iform1').removeClass('loading')
+                  }
+              }
+             
+          })
+          $('.formloading').click(function () {
+           
+            if($('#iform1').form('is valid')){
+                $('#iform1').addClass('loading')
+              }
+              else{
+                $('#iform1').removeClass('loading')
+              }
+               
+           
+        })
+    })
 </script>

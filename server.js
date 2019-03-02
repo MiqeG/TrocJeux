@@ -80,7 +80,7 @@ let tempUsers = {};
 let tempReinit = {};
 mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
   if (err) throw err
-  console.log('Temp folder empty!')
+  console.log('Temp folder ok!')
 });
 
 

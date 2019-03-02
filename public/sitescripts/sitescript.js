@@ -1,6 +1,7 @@
 {
     $(document).ready(function () {
         $(function () {
+        
            if($('#Ville').val()!=''){
                $('#inscriptionSubmit').fadeIn()
            }else{
@@ -29,12 +30,7 @@
             $('.openbtn').click();
         });
        
-        $('.formloading').click(function () {
-           
-            $('.ui.form').addClass('loading')
-               
-           
-        })
+       
        
       
 
@@ -160,42 +156,16 @@
             $('#ModalImage').attr('src', $(this).attr('src'))
         })
 
-        //manage loading event on keypress enter and cancel enter key
+      
        
-        $(document).keydown(function(event){
-            if(event.keyCode==13){
-                event.preventDefault();
-                return false;
-            }
-            
-        });
-
+      
        $('.modifUserData').click(function(){
       
 $('.ui.basic.modal.modifmodal')
   .modal('show')
-;
+
        })
-        $("#Oui").click(function () {
 
-
-
-            $.ajax({
-                url: '/effacerannonce',
-                type: 'POST',
-                dataType: 'json',
-                data: { _id: $('#selection').attr('data-selection'), User_Id: $('#selection').attr('data-user') },
-                success: function (data) {
-                    window.location.href = '/espacemembre'
-                },
-                error: function (err) {
-                    alert("Erreur lors de l'effacement");
-                    console.log(err)
-                    window.location.href = '/espacemembre'
-
-                }
-            })
-        })
     })
 
 }
