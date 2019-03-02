@@ -74,7 +74,7 @@ let secureReinitialisation = require('./routes/securereinitialisation')
 let inscriptionval = require('./routes/inscriptionval')
 let ajaxmdp = require('./routes/ajaxmdp')
 let userupdinfo = require('./routes/userupdinfo')
-let nmdp=require('./routes/nmdp')
+let nmdp = require('./routes/nmdp')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -192,7 +192,7 @@ app.get('/secureinitilisation', csrfProtection, function (req, res) {
 // secure password reset form
 app.post('/nmdp', parseForm, csrfProtection, function (req, res) {
 
- nmdp(req,res,User)
+  nmdp(req, res, User)
 
 })
 //favicon icon

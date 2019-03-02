@@ -57,7 +57,7 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
                         let arrayDate = ciphertextDate.split('')
                         array = masterReplace(array)
                         arrayDate = masterReplace(arrayDate)
-                        
+
 
                         let deplaced = array.join('');
                         let deplacedDate = arrayDate.join('')

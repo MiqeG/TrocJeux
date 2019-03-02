@@ -78,7 +78,7 @@
             <div class="content">
               <p></p>
               <div class="ui right  teal  button modifUserData"><i class=" edit  icon"></i>Modifier</div>
-             
+
             </div>
           </div>
         </div>
@@ -96,12 +96,12 @@
                   <% let DateTimeVariable= new Date( annonces[index].DatePublication ) %>
                   <span class="hlink"> <%= annonces[index].Titre %></span>
                   <i class="ui calendar alternate teal icon"></i> <span style="color:teal;">
-                <div hidden> 
-                 
-                   <% let month=DateTimeVariable.getMonth(); %>
-                  <%= month=month+1 %>
-                  
-                </div>  
+                    <div hidden>
+
+                      <% let month=DateTimeVariable.getMonth(); %>
+                      <%= month=month+1 %>
+
+                    </div>
                     <%= DateTimeVariable.getDate() +' / '+month+' / '+DateTimeVariable.getFullYear() %>
                     <span>&nbsp<i class="ui clock teal icon"></i></span>
                     <%= DateTimeVariable.getHours()+' : '+DateTimeVariable.getMinutes()+' : '+DateTimeVariable.getSeconds() %>
@@ -138,7 +138,8 @@
                         onclick="window.location.href='/modifier/annonceid'"><i class=" edit  icon"
                           data-idannonce="<%= annonces[index]._id  %>"></i></div>
                       <div data-idannonce="<%= annonces[index]._id %>"
-                        class="ui left floated  red  button modalshow memberbuttons deleteloading"><i class=" delete  icon"></i>
+                        class="ui left floated  red  button modalshow memberbuttons deleteloading"><i
+                          class=" delete  icon"></i>
 
                       </div>
                     </div>
@@ -147,7 +148,7 @@
                       <textarea readonly="">       <%= annonces[index].Texte %></textarea>
 
                     </div>
-                  
+
                   </div>
                 </div>
               </div>
@@ -173,21 +174,21 @@
 <script src="assets/sitescripts/imod.js"></script>
 <script>
   $(document).ready(function () {
-    $('.modifUserData').click(function(){
-      
-      
-        
-        $('.ui.basic.modal.modifmodal').modal({
-        onHide: function(){
-            $('#imod').hide()
-            $('#ajaxmdp').show()
-            $('#actualmdp').val('')
+    $('.modifUserData').click(function () {
+
+
+
+      $('.ui.basic.modal.modifmodal').modal({
+        onHide: function () {
+          $('#imod').hide()
+          $('#ajaxmdp').show()
+          $('#actualmdp').val('')
 
         }
-       
-    }).modal('show');
-             })
-             
+
+      }).modal('show');
+    })
+
     $('.miniatureImg').click(function () {
       $('#masterImg' + $(this).attr('data-masterRef')).attr('src', $(this).attr('src'))
       $('.miniatureImg.' + $(this).attr('data-masterRef')).css('padding', '0px')
@@ -198,22 +199,22 @@
 
     $('.espacemembre').addClass('loading')
 
-$.ajax({
-    url: '/effacerannonce',
-    type: 'POST',
-    dataType: 'json',
-    data: { _id: $('#selection').attr('data-selection'), User_Id: $('#selection').attr('data-user') },
-    success: function (data) {
+    $.ajax({
+      url: '/effacerannonce',
+      type: 'POST',
+      dataType: 'json',
+      data: { _id: $('#selection').attr('data-selection'), User_Id: $('#selection').attr('data-user') },
+      success: function (data) {
         window.location.href = '/espacemembre'
-    },
-    error: function (err) {
-        alert("Erreur lors de l'effacement");
+      },
+      error: function (err) {
+
         console.log("Erreur lors de l'effacement")
         window.location.href = '/espacemembre'
 
-    }
-})
-})
+      }
+    })
+  })
 
 </script>
 <% include footer %>

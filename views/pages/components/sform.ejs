@@ -1,11 +1,9 @@
-
-
 <form class="ui form mdpsecure asd" id="mdpsecure" action="/nmdp" method="POST" style="max-width:620px;">
-<h1><i class="ui teal key icon"></i> Réinitialisation de votre mot de passe... </h1>
+  <h1><i class="ui teal key icon"></i> Réinitialisation de votre mot de passe... </h1>
 
-<h3>Bonjour <%= userName %> </h3>
-<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-<input type="hidden" name="user" value="<%= user %>" >
+  <h3>Bonjour <%= userName %> </h3>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <input type="hidden" name="user" value="<%= user %>">
   <div class="field">
     <label>Mot de passe</label>
     <input type="text" name="MotDePasse" placeholder="">
@@ -14,33 +12,33 @@
     <label>Verification mot de passe</label>
     <input type="text" name="VerificationMotDePasse" placeholder="">
   </div>
-  
+
   <button class="ui teal button formloading" type="submit"><i class="ui white check icon"></i> Envoyer!</button>
   <div class="ui error message"></div>
 </form>
 <script>
-        $(document).ready(function(){
-            $('#mdpsecure').keypress(function(e){
-                  if(e.which==13){
-                    if($('#mdpsecure').form('is valid')){
-                        $('#mdpsecure').addClass('loading')
-                      }
-                      else{
-                        $('#mdpsecure').removeClass('loading')
-                      }
-                  }
-                 
-              })
-              $('.formloading').click(function () {
-               
-                if($('#mdpsecure').form('is valid')){
-                    $('#mdpsecure').addClass('loading')
-                  }
-                  else{
-                    $('#mdpsecure').removeClass('loading')
-                  }
-                   
-               
-            })
-        })
-    </script>
+  $(document).ready(function () {
+    $('#mdpsecure').keypress(function (e) {
+      if (e.which == 13) {
+        if ($('#mdpsecure').form('is valid')) {
+          $('#mdpsecure').addClass('loading')
+        }
+        else {
+          $('#mdpsecure').removeClass('loading')
+        }
+      }
+
+    })
+    $('.formloading').click(function () {
+
+      if ($('#mdpsecure').form('is valid')) {
+        $('#mdpsecure').addClass('loading')
+      }
+      else {
+        $('#mdpsecure').removeClass('loading')
+      }
+
+
+    })
+  })
+</script>

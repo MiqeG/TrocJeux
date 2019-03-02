@@ -17,14 +17,14 @@ module.exports = function (req, res, Annonce, configFile, User, searchoption, cs
                 Ville: user.Ville,
                 CodePostal: user.CodePostal
             }
-            if(res.locals.flash===undefined){
-                res.locals.flash=''
+            if (res.locals.flash === undefined) {
+                res.locals.flash = ''
             }
-           res.locals.flash.code=''
+            res.locals.flash.code = ''
 
 
             res.locals.formdata = userJson
-         
+
             res.render('pages/espacemembre', {
                 csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, ServerUrl: configFile.ServerUrl, categories: configFile.categories, searchoption: searchoption, annonces: annonces
             })

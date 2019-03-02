@@ -48,8 +48,8 @@ function readURL(input, length, fileSize) {
                     arrayOfBadFiles.push(input.files[index])
 
                 }
-               
-                $('.file-upload-image' + '.' + index).attr('data-fileName',input.files[index].name)
+
+                $('.file-upload-image' + '.' + index).attr('data-fileName', input.files[index].name)
                 $('.file-upload-image' + '.' + index).show();
             }
             if (arrayOfBadFiles.length > 0) {
@@ -94,50 +94,50 @@ function readURL(input, length, fileSize) {
             reader.readAsDataURL(input.files[index])
 
         }
-        let arrayOfCorruptedFiles=[]
+        let arrayOfCorruptedFiles = []
         $('.file-upload-image').on('error', function () {
 
 
-          
-            let fileName=$(this).attr('data-fileName')
+
+            let fileName = $(this).attr('data-fileName')
             arrayOfCorruptedFiles.push(fileName)
             $('#modalcontent').empty()
             arrayOfCorruptedFiles.forEach(element => {
-                $('#modalcontent').append('<span>'+element+'</span><br>')
+                $('#modalcontent').append('<span>' + element + '</span><br>')
             });
-           
-            if($('#mehdiv').is(':empty')){
+
+            if ($('#mehdiv').is(':empty')) {
                 $('#mehdiv').append('<i class="meh big outline red icon"></i>')
-                
-               
-              $('#inscriptionmodal').modal({
-                  onHide: function () {
-                      $('#modaltitlecontentError').text('')
-                      $('#modaltitleError').hide()
-                      $('#modalcontent').empty();
-                      $('#modalcontent').hide()
-                      $('#mehdiv').empty()
-                      arrayOfCorruptedFiles=[]
-                  },
-                  onShow: function () {
-                    
-                      $('#modaltitlecontentError').text('Erreur fichier(s) corrompu!!')
-                      
-                      $('#modaltitleError').show()
-                      $('#modalcontent').show()
-                      $('#mehdiv').show()
-                  },
-                  onApprove: function () {
-                      $('#modaltitlecontentError').text('')
-                      $('#modaltitleError').hide()
-                      $('#modalcontent').empty();
-                      $('#modalcontent').hide()
-                      $('#mehdiv').empty()
-                      arrayOfCorruptedFiles=[]
-                  }
-              }).modal('show');
+
+
+                $('#inscriptionmodal').modal({
+                    onHide: function () {
+                        $('#modaltitlecontentError').text('')
+                        $('#modaltitleError').hide()
+                        $('#modalcontent').empty();
+                        $('#modalcontent').hide()
+                        $('#mehdiv').empty()
+                        arrayOfCorruptedFiles = []
+                    },
+                    onShow: function () {
+
+                        $('#modaltitlecontentError').text('Erreur fichier(s) corrompu!!')
+
+                        $('#modaltitleError').show()
+                        $('#modalcontent').show()
+                        $('#mehdiv').show()
+                    },
+                    onApprove: function () {
+                        $('#modaltitlecontentError').text('')
+                        $('#modaltitleError').hide()
+                        $('#modalcontent').empty();
+                        $('#modalcontent').hide()
+                        $('#mehdiv').empty()
+                        arrayOfCorruptedFiles = []
+                    }
+                }).modal('show');
             }
-            
+
 
             removeUpload();
 

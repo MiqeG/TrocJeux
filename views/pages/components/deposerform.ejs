@@ -1,8 +1,8 @@
-<form class="ui form imageform asd " style="margin-bottom: 10%;max-width:620px" id="depfor" action="/deposer" method="POST"
-    enctype="multipart/form-data" autocomplete="on">
+<form class="ui form imageform asd " style="margin-bottom: 10%;max-width:620px" id="depfor" action="/deposer"
+    method="POST" enctype="multipart/form-data" autocomplete="on">
     <h1 class="head"><i class="tasks teal icon"></i>Déposer une annonce... </h1>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
- 
+
     <div class="two fields">
         <div class="field">
             <label for="NomUitilisateur"> <i class="user teal icon"></i>Nom d'utilisateur</label>
@@ -93,7 +93,8 @@
 
                                                 <div class="image-upload-wrap">
                                                     <input id="uploadInput" class="file-upload-input" name="Categories"
-                                                        type='file' onchange="readURL(this,<%= uploadAmount %>,<%= maxFileSize %>);"
+                                                        type='file'
+                                                        onchange="readURL(this,<%= uploadAmount %>,<%= maxFileSize %>);"
                                                         accept="image/*" multiple required />
                                                     <div class="drag-text">
 
@@ -139,18 +140,18 @@
 
 
 <script>
-    $(document).ready(function(){
-      
-          $('.formloading').click(function () {
-           
-            if($('#depfor').form('is valid')){
+    $(document).ready(function () {
+
+        $('.formloading').click(function () {
+
+            if ($('#depfor').form('is valid')) {
                 $('#depfor').addClass('loading')
-              }
-              else{
+            }
+            else {
                 $('#depfor').removeClass('loading')
-              }
-               
-           
+            }
+
+
         })
     })
 </script>

@@ -11,19 +11,22 @@
             <% if(locals.formdata && locals.formdata.NomUitilisateur && locals.flash.code!="nUdejaSoumis"){ %>
 
             <input class="disabled field" name="NomUitilisateur" id="NomUitilisateur"
-                value="<%= locals.formdata.NomUitilisateur %>" maxlength="20" minlength="4" autocomplete="off" readonly="readonly"></input>
+                value="<%= locals.formdata.NomUitilisateur %>" maxlength="20" minlength="4" autocomplete="off"
+                readonly="readonly"></input>
             <% }else{ %>
 
-            <input  class="disabled field"  name="NomUitilisateur" id="NomUitilisateur" maxlength="20" minlength="4" autocomplete="off" readonly="readonly"></input>
+            <input class="disabled field" name="NomUitilisateur" id="NomUitilisateur" maxlength="20" minlength="4"
+                autocomplete="off" readonly="readonly"></input>
             <% } %>
         </div>
         <div class="field">
-            <label class="whiteclasstitle"  for="Nom"><i class="address card teal icon"></i> Nom</label>
+            <label class="whiteclasstitle" for="Nom"><i class="address card teal icon"></i> Nom</label>
             <% if(locals.formdata && locals.formdata.Nom){ %>
-            <input  class="disabled field" name="Nom" id="Nom" value="<%= locals.formdata.Nom %>" maxlength="35"
+            <input class="disabled field" name="Nom" id="Nom" value="<%= locals.formdata.Nom %>" maxlength="35"
                 minlength="2" autocomplete="off" readonly="readonly"></input>
             <% }else{ %>
-            <input  class="disabled field" name="Nom" id="Nom" maxlength="35" minlength="2" autocomplete="off" readonly="readonly"></input>
+            <input class="disabled field" name="Nom" id="Nom" maxlength="35" minlength="2" autocomplete="off"
+                readonly="readonly"></input>
             <% } %>
 
         </div>
@@ -31,22 +34,25 @@
     <div class="two fields">
         <div class="field">
 
-            <label class="whiteclasstitle"  for="Prenom"><i class="address card outline teal icon"></i>
+            <label class="whiteclasstitle" for="Prenom"><i class="address card outline teal icon"></i>
                 Prenom</label>
             <% if(locals.formdata && locals.formdata.Prenom ){ %>
-            <input  class="disabled field"  name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>" maxlength="35"
+            <input class="disabled field" name="Prenom" id="Prenom" value="<%= locals.formdata.Prenom %>" maxlength="35"
                 minlength="2" autocomplete="off" readonly="readonly"></input>
             <% }else{ %>
-            <input  class="disabled field"  name="Prenom" id="Prenom" maxlength="35" minlength="2" autocomplete="off" readonly="readonly"></input>
+            <input class="disabled field" name="Prenom" id="Prenom" maxlength="35" minlength="2" autocomplete="off"
+                readonly="readonly"></input>
             <% } %>
         </div>
         <div class="field">
 
             <label class="whiteclasstitle" for="Email"><i class="envelope open outline teal icon"></i>Email</label>
             <% if(locals.formdata && locals.formdata.Email && locals.flash.code!="eDejaSoumis"){ %>
-            <input  class="disabled field"  name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50" autocomplete="off" readonly="readonly"></input>
+            <input class="disabled field" name="Email" id="Email" value="<%= locals.formdata.Email %>" maxlength="50"
+                autocomplete="off" readonly="readonly"></input>
             <% }else{ %>
-            <input  class="disabled field"  name="Email" id="Email" maxlength="50" autocomplete="off" readonly="readonly"></input>
+            <input class="disabled field" name="Email" id="Email" maxlength="50" autocomplete="off"
+                readonly="readonly"></input>
             <% } %>
         </div>
     </div>
@@ -55,7 +61,7 @@
         <div class="field">
             <label class="whiteclasstitle" for="MotDePasse"><i class="key icon teal"></i> Mot de passe</label>
             <% if(locals.formdata && locals.formdata.MotDePasse ){ %>
-            <input  class="changer" name="MotDePasse" id="MotDePasse" type="password"
+            <input class="changer" name="MotDePasse" id="MotDePasse" type="password"
                 value="<%= locals.formdata.MotDePasse %>" maxlength="40" autocomplete="off"></input>
             <% }else{ %>
             <input class="changer" name="MotDePasse" id="MotDePasse" type="password" maxlength="40"
@@ -66,8 +72,8 @@
             <label class="whiteclasstitle" for="MotDePasse"><i class="keyboard outline teal icon"></i> Verification
                 mot
                 de passe</label>
-            <input class="changer" name="VerificationMotDePasse" id="VerificationMotDePasse" type="password" maxlength="40"
-                autocomplete="off"></input>
+            <input class="changer" name="VerificationMotDePasse" id="VerificationMotDePasse" type="password"
+                maxlength="40" autocomplete="off"></input>
         </div>
     </div>
     <div class="two fields">
@@ -81,7 +87,7 @@
             <% } %>
         </div>
         <div class="field">
-            <label class="whiteclasstitle" ><i class="globe teal icon"></i> Pays</label>
+            <label class="whiteclasstitle"><i class="globe teal icon"></i> Pays</label>
             <div class="ui fluid selection dropdown">
                 <% if(locals.formdata &&locals.formdata.Pays  ){ %>
                 <input class="changer" type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
@@ -132,28 +138,28 @@
 </form>
 
 <script>
-        $(document).ready(function(){
-            $('#imod').keypress(function(e){
-                  if(e.which==13){
-                    if($('#imod').form('is valid')){
-                        $('#imod').addClass('loading')
-                      }
-                      else{
-                        $('#imod').removeClass('loading')
-                      }
-                  }
-                 
-              })
-              $('.formloading').click(function () {
-               
-                if($('#imod').form('is valid')){
+    $(document).ready(function () {
+        $('#imod').keypress(function (e) {
+            if (e.which == 13) {
+                if ($('#imod').form('is valid')) {
                     $('#imod').addClass('loading')
-                  }
-                  else{
+                }
+                else {
                     $('#imod').removeClass('loading')
-                  }
-                   
-               
-            })
+                }
+            }
+
         })
-    </script>
+        $('.formloading').click(function () {
+
+            if ($('#imod').form('is valid')) {
+                $('#imod').addClass('loading')
+            }
+            else {
+                $('#imod').removeClass('loading')
+            }
+
+
+        })
+    })
+</script>
