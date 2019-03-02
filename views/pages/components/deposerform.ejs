@@ -132,6 +132,16 @@
                         </table>
                     </div>
                 </div>
-                <div class="ui error message"></div>
+                <div class="ui error message" id="deposererror"></div>
 
 </form>
+
+<script> var target = document.querySelector('#deposererror')
+    var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            $('.ui.form').removeClass('loading')
+        });
+    });
+    var config = { attributes: true, childList: true, characterData: true }
+    observer.observe(target, config);</script>
+</script>

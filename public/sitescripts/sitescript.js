@@ -28,21 +28,14 @@
            })
             $('.openbtn').click();
         });
-        $(".ui.error.message").bind("DOMNodeInserted",function(){
-            $('.ui.form').removeClass('loading');
-        });
-        $(".ui.error.message").bind("DOMNodeRemoved",function(){
-            $('.ui.form').addClass('loading');
-        });
        
         $('.formloading').click(function () {
-        
-            $('.ui.form').addClass('loading');
+           
+            $('.ui.form').addClass('loading')
+               
+           
         })
-        $('.formLoadingMembre').click(function () {
-            $('.ui.form.espacemembre').addClass('loading');
-            $('.memberbuttons').hide()
-        })
+       
       
 
         if ($('#sessionFlash').length) {
@@ -168,17 +161,15 @@
         })
 
         //manage loading event on keypress enter and cancel enter key
-        document.addEventListener("keydown", keyDownTextField, false);
+       
+        $(document).keydown(function(event){
+            if(event.keyCode==13){
+                event.preventDefault();
+                return false;
+            }
+            
+        });
 
-function keyDownTextField(e) {
-  var keyCode = e.keyCode;
-  if(keyCode==13&&$('.ui.error.message').is(':visible')) {
- 
-    $('.ui.form').removeClass('loading')
-  } else {
-  
-  }
-}
        $('.modifUserData').click(function(){
       
 $('.ui.basic.modal.modifmodal')

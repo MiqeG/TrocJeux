@@ -1,10 +1,13 @@
-<div class="ui basic modal modifmodal">
+<div class="ui basic modal modifmodal" id="noenter">
     <div class="ui icon header">
       <i class="edit icon"></i>
      Modifiez vos informations...
     </div>
     <div class="content">
-        <% include pcheckform %>
+      <form>
+      <% include pcheckform %>
+      </form>
+       
         <% include iform %>
     </div>
     <div class="actions">
@@ -15,3 +18,13 @@
      
     </div>
   </div>
+  <script>
+$(window).keydown(function (event) {
+    if (event.keyCode == 13) {
+        
+        event.preventDefault();
+        return false;
+    }
+
+});
+</script>
