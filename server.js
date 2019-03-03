@@ -284,6 +284,20 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   ajaxCodePostal(req, res, SearchVille)
 
 })
+app.post('/adupd',isLoggedIn,function(req,res){
+console.log(req.body)
+Annonce.findOne({_id:req.body._id},function(err,annonce){
+  if(err){
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify('Erreur inconnue! veuillez nous contacter!'));
+    return
+  }
+  console.log(annonce)
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(annonce));
+  return
+})
+})
 //validate email upload link
 app.get('/emailupdval',function(req,res){
   if(req.query.u&&req.query.e&&req.query.d){
