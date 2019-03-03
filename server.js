@@ -76,6 +76,7 @@ let ajaxmdp = require('./routes/ajaxmdp')
 let userupdinfo = require('./routes/userupdinfo')
 let nmdp = require('./routes/nmdp')
 let emailupd=require('./routes/emailupd')
+let emailupdval=require('./routes/emailupdval')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -178,12 +179,13 @@ app.get('/inscriptionval', (req, res) => {
   })
 
 })
+//send password reset email
 app.post('/reinitialiser', (req, res) => {
 
   reinitialiser(req, res, User, configFile, CryptoJS)
 })
 
-// reset user password
+// reset user password / parse password link
 app.get('/secureinitilisation', csrfProtection, function (req, res) {
 
   secureReinitialisation(req, res, User, tempReinit, configFile, function (returnedReinit) {
@@ -243,7 +245,7 @@ app.get('/searchApi', (req, res) => {
 
 })
 
-//connect user
+//Update email ajax
 app.post('/emailupd',isLoggedIn,function(req,res){
   console.log(tempEmailUpd)
     emailupd(req,res,CryptoJS,tempEmailUpd,configFile,User,function(returnedTempEmail){
@@ -253,6 +255,7 @@ app.post('/emailupd',isLoggedIn,function(req,res){
     })
 
 })
+//Connect user
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
@@ -281,9 +284,10 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   ajaxCodePostal(req, res, SearchVille)
 
 })
+//validate email upload link
 app.get('/emailupdval',function(req,res){
   if(req.query.u&&req.query.e&&req.query.d){
-    emailupdval(req,res,req.query.u,req.query.e,req.query.d,tempEmailUpd,CryptoJS,User,function(returnedTempEmailUpd){
+    emailupdval(req,res,req.query.u,req.query.e,req.query.d,tempEmailUpd,CryptoJS,configFile,User,Annonce,function(returnedTempEmailUpd){
       tempEmailUpd=returnedTempEmailUpd
     })
   }

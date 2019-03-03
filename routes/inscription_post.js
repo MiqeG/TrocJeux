@@ -59,7 +59,7 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
                         formated = formated.toISOString()
                         let ciphertext = CryptoJS.AES.encrypt(req.body.Email.toString(), configFile.serverConfigurationVariables.serverKey).toString();
                         let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
-                        console.log(ciphertext)
+                       
                         let array = ciphertext.split('')
                         let arrayDate = ciphertextDate.split('')
                         array = masterReplace(array)
@@ -68,7 +68,7 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
 
                         let deplaced = array.join('');
                         let deplacedDate = arrayDate.join('')
-                        console.log(deplaced);
+                      
                         var user1 = new User({
                             Type: "User",
                             NomUitilisateur: req.body.NomUitilisateur,

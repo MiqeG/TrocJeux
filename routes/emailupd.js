@@ -49,7 +49,7 @@ module.exports = function (req, res, CryptoJS, tempEmailUpd, configFile,User, ca
  
  
                  // save model to RAM (tempUsers)
-                 console.log(tempEmailUpd)
+              
                  if (tempEmailUpd[req.user._id]) {
                     
                      let ramdate = new Date(tempEmailUpd[req.user._id].date)
@@ -83,7 +83,7 @@ module.exports = function (req, res, CryptoJS, tempEmailUpd, configFile,User, ca
 
                  sendEmail(subject, output, req.body.ajaxEmail)
                  jsonCreation(res, 200, 'E-mail de verification envoyé à: ' + req.body.ajaxEmail)
-                 console.log(tempEmailUpd)
+               
                  callback(tempEmailUpd)
                  return
                     }
