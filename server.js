@@ -242,6 +242,9 @@ app.get('/searchApi', (req, res) => {
 })
 
 //connect user
+app.post('/emailupd',isLoggedIn,function(req,res){
+console.log(req.body)
+})
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
