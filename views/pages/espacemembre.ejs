@@ -181,6 +181,7 @@
 
       $('.ui.basic.modal.modifmodal').modal({
         onHide: function () {
+          $('#ajaxEmailForm').hide()
           $('#imod').hide()
           $('#ajaxmdp').show()
           $('#actualmdp').val('')

@@ -151,12 +151,14 @@
     </div>
     <div class="two fields">
         <div class="field">
-            <div id="ajaxSubmit" class="ui teal button "> Valider!</div>
-            <div class="ui error message" id="ajaxErrorDiv"></div>
-            <div class="ui success message" id="ajaxSuccessDiv"></div>
+                <div id="ajaxSubmit" class="ui teal labeled icon submit button"><i class="icon envelope"
+                    ></i>Valider!</div>
+              
+                <div class="ui error message" id="ajaxErrorDiv"></div>
+                <div class="ui success message" id="ajaxSuccessDiv"></div>
         </div>
         <div class="field">
-
+               
         </div>
     </div>
 </div>
@@ -180,7 +182,7 @@
                     success: function (data) {
                         $('#ajaxEmailForm').removeClass('loading')
                         $('#ajaxInput').hide()
-                        $('#ajaxSubmit').hide()
+                        $('#ajaxSubmit')
                         $('#ajaxSuccessDiv').show()
                         $('#ajaxSuccessDiv').text('Success! Vous allez reçevoir une e-mail de confirmation...')
 
