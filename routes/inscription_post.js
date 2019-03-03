@@ -5,6 +5,8 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
     if (req.body === undefined || req.body === '') {
         req.flash('error', 'formulaire vide', 'vide')
         res.redirect('/inscription')
+        callback(tempUsers)
+        return
 
     }
     else {
@@ -18,6 +20,8 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
 
 
                 res.redirect('/inscription')
+                callback(tempUsers)
+                return
 
             }
             else {
@@ -30,6 +34,8 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
 
 
                         res.redirect('/inscription')
+                        callback(tempUsers)
+                        return
 
                     }
                     else {
@@ -44,9 +50,10 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
 
 
                             res.redirect('/inscription')
+                            callback(tempUsers)
                             return
                         }
-                        // Decrypt link
+                        // Encrypt link
                         let formated = new Date
                         formated.setHours(formated.getHours() + 1)
                         formated = formated.toISOString()
@@ -76,17 +83,18 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
                             Actif: true
                         });
 
-                        // save model to database
+                        // save model to RAM (tempUsers)
 
                         if (tempUsers[user1.Email]) {
                             req.flash('error', "Vous vous etes deja inscrit...vérifiez vos e-mails et validez votre inscription...")
                             res.redirect('/')
+                            callback(tempUsers)
                             return
                         }
                         tempUsers[user1.Email] = user1
 
 
-
+                        //compose and send email with link
                         let link = 'https://theroxxors.ml/inscriptionval?u=' + deplaced + '&d=' + deplacedDate
 
                         const output = `

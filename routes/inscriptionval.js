@@ -53,12 +53,14 @@ module.exports = function (req, res, User, CryptoJS, configFile, tempUsers, call
           req.flash('success', 'Inscription validée! Connectez vous pour commencer a troquer...')
           res.redirect('/')
           callback(tempUsers)
+          return
         })
       }
       else {
         req.flash('error', 'Une erreur est survenue! Votre compte est peut-être déja actif')
         res.redirect('/')
         callback(tempUsers)
+        return
       }
 
 
@@ -69,6 +71,7 @@ module.exports = function (req, res, User, CryptoJS, configFile, tempUsers, call
       req.flash('error', 'Une erreur est survenue!')
       res.redirect('/')
       callback(tempUsers)
+      return
     }
 
   }

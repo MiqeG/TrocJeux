@@ -75,9 +75,11 @@ let inscriptionval = require('./routes/inscriptionval')
 let ajaxmdp = require('./routes/ajaxmdp')
 let userupdinfo = require('./routes/userupdinfo')
 let nmdp = require('./routes/nmdp')
+let emailupd=require('./routes/emailupd')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
+let tempEmailUpd = {};
 mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
   if (err) throw err
   console.log('Temp folder ok!')
@@ -243,7 +245,13 @@ app.get('/searchApi', (req, res) => {
 
 //connect user
 app.post('/emailupd',isLoggedIn,function(req,res){
-console.log(req.body)
+  console.log(tempEmailUpd)
+    emailupd(req,res,CryptoJS,tempEmailUpd,configFile,User,function(returnedTempEmail){
+      tempEmailUpd=returnedTempEmail
+     console.log(tempEmailUpd)
+      console.log('END....')
+    })
+
 })
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
@@ -273,7 +281,17 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   ajaxCodePostal(req, res, SearchVille)
 
 })
-
+app.get('/emailupdval',function(req,res){
+  if(req.query.u&&req.query.e&&req.query.d){
+    emailupdval(req,res,req.query.u,req.query.e,req.query.d,tempEmailUpd,CryptoJS,User,function(returnedTempEmailUpd){
+      tempEmailUpd=returnedTempEmailUpd
+    })
+  }
+ else{
+   req.flash('error','Lien Invalide!!')
+   res.redirect('/')
+ }
+})
 
 //member area
 app.get('/espacemembre', isLoggedIn, csrfProtection, function (req, res) {

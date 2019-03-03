@@ -178,20 +178,21 @@
                     url: '/emailupd',
                     type: 'POST',
                     dataType: 'json',
-                    data: { NewMail: $('#ajaxInput').val(), Email: $('#Email').val() },
+                    data: { ajaxEmail: $('#ajaxInput').val(), Email: $('#Email').val() },
                     success: function (data) {
+                       
                         $('#ajaxEmailForm').removeClass('loading')
                         $('#ajaxInput').hide()
-                        $('#ajaxSubmit')
+                        $('#ajaxSubmit').hide()
                         $('#ajaxSuccessDiv').show()
-                        $('#ajaxSuccessDiv').text('Success! Vous allez reçevoir une e-mail de confirmation...')
+                        $('#ajaxSuccessDiv').text(data.message)
 
                     },
                     error: function (err) {
-
+                      
                         $('#ajaxEmailForm').removeClass('loading')
                         $('#ajaxErrorDiv').show()
-                        $('#ajaxErrorDiv').text('Erreur! Impossible de changer votre e-mail veuillez contacter un webmaster...')
+                        $('#ajaxErrorDiv').text(err.responseJSON.message)
 
                     }
                 })
