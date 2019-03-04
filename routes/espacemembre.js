@@ -34,6 +34,7 @@ module.exports = function (req, res, Annonce, configFile, User, searchoption, cs
                     categories: configFile.categories,
                     uploadAmount: configFile.serverConfigurationVariables.uploadAmount,
             maxFileSize: configFile.serverConfigurationVariables.maxFileSize,
+            _id:req.user._id
             })
         })
 

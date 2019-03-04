@@ -79,6 +79,7 @@ let nmdp = require('./routes/nmdp')
 let emailupd=require('./routes/emailupd')
 let emailupdval=require('./routes/emailupdval')
 let adupdpost=require('./routes/adupdpost')
+let deleteuser=require('./routes/deleteuser')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -267,8 +268,26 @@ else{
   return
 }
 
-
 })
+app.post('/deleteuser',isLoggedIn,function(req,res){
+  if(req.body.user_Id!=req.user._id){
+  
+    req.flash('error','Erreur interne serveur contactez nous!...')
+    res.redirect('/logout')
+    return
+  }
+  else if(req.body.Email!=req.user.Email){
+  
+    req.flash('error','Erreur interne serveur contactez nous!...')
+    res.redirect('/logout')
+    return
+  }
+  else{
+    deleteuser(req,res,User,Annonce,configFile, rimraf)
+  }
+ 
+
+  })
 //Connect user
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),

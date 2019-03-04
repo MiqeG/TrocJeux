@@ -2,7 +2,7 @@
 
 
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-
+    <input type="hidden" name="_id" id="hidId" value="<%= _id %>">
 
     <div class="two fields">
         <div class="field">
@@ -130,7 +130,7 @@
         </div>
     </div>
     <div id="updformcontrol">
-        <button id="inscriptionSubmit" class="ui teal labeled icon submit button formloading "><i class="icon edit"
+        <button id="inscriptionSubmit" class="ui teal labeled  icon submit button formloading "><i class="icon edit"
                 hidden></i>Envoyer</button></div>
     <div class="ui error message" id="imoderror"></div>
 
@@ -146,24 +146,83 @@
         <div class="field">
 
 
-        </div>
 
+        </div>
     </div>
     <div class="two fields">
         <div class="field">
-                <div id="ajaxSubmit" class="ui teal labeled icon submit button"><i class="icon envelope"
-                    ></i>Valider!</div>
-              
-                <div class="ui error message" id="ajaxErrorDiv"></div>
-                <div class="ui success message" id="ajaxSuccessDiv"></div>
+            <div id="ajaxSubmit" class="ui teal labeled  icon submit button"><i class="icon envelope"></i>Valider!</div>
+
+            <div class="ui error message" id="ajaxErrorDiv"></div>
+            <div class="ui success message" id="ajaxSuccessDiv"></div>
         </div>
         <div class="field">
-               
+            <div id="ajaxDeleteAccount" class="ui red labeled right floated icon  button"><i
+                    class="icon delete"></i>Effacez votre compte</div>
+            <div id="deleteAccountDiv" hidden>
+                <table class="ui teal table" style="background-color:transparent">
+                    <thead>
+                        <tr>
+                            <th style="background-color:transparent;color:white">Voulez vous vraiment effacer votre
+                                compte et toutes vos annonces?</th>
+                            <th style="background-color:transparent"></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="ajaxDeleteAccountforReal" class="ui teal labeled right floated icon  button"><i
+                                        class="icon eraser"></i>Oui!</div>
+                            </td>
+                            <td>
+                                <div id="remainSubscribed" class="ui red labeled right floated icon  button"><i
+                                        class="icon thumbs up"></i>Non!</div>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function () {
+        $('#ajaxDeleteAccountforReal').click(function(){
+            $('#imod').addClass('loading')
+            $('#ajaxEmailForm').addClass('loading')
+            $.ajax({
+                    url: '/deleteuser',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { user_Id:$('#hidId').val() , Email:$('#Email').val() },
+                    success: function (data) {
+
+                      window.location.href='/logout'
+
+                    },
+                    error: function (err) {
+                        $('#imod').removeClass('loading')
+                        $('#ajaxEmailForm').removeClass('loading')
+
+                    }
+                })
+        })
+        $('#ajaxDeleteAccount').click(function () {
+            $('#ajaxDeleteAccount').hide()
+            $('#deleteAccountDiv').transition('jiggle')
+           
+        })
+        $('#remainSubscribed').click(function () {
+            $('#ajaxDeleteAccount').transition('fly down')
+            $('#deleteAccountDiv').fadeOut(400)
+        })
         function validateEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
@@ -180,7 +239,7 @@
                     dataType: 'json',
                     data: { ajaxEmail: $('#ajaxInput').val(), Email: $('#Email').val() },
                     success: function (data) {
-                       
+
                         $('#ajaxEmailForm').removeClass('loading')
                         $('#ajaxInput').hide()
                         $('#ajaxSubmit').hide()
@@ -189,7 +248,7 @@
 
                     },
                     error: function (err) {
-                      
+
                         $('#ajaxEmailForm').removeClass('loading')
                         $('#ajaxErrorDiv').show()
                         $('#ajaxErrorDiv').text(err.responseJSON.message)
