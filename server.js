@@ -289,13 +289,30 @@ app.post('/deleteuser',isLoggedIn,function(req,res){
 
   })
 //Connect user
+app.get('/espaceadmin',isLoggedIn,function(req,res){
+  if(req.user.Type=='Admin'){
+    res.render('pages/espaceadmin',{configFile:configFile,ServerUrl:configFile.serverConfigurationVariables.ServerUrl, auth: req.isAuthenticated(),user: req.user,categories:configFile.categories})
+  }
+  else{
+    res.redirect('/')
+  }
+
+})
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
+   if(req.user.Type=='Admin'){
+    req.session._id = req.user._id
 
+    res.redirect('/espaceadmin')
+   }
+   else if(req.user.Type=='User'){
+    
     req.session._id = req.user._id
 
     res.redirect('/espacemembre')
+   }
+   
   });
 
 //logout user
@@ -346,9 +363,19 @@ app.get('/emailupdval',function(req,res){
 
 //member area
 app.get('/espacemembre', isLoggedIn, csrfProtection, function (req, res) {
-
+if(req.user.Type=='Admin'){
+  
+  res.redirect('/espaceadmin')
+  return
+}
+else if(req.user.Type=='User'){
   let searchoption = getSearchOption(req)
   espacemembre(req, res, Annonce, configFile, User, searchoption, csrfProtection)
+
+}
+  else{
+    redirect('/')
+  }
 
 
 });
@@ -396,7 +423,34 @@ app.use(function (req, res, next) {
 
 server.listen(configFile.serverConfigurationVariables.port, function () {
   console.log('server started')
+  
 })
+
+///////////////////////////////////////
+//Socket.io
+///////////////////////////////////////
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+  User.findOne({id:req.user._id},function(err,user){
+    if(err){
+      socket.disconnect()
+    }
+    else if(user==null){
+      socket.disconnect()
+    }
+    if(req.user.MotDePasse==user.MotDePasse){
+      socket.emit('Logged',{
+
+      })
+    }
+  })
+  
+  socket.on('getads',{
+    
+  })
+})
+
+
 
 ///////////////////////////////////////
 //Functions

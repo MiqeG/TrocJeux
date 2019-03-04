@@ -93,7 +93,7 @@ module.exports = function (req, res, User, SearchVille, CryptoJS, configFile, te
                         }
                         tempUsers[user1.Email] = user1
 
-
+                        console.log(tempUsers)
                         //compose and send email with link
                         let link = 'https://theroxxors.ml/inscriptionval?u=' + deplaced + '&d=' + deplacedDate
 

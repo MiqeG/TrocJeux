@@ -32,6 +32,7 @@ module.exports = function (req, res, User, CryptoJS, configFile, tempUsers, call
       console.log(plaintextDate)
       console.log(DateNow.getTime())
       console.log(linkDate.getTime())
+      
       if (isNaN(linkDate.getTime())) {
         req.flash('error', 'Une erreur est survenue lien invalide!')
         res.redirect('/')
@@ -45,10 +46,10 @@ module.exports = function (req, res, User, CryptoJS, configFile, tempUsers, call
         callback(tempUsers)
         return
       }
-      if (tempUsers[plaintext]) {
-        tempUsers[plaintext].save(function (err, user) {
+      if (tempUsers[plaintext.toLowerCase()]) {
+        tempUsers[plaintext.toLowerCase()].save(function (err, user) {
           if (err) return
-          delete tempUsers[plaintext]
+          delete tempUsers[plaintext.toLowerCase()]
           console.log('User: ' + user.NomUitilisateur + ' Activated')
           req.flash('success', 'Inscription validée! Connectez vous pour commencer a troquer...')
           res.redirect('/')
