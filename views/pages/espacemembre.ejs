@@ -178,7 +178,11 @@
 <script src="assets/sitescripts/imod.js"></script>
 <script>
   $(document).ready(function () {
+  
     $('#imoddeposersubmit').hide()
+    $('#uploadInput').change(function(){
+      $('#imoddeposersubmit').show()
+    })
     $('.ui.form.imoddeposer').change(function () {
       $('#imoddeposersubmit').show()
 
@@ -219,7 +223,9 @@
       $('#imod').hide()
       $('#ajaxmdp').show()
       $('#actualmdp').val('')
-
+      $('#updremover').click()
+      $('#imoddeposersubmit').hide()
+      $('.title.active').click()
     }
 
   }).modal('setting', 'closable', false)
@@ -233,7 +239,7 @@
       dataType: 'json',
       data: { _id: $(this).attr('id') },
       success: function (data) {
-        console.log(data)
+     
         $('#upd_User_Id').val(data.User_Id)
         $('#upd_id').val(data._id)
         $('#updNomUitilisateur').val(data.NomUitilisateur)
