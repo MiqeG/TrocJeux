@@ -255,6 +255,9 @@ app.post('/emailupd',isLoggedIn,function(req,res){
     })
 
 })
+app.post('/adupdpost',parseForm,csrfProtection,function(req,res){
+console.log(req.body)
+})
 //Connect user
 app.post('/connexion',
   passport.authenticate('local', { failureRedirect: '/error' }),

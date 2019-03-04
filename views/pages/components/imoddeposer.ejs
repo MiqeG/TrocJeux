@@ -1,0 +1,129 @@
+<div>
+    <form class="ui form imoddeposer" action="/adupdpost" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="field">
+                    <input type="hidden" name="upd_id" id="upd_id" value="">
+                    <input type="hidden" name="updNomUitilisateur" id="updNomUitilisateur" value="">
+                    <input type="hidden" name="updEmail" id="updEmail" value="">
+                    <input type="hidden" name="updVille" id="updVille" value="">
+                    <input type="hidden" name="updCodePostal" id="updCodePostal" value="">
+                    <input type="hidden" name="updActive" id="updActive" value="">
+        
+                </div>
+                <div class="field">
+                    <label for="actualCategories" style="color:white;" ><i class="edit teal icon"></i>Catégories</label>
+                    <input type="text" class="disabled field" name="actualCategories" id="actualCategories">
+
+                </div>
+            <div class="field">
+                    <div>
+                          <label for="updCategories"><i class="edit teal outline icon"></i> Modifiez les catégories</label>
+                          <div class="ui fluid multiple search selection dropdown searchCategorie">
+                                  <input name="updCategories" id="updCategories" type="hidden" value="">
+                                  <i class="dropdown icon"></i>
+                                  <div class="default text">Catégories</div>
+                                 
+                                  <div class="menu">
+                                          <% categories.forEach(element => { %>
+                          
+                                          <div class="item" data-value="<%= element %>"><%= element %></div>
+                                          <% }); %>
+                          
+                                      </div>
+                      
+                                  </div>
+                    </div>
+          
+                      </div>
+        <div class="field">
+            <label style="color:white;"><i class="newspaper teal icon"></i> Nouveau Titre</label>
+            <textarea name="updTitre" id="updTitre" rows="2"></textarea>
+        </div>
+      
+        <div class="field">
+            <label style="color:white;"><i class="address card outline teal icon"></i> Nouveau texte d'annonce</label>
+            <textarea  name="updTexte" id="updTexte"></textarea>
+        </div>
+       
+            <div class="field">
+                <div>
+                    <input type="hidden" id="actualImages" name="actualImages" value="">
+                </div>
+                <div id="currentimages">
+
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui inverted  accordion">
+                    <div class="title ">
+                        <i class="dropdown  black icon"></i>
+                        <span style="color:rgb(36, 182, 182);font-weight:1000;"><i class="file outline icon"></i> Modifiez les
+                            images...</span>
+                    </div>
+                    <div class="content ">
+                        <table class="ui  teal  table ImageTable">
+
+                            <tbody>
+                                <tr>
+                                    <td class="centered" colspan="4">
+                                        <div class="field">
+
+                                            <div class="file-upload">
+
+
+                                                <div class="image-upload-wrap">
+                                                    <input id="uploadInput" class="file-upload-input" name="newCategories"
+                                                        type='file'
+                                                        onchange="readURL(this,<%= uploadAmount %>,<%= maxFileSize %>);"
+                                                        accept="image/*" multiple required />
+                                                    <div class="drag-text">
+
+                                                        <h3><i class="file huge icon"></i> Déposez vos images ici!</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="file-upload-content">
+                                                    <% for(let i=0;i<uploadAmount;i++){ %>
+                                                    <img class="ui rounded  bordered left floated mini image file-upload-image  <%= i %> dynamicImage ZoomImage miniImage"
+                                                        src="#" alt="" style="width:40px;height:40px" />
+
+
+                                                    <% } %>
+
+                                                    <div class="image-title-wrap">
+                                                        <div onclick="removeUpload()" class="ui red  inverted  button">
+                                                            <span class="image-title "><span></span><i
+                                                                    class="trash icon"></i></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                    <table>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="field" style="text-align: center"> <button type="button"
+                                            class="ui teal labeled submit icon button adupdformloading" id=""><i
+                                                class="icon edit" hidden></i>Envoyer</button></div>
+                                </td>
+                            </tr>
+                        </table>
+            </div>
+            <div class="ui error message" id="adupderror"></div>
+
+        </form>
+    </div>
+   <script>
+       
+
+
+   </script>

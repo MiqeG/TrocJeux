@@ -26,7 +26,14 @@ module.exports = function (req, res, Annonce, configFile, User, searchoption, cs
             res.locals.formdata = userJson
 
             res.render('pages/espacemembre', {
-                csrfToken: req.csrfToken(), auth: req.isAuthenticated(), user: req.user, ServerUrl: configFile.ServerUrl, categories: configFile.categories, searchoption: searchoption, annonces: annonces
+                csrfToken: req.csrfToken(), auth: req.isAuthenticated(),
+                 user: req.user, ServerUrl: configFile.ServerUrl,
+                  categories: configFile.categories,
+                   searchoption: searchoption,
+                    annonces: annonces,
+                    categories: configFile.categories,
+                    uploadAmount: configFile.serverConfigurationVariables.uploadAmount,
+            maxFileSize: configFile.serverConfigurationVariables.maxFileSize,
             })
         })
 

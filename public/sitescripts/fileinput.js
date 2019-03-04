@@ -79,6 +79,7 @@ function readURL(input, length, fileSize) {
                         $('#modalcontent').empty();
                         $('#modalcontent').hide()
                         $('#mehdiv').empty()
+                        $('#modalcontent').empty()
                     }
                 }).modal('show');
 

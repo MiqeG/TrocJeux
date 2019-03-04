@@ -3,7 +3,9 @@
 <% include components/annoncemodal %>
 
 <%- include('components/modifmodal',{csrfToken:csrfToken}) %>
-
+<%- include('components/adupdmodal',{csrfToken:csrfToken}) %>
+<link rel="stylesheet" href="assets/sitecss/fileinput.css">
+<script src="/assets/formvalidation/imageformvalidation.js"></script>
 <div class="asd" style="padding-bottom:20em">
   <div class="ui inverted  asd "
     style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
@@ -188,7 +190,9 @@
 
         }
 
-      }).modal('show');
+      }).modal('setting', 'closable', false).modal('show');
+     
+ 
     })
 
     $('.miniatureImg').click(function () {
@@ -197,8 +201,19 @@
       $(this).css('padding', '5px')
     })
   })
+  $('.ui.basic.modal.adupdmodal').modal({
+        onHide: function () {
+          $('#ajaxEmailForm').hide()
+          $('#imod').hide()
+          $('#ajaxmdp').show()
+          $('#actualmdp').val('')
+
+        }
+
+      }).modal('setting', 'closable', false)
   $('.adeditbutton').click(function(){
-    alert( $(this).attr('id'))
+    
+  
    
     $.ajax({
       url: '/adupd',
@@ -207,6 +222,51 @@
       data: { _id: $(this).attr('id')},
       success: function (data) {
         console.log(data)
+        $('#upd_id').val(data._id)
+        $('#updNomUitilisateur').val(data.NomUitilisateur)
+        $('#updEmail').val(data.Email)
+        $('#updVille').val(data.Ville)
+        $('#updCodePostal').val(data.CodePostal)
+        $('#updActive').val(data.Active)
+        $('#updTitre').text(data.Titre)
+        $('#updTexte').text(data.Texte)
+       
+     
+       let str='';
+
+        for (let index = 0; index < data.Categories.length; index++) {
+          if(index<data.Categories.length-1){
+            str+= data.Categories[index]+','
+          }
+          
+          else if(index==data.Categories.length-1){
+            str+= data.Categories[index]
+          }
+        }
+        $('#currentimages').empty() 
+        let str2="";
+        for (let index = 0; index < data.UserImages.length; index++) {
+            
+          $('#currentimages').append('<img class="ui bordered rounded mini left floated image appendedImage" style="height:60px;width:60px;" src="pregistered/'+data.User_Id+'/'+data._id+'/'+data.UserImages[index]+'"></img>')
+          if(index<data.UserImages.length-1){
+            str2+= data.UserImages[index]+','
+          }
+          
+          else if(index==data.UserImages.length-1){
+            str2+= data.UserImages[index]
+          }
+        }
+       $('.adupdformloading').click(function(){
+         $('.ui.form.imoddeposer').addClass('loading')
+       })
+      
+       $('#actualImages').val(str2)
+        
+        $('#actualCategories').val(str)
+        $('#updCategories').change(function(){
+        $('#actualCategories').val( $('#updCategories').val())
+      })
+        $('.ui.basic.modal.adupdmodal').modal('show')
       },
       error: function (err) {
 
