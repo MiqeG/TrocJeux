@@ -19,13 +19,13 @@
       <div id="modalcontent" hidden>
       </div>
       <% if(locals.flash && locals.flash.error){ %>
-      <div class="ui     red basic cancel inverted" style="color:rgb(219, 77, 77)">
+      <div class="ui     red basic cancel inverted" id="redhider" style="color:rgb(219, 77, 77)">
         <i class="meh outline icon"></i><span id="sessionFlash"><%= flash.error %></span>
       </div>
 
       <% } %>
       <% if(locals.flash && locals.flash.success){ %>
-      <div class="ui  green ok inverted" style="color:rgb(53, 207, 104)">
+      <div class="ui  green ok inverted" id="greenhider" style="color:rgb(53, 207, 104)">
         <i class="smile outline icon"></i><span id="sessionFlash"><%= flash.success %></span>
       </div>
 
@@ -35,7 +35,7 @@
 
   <div class="actions">
 
-    <div class="ui green ok inverted button">
+    <div class="ui green ok inverted button" id="buttonhider">
       <i class="checkmark icon"></i>
       Ok
     </div>

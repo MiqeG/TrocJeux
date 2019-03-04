@@ -1,8 +1,10 @@
 <div>
-    <form class="ui form imoddeposer" action="/adupdpost" method="POST">
+    <form class="ui form imoddeposer" action="/adupdpost" method="POST" id="updmod" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="field">
                     <input type="hidden" name="upd_id" id="upd_id" value="">
+                    
+                    <input type="hidden" name="upd_User_Id" id="upd_User_Id" value="">
                     <input type="hidden" name="updNomUitilisateur" id="updNomUitilisateur" value="">
                     <input type="hidden" name="updEmail" id="updEmail" value="">
                     <input type="hidden" name="updVille" id="updVille" value="">
@@ -72,10 +74,10 @@
 
 
                                                 <div class="image-upload-wrap">
-                                                    <input id="uploadInput" class="file-upload-input" name="newCategories"
+                                                    <input id="uploadInput" class="file-upload-input" name="Categories"
                                                         type='file'
                                                         onchange="readURL(this,<%= uploadAmount %>,<%= maxFileSize %>);"
-                                                        accept="image/*" multiple required />
+                                                        accept="image/*" multiple />
                                                     <div class="drag-text">
 
                                                         <h3><i class="file huge icon"></i> Déposez vos images ici!</h3>
@@ -112,7 +114,7 @@
                             <tr>
                                 <td colspan="3">
                                     <div class="field" style="text-align: center"> <button type="button"
-                                            class="ui teal labeled submit icon button adupdformloading" id=""><i
+                                            class="ui teal labeled submit icon button adupdformloading" id="imoddeposersubmit"><i
                                                 class="icon edit" hidden></i>Envoyer</button></div>
                                 </td>
                             </tr>
@@ -123,7 +125,7 @@
         </form>
     </div>
    <script>
-       
+
 
 
    </script>

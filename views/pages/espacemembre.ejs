@@ -138,8 +138,8 @@
                     <% include components/userdetails %>
                     <div class="field">
                       <div class="ui left floated  teal  button memberbuttons adeditbutton"
-                       data-idannonceupd="<%= annonces[index]._id  %>" id="<%= annonces[index]._id  %>"><i class=" edit  icon"
-                          data-idannonce="<%= annonces[index]._id  %>"></i></div>
+                        data-idannonceupd="<%= annonces[index]._id  %>" id="<%= annonces[index]._id  %>"><i
+                          class=" edit  icon" data-idannonce="<%= annonces[index]._id  %>"></i></div>
                       <div data-idannonce="<%= annonces[index]._id %>"
                         class="ui left floated  red  button modalshow memberbuttons deleteloading"><i
                           class=" delete  icon"></i>
@@ -174,11 +174,18 @@
 </div>
 
 <script src="assets/formValidation/formValidation.js"></script>
+<script src="assets/formValidation/imoddeposervalidation.js"></script>
 <script src="assets/sitescripts/imod.js"></script>
 <script>
   $(document).ready(function () {
-    $('.modifUserData').click(function () {
+    $('#imoddeposersubmit').hide()
+    $('.ui.form.imoddeposer').change(function () {
+      $('#imoddeposersubmit').show()
 
+
+    })
+
+    $('.modifUserData').click(function () {
 
 
       $('.ui.basic.modal.modifmodal').modal({
@@ -191,10 +198,15 @@
         }
 
       }).modal('setting', 'closable', false).modal('show');
-     
- 
-    })
 
+
+    })
+    $('#buttonhider').click(function () {
+      $('#redhider').empty();
+      $('#redhider').hide()
+      $('#greenhider').empty();
+      $('#greenhider').hide()
+    })
     $('.miniatureImg').click(function () {
       $('#masterImg' + $(this).attr('data-masterRef')).attr('src', $(this).attr('src'))
       $('.miniatureImg.' + $(this).attr('data-masterRef')).css('padding', '0px')
@@ -202,26 +214,27 @@
     })
   })
   $('.ui.basic.modal.adupdmodal').modal({
-        onHide: function () {
-          $('#ajaxEmailForm').hide()
-          $('#imod').hide()
-          $('#ajaxmdp').show()
-          $('#actualmdp').val('')
+    onHide: function () {
+      $('#ajaxEmailForm').hide()
+      $('#imod').hide()
+      $('#ajaxmdp').show()
+      $('#actualmdp').val('')
 
-        }
+    }
 
-      }).modal('setting', 'closable', false)
-  $('.adeditbutton').click(function(){
-    
-  
-   
+  }).modal('setting', 'closable', false)
+  $('.adeditbutton').click(function () {
+
+
+
     $.ajax({
       url: '/adupd',
       type: 'POST',
       dataType: 'json',
-      data: { _id: $(this).attr('id')},
+      data: { _id: $(this).attr('id') },
       success: function (data) {
         console.log(data)
+        $('#upd_User_Id').val(data.User_Id)
         $('#upd_id').val(data._id)
         $('#updNomUitilisateur').val(data.NomUitilisateur)
         $('#updEmail').val(data.Email)
@@ -230,48 +243,55 @@
         $('#updActive').val(data.Active)
         $('#updTitre').text(data.Titre)
         $('#updTexte').text(data.Texte)
-       
-     
-       let str='';
+
+
+        let str = '';
 
         for (let index = 0; index < data.Categories.length; index++) {
-          if(index<data.Categories.length-1){
-            str+= data.Categories[index]+','
+          if (index < data.Categories.length - 1) {
+            str += data.Categories[index] + ','
           }
-          
-          else if(index==data.Categories.length-1){
-            str+= data.Categories[index]
+
+          else if (index == data.Categories.length - 1) {
+            str += data.Categories[index]
           }
         }
-        $('#currentimages').empty() 
-        let str2="";
+        $('#currentimages').empty()
+        let str2 = "";
         for (let index = 0; index < data.UserImages.length; index++) {
-            
-          $('#currentimages').append('<img class="ui bordered rounded mini left floated image appendedImage" style="height:60px;width:60px;" src="pregistered/'+data.User_Id+'/'+data._id+'/'+data.UserImages[index]+'"></img>')
-          if(index<data.UserImages.length-1){
-            str2+= data.UserImages[index]+','
+
+          $('#currentimages').append('<img class="ui bordered rounded mini left floated image appendedImage" style="height:60px;width:60px;" src="pregistered/' +
+           data.User_Id + '/' + data._id + '/' + data.UserImages[index] + '"></img>')
+          if (index < data.UserImages.length - 1) {
+            str2 += data.UserImages[index] + ','
           }
-          
-          else if(index==data.UserImages.length-1){
-            str2+= data.UserImages[index]
+
+          else if (index == data.UserImages.length - 1) {
+            str2 += data.UserImages[index]
           }
         }
-       $('.adupdformloading').click(function(){
-         $('.ui.form.imoddeposer').addClass('loading')
-       })
-      
-       $('#actualImages').val(str2)
-        
+        $('.adupdformloading').click(function () {
+          if ($('#updmod').form('is valid')) {
+                $('#updmod').addClass('loading')
+            }
+            else {
+                $('#updmod').removeClass('loading')
+            }
+         
+        })
+
+        $('#actualImages').val(str2)
+
         $('#actualCategories').val(str)
-        $('#updCategories').change(function(){
-        $('#actualCategories').val( $('#updCategories').val())
-      })
+        $('#updCategories').change(function () {
+          $('#actualCategories').val($('#updCategories').val())
+        })
         $('.ui.basic.modal.adupdmodal').modal('show')
       },
       error: function (err) {
 
-       console.log(err)
-       
+        console.log(err)
+
       }
     })
   })

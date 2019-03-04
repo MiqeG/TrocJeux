@@ -18,6 +18,7 @@ var csrf = require('csurf')
 var mkdirp = require('mkdirp')
 
 var rimraf = require("rimraf");
+let fs=require('fs')
 const fs2 = require('fs-extra');
 let path = require('path')
 var csrfProtection = csrf({ cookie: true })
@@ -77,6 +78,7 @@ let userupdinfo = require('./routes/userupdinfo')
 let nmdp = require('./routes/nmdp')
 let emailupd=require('./routes/emailupd')
 let emailupdval=require('./routes/emailupdval')
+let adupdpost=require('./routes/adupdpost')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -247,16 +249,25 @@ app.get('/searchApi', (req, res) => {
 
 //Update email ajax
 app.post('/emailupd',isLoggedIn,function(req,res){
-  console.log(tempEmailUpd)
+ 
     emailupd(req,res,CryptoJS,tempEmailUpd,configFile,User,function(returnedTempEmail){
       tempEmailUpd=returnedTempEmail
-     console.log(tempEmailUpd)
-      console.log('END....')
+   console.log('email updated')
     })
 
 })
-app.post('/adupdpost',parseForm,csrfProtection,function(req,res){
-console.log(req.body)
+app.post('/adupdpost',isLoggedIn,function(req,res){
+
+if(req.body){
+  adupdpost(req,res,Annonce,configFile, IoOp, formidable, path, mkdirp,fs)
+}
+else{
+  req.flash('error','Erreur interne serveur...')
+  res.redirect('/espacemembre')
+  return
+}
+
+
 })
 //Connect user
 app.post('/connexion',
@@ -288,14 +299,14 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
 
 })
 app.post('/adupd',isLoggedIn,function(req,res){
-console.log(req.body)
+
 Annonce.findOne({_id:req.body._id},function(err,annonce){
   if(err){
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify('Erreur inconnue! veuillez nous contacter!'));
     return
   }
-  console.log(annonce)
+
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(annonce));
   return
