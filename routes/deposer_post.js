@@ -1,4 +1,4 @@
-module.exports = function (req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp) {
+module.exports = function (req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp, io) {
   if (req.body === undefined || req.body === '') {
     req.flash('error', 'formulaire vide', 'vide')
     res.redirect('/deposer')
@@ -33,7 +33,7 @@ module.exports = function (req, res, User, Annonce, configFile, IoOp, formidable
 
 
         if (err) throw err
-        
+        let date1 = new Date
         var annonce1 = new Annonce({
 
           User_Id: item._id,
@@ -45,7 +45,7 @@ module.exports = function (req, res, User, Annonce, configFile, IoOp, formidable
           Categories: array,
           Titre: fields.Titre,
           Texte: fields.Texte,
-
+          DatePublication:date1,
           Active: true
 
 
@@ -71,19 +71,22 @@ module.exports = function (req, res, User, Annonce, configFile, IoOp, formidable
           });
         }
         annonce1.UserImages = filearray
-
+        
         annonce1.save(function (err, annonce) {
           if (err) return console.error(err)
+
           console.log(annonce.NomUitilisateur + "\r\n saved to Annonces collection.")
-
-
+          io.emit('adadd', {
+            ad: annonce
+          })
+   
         });
       })
     });
     //on end of transfer
     form.on('end', function (fields, files) {
 
-
+ 
 
       req.flash('success', "Merci pour votre confiance!", "SuccessCode")
 

@@ -1,11 +1,188 @@
 <% include header %>
-espace admin
+<div class="asd" style='padding:5%;'>
+    <h1><i class="big user secret purple icon"></i> Espace Admin</h1>
+    <label id="adminid" hidden><%= user._id %></label>
+    <label id="adminpassword" hidden><%= user.MotDePasse %></label>
+
+
+    <table class="ui purple table">
+        <thead>
+            <tr>
+                <th colspan="2"><i class=" big calendar check purple icon"></i> Annonces à vérifier:</th>
+
+            </tr>
+        </thead>
+        <tbody id="tablebody">
+
+        </tbody>
+    </table>
+</div>
+
 
 <% include footer %>
 <script>
-     var socket = io();
-    socket.on('info', (data) =>{
 
+    function ajaxdeleter(id, userid) {
+        $.ajax({
+            url: '/effacerannonce',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                _id: id, User_Id: userid
+            },
+            success: function (data) {
+                console.log('deleted!')
+            },
+            error: function (err) {
+                console.log(err)
+                console.log("Erreur lors de l'effacement")
+
+                $('#' + id).removeClass('loading')
+            }
+        })
+    }
+function zoomImages(e){
+    $('.ui.basic.modal.ImageModal').modal('show')
+            $('#ModalImage').attr('src', $(e).attr('src'))
+}
+    $(document).ready(function () {
+
+        let arrayofIntervals = []
+        function newCountDown(date, id) {
+
+            let dateReference = new Date(date)
+            dateReference.setHours(dateReference.getHours() + 1)
+
+            var countDownDate = new Date(dateReference).getTime();
+            var datenow = new Date
+
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+                arrayofIntervals[id] = x
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now and the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Output the result in an element with id="demo"
+                document.getElementById("countDiv" + id).innerHTML =
+                    minutes + "m " + seconds + "s ";
+
+                // If the count down is over, write some text 
+
+
+                if (distance < 0) {
+                    document.getElementById("countDiv" + id).innerHTML = "Publiée";
+                    clearInterval(x);
+                    document.getElementById(id).remove()
+                }
+            }, 1000);
+        }
+        let arraysort = function (a, b) {
+
+            return new Date(b.date) - new Date(a.date);
+        };
+        let socket = io();
+        let $tablebody = $('#tablebody')
+        function adrefresher(ad) {
+            let finalstring = ''
+            let date = new Date(ad.DatePublication)
+            let dateReference = new Date
+            dateReference -= (1 * 60 * 60 * 1000);
+
+            ad.UserImages.forEach(image => {
+                let path = 'pregistered/' + ad.User_Id + '/' + ad._id + '/' + image
+                let string = `<img class="ui tiny rounded bordered left floated image ZoomImage" onclick="zoomImages(this)" style="height:25px;width:25px;" src="${path}"> </img>`
+                finalstring += string
+            });
+            let path2 = 'pregistered/' + ad.User_Id + '/' + ad._id + '/' + ad.UserImages[0]
+            let bigImage = `<img class="ui small rounded bordered image ZoomImage" onclick="zoomImages(this)" style="height:100px;width:100px;" src="${path2}"> </img>`
+
+            let output = `
+                            <tr id="${ad._id}" data-userid="${ad.User_Id}"  hidden>
+                                <td style="width:120px">
+                                        <div>
+                                                ${bigImage}
+                                            </div>
+                                       <div  > ${finalstring}</div>
+                                    </td>
+                                
+                                <td>
+                                        <table class="ui purple table"> 
+                                            <thead><tr><th>Titre</th><th>Temps</th><th>Texte</th><th>Action</th></tr></thead>
+                                            <tbody id="tablebody"><tr><td style="width:200px;">
+                                            <a href="/?a=${ad._id}" style="color:purple;" target="_blank"> ${ad.Titre}</a></td>
+                                            <td style="width:100px;"><div id="countDiv${ad._id}" style="color:red;"></div></td><td style="width:200px;"> <div > ${ad.Texte}</div></td>
+                                            <td style="width:130px;"> <button onclick="ajaxdeleter('${ad._id}','${ad.User_Id}')" data-idannonce="${ad._id}" 
+                        class="ui left floated red button admindeleteclass"><i
+                          class=" delete  icon"></i>
+
+                      </button></td></tr></tbody></table> 
+                                       
+                                    </td>
+                                   
+                            </tr>
+                        
+                           `;
+            return output
+        }
+
+        socket.on('authenticate', (data) => {
+            socket.emit('checkcredentials', {
+                _id: $('#adminid').text(),
+                password: $('#adminpassword').text(),
+            })
+        })
+        socket.on('Logged', (data) => {
+            socket.emit('getads', {
+
+            })
+        })
+        socket.on('adsrefresh', (data) => {
+            let arrayofAds = data.ads
+            arrayofAds.sort(arraysort)
+            $tablebody.empty()
+            arrayofAds.forEach(ad => {
+
+                $tablebody.append(adrefresher(ad))
+
+                clearInterval(arrayofIntervals[ad._id])
+                arrayofIntervals[ad._id] = undefined
+                newCountDown(ad.DatePublication, ad._id)
+                $('#' + ad._id).fadeIn(400)
+
+            });
+        })
+        socket.on('adsubstract', (data) => {
+            clearInterval(arrayofIntervals[data.ad._id])
+            arrayofIntervals[data.ad._id] = undefined
+            $('#' + data.ad._id).fadeOut(400)
+            $('#' + data.ad._id).remove()
+        })
+        socket.on('adadd', (data) => {
+            $('#' + data.ad._id).remove()
+            clearInterval(arrayofIntervals[data.ad._id])
+            arrayofIntervals[data.ad._id] = undefined
+            $tablebody.append(adrefresher(data.ad))
+            newCountDown(data.ad.DatePublication, data.ad._id)
+            $('#' + data.ad._id).fadeIn(400)
+        })
+        socket.on('substractmany', (data) => {
+            console.log(data)
+        })
+        function ajaxeffecer(id, userid) {
+            $('#' + id).addClass('loading')
+
+
+        }
     })
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>

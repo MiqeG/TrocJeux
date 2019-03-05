@@ -1,28 +1,45 @@
-module.exports = function (req, res, Annonce, rimraf, configFile) {
+module.exports = function (req, res, Annonce, rimraf, configFile,io) {
     let json = {}
-    console.log(req.body._id)
     
+    if(req.user._id!=req.body.User_Id&&req.user.Type!='Admin'){
+        req.flash('error', "Erreur lors de la suppression de l'annonce: " + req.body._id +"code: erreur: violation 101")
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+        return
+
+    }
     Annonce.findOneAndDelete({ _id: req.body._id }, function (err,annonce) {
         if (err) {
 
             console.log(err)
 
             req.flash('error', "Erreur lors de la suppression de l'annonce: " + req.body._id +"code: erreur inconnue")
-            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(json));
 
             return
         }
+        
         else if(annonce==null){
             req.flash('error', "Erreur lors de la suppression de l'annonce: " + req.body._id+" code= Annonce introuvable...vous l'avez peut être déja supprimmée ")
-            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(json));
 
             return
         }
         else {
-            console.log(annonce)
+            let dateReference = new Date
+            dateReference -= (1 * 60 * 60 * 1000);
+            if(annonce.DatePublication>dateReference){
+               
+                io.emit('adsubstract', {
+                    ad: annonce
+                  })
+                
+            
+            }
             json = { annonceId: req.body._id }
+    
         }
 
 

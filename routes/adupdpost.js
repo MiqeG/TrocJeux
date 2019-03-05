@@ -1,4 +1,4 @@
-module.exports = function (req, res, Annonce, configFile, IoOp, formidable, path, mkdirp,fs) {
+module.exports = function (req, res, Annonce, configFile, IoOp, formidable, path, mkdirp,fs,io) {
 
     let form = new formidable.IncomingForm();
     form.maxFieldsSize = configFile.serverConfigurationVariables.maxFieldsSize * 1024 * 1024;
@@ -46,7 +46,14 @@ module.exports = function (req, res, Annonce, configFile, IoOp, formidable, path
             else if(y==-1){
                 let path=temp_path
               
-                fs.unlinkSync(path)
+                fs.unlink(path,function(err){
+                    if(err){
+
+                    }
+                    else{
+                        console.log('done')
+                    }
+                })
             }
 
 
@@ -72,9 +79,9 @@ module.exports = function (req, res, Annonce, configFile, IoOp, formidable, path
             finalfilearray = splitArray
         }
         
-        
+        let date=new Date
         Annonce.findOneAndUpdate({ _id: fields.upd_id },
-             { $set: { Titre: fields.updTitre,Texte:fields.updTexte,Categories:fields.actualCategories,UserImages:finalfilearray } },
+             { $set: { Titre: fields.updTitre,Texte:fields.updTexte,Categories:fields.actualCategories,UserImages:finalfilearray,DatePublication:date } },{new: true},
               function (err, annonce) {
             if (err) {
                 req.flash('error','Erreur de type inconnue!!')
@@ -88,6 +95,9 @@ module.exports = function (req, res, Annonce, configFile, IoOp, formidable, path
             }
             else if (annonce._id) {
                 console.log('ad updated!')
+                io.emit('adadd',{
+                    ad:annonce
+                })
                 req.flash('success','annonce actualisée')
                 res.redirect('/espacemembre')
                 return

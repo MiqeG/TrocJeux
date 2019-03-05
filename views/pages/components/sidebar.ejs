@@ -1,6 +1,11 @@
 <div class="ui sidebar vertical left menu overlay visible inverted"
   style="-webkit-transition-duration: 0.1s; overflow: visible !important;">
-
+  <% let color='teal' %>
+  <% if(user==undefined){
+    user={Type:'User'}
+    
+  }else if(user&&user.Type=='Admin'){color='purple'} %>
+  <label id="accounttype" hidden><%= user.Type %></label>
   <div class="item logo">
     <div class="paddingLogo">
       <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="/assets/img/logo.png"
@@ -21,8 +26,10 @@
     <% }else if(auth==true){ %>
     <a class="item tealColor" href="<% ServerUrl %>/espacemembre" style="color:white"><i class="user  icon"></i><b
         style="color:rgb(50, 240, 240)"> Bonjour &nbsp <%= user.Prenom %> !</b></a>
+  <% if(user.Type!='Admin'){%>
     <a class="item tealColor" href="<% ServerUrl %>/deposer" style="color:white"><i class="tasks  icon"></i><b
         style="color:rgb(50, 240, 240)"> Déposer une annonce...</b></a>
+        <% } %>
     <a class="item LogOut" style="color:white"><i class="sign-out alternate icon"></i><b
         style="color:rgb(50, 240, 240)">Se &nbsp deconnecter!</b> </a> &nbsp
     <% } %>
@@ -63,7 +70,9 @@
       <% }else if(auth==true){ %>
       <a class="item " href="<% ServerUrl %>/espacemembre"><i class="user teal icon"></i><b>Bonjour <%= user.Prenom %>
           !</b></a>
+          <% if(user.Type!='Admin'){ %>
       <a class="item " href="<% ServerUrl %>/deposer"><i class="tasks teal icon"></i><b>Déposer une annonce...</b></a>
+      <% } %>
       <a class="item LogOut"><i class="sign-out alternate teal icon"></i><b>Se deconnecter!</b> </a> &nbsp
       <% } %>
     </div>
@@ -93,8 +102,8 @@
 </div>
 <div class="pusher">
 
-  <div class="ui inverted menu asd fixed borderless inverted teal "
-    style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;">
+  <div class="ui inverted menu asd fixed borderless inverted <%= color %>"
+    style="border-radius: 0!important; border: 0; margin-left: 260px; -webkit-transition-duration: 0.1s;" id="admincolor">
 
     <a class="item openbtn">
       <i class="icon content"></i>
@@ -103,7 +112,7 @@
 
     <div class="ui  left aligned category search">
       <div class="ui icon input">
-        <input id="headerSearchBar" class="prompt" type="text" placeholder="Rechercher...par Titre">
+        <input id="headerSearchBar" class="prompt" type="text" placeholder="Recherche...par Titre">
         <i class="search icon"></i>
       </div>
 

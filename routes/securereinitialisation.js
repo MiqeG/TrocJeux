@@ -29,8 +29,6 @@ module.exports = function (req, res, User, tempReinit, configFile, callback) {
     let DateNow = new Date()
 
 
-    console.log(DateNow.getTime())
-    console.log(linkDate.getTime())
 
     if (isNaN(linkDate.getTime())) {
       req.flash('error', 'lien non valide!')

@@ -54,7 +54,7 @@ module.exports = function (req, res, CryptoJS, tempEmailUpd, configFile,User, ca
                     
                      let ramdate = new Date(tempEmailUpd[req.user._id].date)
                      if(ramdate>dateofnow){
-                         console.log(ramdate-dateofnow)
+                        
                          let remaining=ramdate-dateofnow
                          remaining=parseInt(remaining/1000/60)
                          jsonCreation(res, 500, "Erreur!! Vous avez deja changé votre e-mail...veuillez vérifier votre boîte aux lettres...le lien est actif pendant 1h restant: " +remaining.toString()+' min')

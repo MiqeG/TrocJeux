@@ -89,6 +89,13 @@ mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', functi
   console.log('Temp folder ok!')
 });
 
+server.listen(configFile.serverConfigurationVariables.port, function () {
+  console.log('server started')
+  
+})
+
+//listen on port specified in config file
+
 
 ///////////////////////////////////////
 //MongoDB
@@ -171,11 +178,74 @@ let isLoggedIn = require('./middlewares/isloggedin')
 //flash message middleware
 
 app.use(require('./middlewares/flash'))
+///////////////////////////////////////
+//Socket.io
+///////////////////////////////////////
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+  socket.emit('authenticate',{
+    message:'please authenticate'
+  })
+  socket.on('checkcredentials',(data)=>{
+  
+    User.findOne({_id:data._id},function(err,user){
+     
+      if(err){
+        console.log('disconnecting1')
+        socket.disconnect()
+        return
+      }
+      else if(user==null){
+        console.log('disconnecting2')
+        socket.disconnect()
+        return
+      }
+      if(data.password==user.MotDePasse){
+        socket.emit('Logged',{
+    
+        })
+      }
+    })
+  })
 
+  
+  socket.on('getads',(data)=>{
+    let dateReference=new Date
+    dateReference -= (1 * 60 * 60 * 1000);
+    
+  
+
+    Annonce.find({DatePublication:{"$gt": dateReference}},function(err,annonces){
+      if(err){
+       
+        socket.emit('error',{
+          error:"database research error",
+        })
+      }
+      else if(annonces==null){
+        
+        socket.emit('empty',{
+          message:'aucune annonce a valider'
+        })
+
+      }
+      else if (annonces){
+        
+        socket.emit('adsrefresh',{
+          ads:annonces
+        })
+      }
+    })
+  })
 ///////////////////////////////////////
 //Routes
 ///////////////////////////////////////
 //parse password retrieval form
+//index
+app.get('/', csrfProtection, (req, res) => {
+  console.log(req)
+  index(req, res, configFile, Annonce)
+})
 app.get('/inscriptionval', (req, res) => {
   inscriptionval(req, res, User, CryptoJS, configFile, tempUsers, function (returnedUsers) {
     tempUsers = returnedUsers
@@ -260,7 +330,7 @@ app.post('/emailupd',isLoggedIn,function(req,res){
 app.post('/adupdpost',isLoggedIn,function(req,res){
 
 if(req.body){
-  adupdpost(req,res,Annonce,configFile, IoOp, formidable, path, mkdirp,fs)
+  adupdpost(req,res,Annonce,configFile, IoOp, formidable, path, mkdirp,fs,io)
 }
 else{
   req.flash('error','Erreur interne serveur...')
@@ -283,7 +353,7 @@ app.post('/deleteuser',isLoggedIn,function(req,res){
     return
   }
   else{
-    deleteuser(req,res,User,Annonce,configFile, rimraf)
+    deleteuser(req,res,User,Annonce,configFile, rimraf,io)
   }
  
 
@@ -299,8 +369,10 @@ app.get('/espaceadmin',isLoggedIn,function(req,res){
 
 })
 app.post('/connexion',
+
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
+   
    if(req.user.Type=='Admin'){
     req.session._id = req.user._id
 
@@ -321,10 +393,7 @@ app.get('/logout', (req, res) => {
   req.session = null
   res.redirect('/')
 })
-//index
-app.get('/', csrfProtection, (req, res) => {
-  index(req, res, configFile, Annonce)
-})
+
 //display subsciption page
 app.get('/inscription', csrfProtection, (req, res) => {
   inscription(req, res, configFile)
@@ -394,7 +463,7 @@ app.post('/upduserinfo', isLoggedIn, parseForm, csrfProtection, function (req, r
 })
 //parse incoming ad post
 app.post('/deposer', isLoggedIn, (req, res) => {
-  deposer(req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp)
+  deposer(req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp,io)
 
 })
 // parse incoming user subscription
@@ -407,7 +476,9 @@ app.post('/inscription', parseForm, csrfProtection, (req, res) => {
 })
 //remove ad
 app.post('/effacerannonce', isLoggedIn, (req, res) => {
-  effacerAnnonce(req, res, Annonce, rimraf, configFile)
+
+  
+  effacerAnnonce(req, res, Annonce, rimraf, configFile,io)
 
 })
 
@@ -419,36 +490,10 @@ app.use(function (req, res, next) {
 
 });
 
-//listen on port specified in config file
 
-server.listen(configFile.serverConfigurationVariables.port, function () {
-  console.log('server started')
-  
-})
 
-///////////////////////////////////////
-//Socket.io
-///////////////////////////////////////
-const io = require('socket.io')(server);
-io.on('connection', (socket) => {
-  User.findOne({id:req.user._id},function(err,user){
-    if(err){
-      socket.disconnect()
-    }
-    else if(user==null){
-      socket.disconnect()
-    }
-    if(req.user.MotDePasse==user.MotDePasse){
-      socket.emit('Logged',{
 
-      })
-    }
-  })
-  
-  socket.on('getads',{
-    
-  })
-})
+
 
 
 
@@ -470,7 +515,5 @@ function getSearchOption(req) {
   }
 }
 
-
-
-
-
+//end of nesting inside io
+})

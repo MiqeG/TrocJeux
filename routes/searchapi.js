@@ -70,7 +70,7 @@ module.exports = function (req, res, Annonce) {
 
             let pathToResults = "/searchresults/?q=" + req.query.q + '&t=' + req.query.t
             let action = { url: pathToResults, text: docs.length + " resultats cliquez pour parcourir" }
-            // console.log(results)
+           
 
             let returnArray = { results: results, action }
 

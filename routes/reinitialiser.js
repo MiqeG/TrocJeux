@@ -13,7 +13,7 @@ module.exports = function (req, res, User, configFile, CryptoJS) {
         formated = formated.toISOString()
         let ciphertext = CryptoJS.AES.encrypt(user._id.toString(), configFile.serverConfigurationVariables.serverKey).toString();
         let ciphertextDate = CryptoJS.AES.encrypt(formated, configFile.serverConfigurationVariables.serverKey).toString();
-        console.log(ciphertext)
+        
         let array = ciphertext.split('')
         let arrayDate = ciphertextDate.split('')
         array = masterReplace(array)
@@ -22,7 +22,7 @@ module.exports = function (req, res, User, configFile, CryptoJS) {
 
         let deplaced = array.join('');
         let deplacedDate = arrayDate.join('')
-        console.log(deplaced);
+     
 
 
         let link = 'https://theroxxors.ml/secureinitilisation?s=' + deplaced + '&d=' + deplacedDate
