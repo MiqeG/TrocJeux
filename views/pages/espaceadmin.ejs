@@ -22,9 +22,10 @@
 <% include footer %>
 <script>
 
-    function ajaxdeleter(id, userid) {
+    function ajaxdeleterchecker(id, userid,option) {
+        let ajaxof='/'+option
         $.ajax({
-            url: '/effacerannonce',
+            url: ajaxof,
             type: 'POST',
             dataType: 'json',
             data: {
@@ -35,7 +36,7 @@
             },
             error: function (err) {
                 console.log(err)
-                console.log("Erreur lors de l'effacement")
+                console.log("Erreur lors de la modification des données")
 
                 $('#' + id).removeClass('loading')
             }
@@ -85,10 +86,7 @@ function zoomImages(e){
                 }
             }, 1000);
         }
-        let arraysort = function (a, b) {
-
-            return new Date(b.date) - new Date(a.date);
-        };
+        
         let socket = io();
         let $tablebody = $('#tablebody')
         function adrefresher(ad) {
@@ -120,9 +118,11 @@ function zoomImages(e){
                                             <tbody id="tablebody"><tr><td style="width:200px;">
                                             <a href="/?a=${ad._id}" style="color:purple;" target="_blank"> ${ad.Titre}</a></td>
                                             <td style="width:100px;"><div id="countDiv${ad._id}" style="color:red;"></div></td><td style="width:200px;"> <div > ${ad.Texte}</div></td>
-                                            <td style="width:130px;"> <button onclick="ajaxdeleter('${ad._id}','${ad.User_Id}')" data-idannonce="${ad._id}" 
-                        class="ui left floated red button admindeleteclass"><i
-                          class=" delete  icon"></i>
+                                            <td style="width:170px;"> <button onclick="ajaxdeleterchecker('${ad._id}','${ad.User_Id}','effacerannonce')" data-idannonce="${ad._id}" 
+                        class="ui left floated outline red  button admindeleteclass"><i
+                          class=" delete  icon"></i><button onclick="ajaxdeleterchecker('${ad._id}','${ad.User_Id}','checkannonce')" data-idannonce="${ad._id}" 
+                          class="ui left floated outline purple  button admindeleteclass"><i
+                            class=" check  icon"> </i>
 
                       </button></td></tr></tbody></table> 
                                        
@@ -147,9 +147,14 @@ function zoomImages(e){
             })
         })
         socket.on('adsrefresh', (data) => {
-           console.log('OKKKKKKKKKKKKKK')
+            let arraysort = function (a, b) {
+              
+                return  new Date(a.DatePublication)-new Date(b.DatePublication);
+            };
             let arrayofAds = data.ads
+          
             arrayofAds.sort(arraysort)
+           
             $tablebody.empty()
             arrayofAds.forEach(ad => {
 

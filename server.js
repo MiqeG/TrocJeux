@@ -269,9 +269,39 @@ app.post('/emailupd',isLoggedIn,function(req,res){
     })
 
 })
+app.post('/checkannonce',isLoggedIn,function(req,res){
+  if(req.user.Type=='Admin'){
+   console.log('Admin: '+req.user.NomUitilisateur +" a checké l'annonce: " +req.body._id)
+   let newdate= new Date
+   console.log(newdate)
+   newdate=newdate.setDate(newdate.getHours()-3)
+   
+   
+   let dateReference = new Date
+            dateReference -= (1 * 60 * 60 * 1000);
+   Annonce.findOneAndUpdate({_id:req.body._id},{$set:{DatePublication:dateReference}}, {new: true},function(err,annonce){
+     if(err){
+
+     }
+     else if(annonce==null){
+
+     }
+     else if(annonce){
+       console.log(annonce)
+      io.emit('adsubstract',{
+        ad:annonce
+      })
+     }
+   })
+  }
+  else{
+    res.redirect('/')
+  }
+})
 app.post('/adupdpost',isLoggedIn,function(req,res){
 
 if(req.body){
+  
   adupdpost(req,res,Annonce,configFile, IoOp, formidable, path, mkdirp,fs,io)
 }
 else{
