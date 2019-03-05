@@ -178,72 +178,14 @@ let isLoggedIn = require('./middlewares/isloggedin')
 //flash message middleware
 
 app.use(require('./middlewares/flash'))
-///////////////////////////////////////
-//Socket.io
-///////////////////////////////////////
-const io = require('socket.io')(server);
-io.on('connection', (socket) => {
-  socket.emit('authenticate',{
-    message:'please authenticate'
-  })
-  socket.on('checkcredentials',(data)=>{
-  
-    User.findOne({_id:data._id},function(err,user){
-     
-      if(err){
-        console.log('disconnecting1')
-        socket.disconnect()
-        return
-      }
-      else if(user==null){
-        console.log('disconnecting2')
-        socket.disconnect()
-        return
-      }
-      if(data.password==user.MotDePasse){
-        socket.emit('Logged',{
-    
-        })
-      }
-    })
-  })
 
-  
-  socket.on('getads',(data)=>{
-    let dateReference=new Date
-    dateReference -= (1 * 60 * 60 * 1000);
-    
-  
-
-    Annonce.find({DatePublication:{"$gt": dateReference}},function(err,annonces){
-      if(err){
-       
-        socket.emit('error',{
-          error:"database research error",
-        })
-      }
-      else if(annonces==null){
-        
-        socket.emit('empty',{
-          message:'aucune annonce a valider'
-        })
-
-      }
-      else if (annonces){
-        
-        socket.emit('adsrefresh',{
-          ads:annonces
-        })
-      }
-    })
-  })
 ///////////////////////////////////////
 //Routes
 ///////////////////////////////////////
 //parse password retrieval form
 //index
 app.get('/', csrfProtection, (req, res) => {
-  console.log(req)
+
   index(req, res, configFile, Annonce)
 })
 app.get('/inscriptionval', (req, res) => {
@@ -491,7 +433,71 @@ app.use(function (req, res, next) {
 });
 
 
+///////////////////////////////////////
+//Socket.io
+///////////////////////////////////////
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+  
+  socket.emit('authenticate',{
+    message:'please authenticate'
+  })
+  socket.on('checkcredentials',(data)=>{
+  
+    User.findOne({_id:data._id},function(err,user){
+ 
+      if(err){
+        
+        console.log('disconnecting1')
+        socket.disconnect()
+        return
+      }
+      else if(user==null){
+        console.log('disconnecting2')
+        socket.disconnect()
+        return
+      }
+      if(data.password==user.MotDePasse){
+        
+        socket.emit('Logged',{
+    
+        })
+      }
+    })
+  })
 
+  
+  socket.on('getads',(data)=>{
+    
+    let dateReference=new Date
+    dateReference -= (1 * 60 * 60 * 1000);
+  
+
+
+    Annonce.find({DatePublication:{"$gt": dateReference}},function(err,annonces){
+      if(err){
+       
+        socket.emit('error',{
+          error:"database research error",
+        })
+      }
+      else if(annonces==null){
+        
+        socket.emit('empty',{
+          message:'aucune annonce a valider'
+        })
+
+      }
+      else if (annonces){
+
+        socket.emit('adsrefresh',{
+          ads:annonces
+        })
+      }
+    })
+  })
+  //end of nesting inside io
+})
 
 
 
@@ -515,5 +521,4 @@ function getSearchOption(req) {
   }
 }
 
-//end of nesting inside io
-})
+

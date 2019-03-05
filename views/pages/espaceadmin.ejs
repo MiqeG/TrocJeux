@@ -141,11 +141,13 @@ function zoomImages(e){
             })
         })
         socket.on('Logged', (data) => {
+          
             socket.emit('getads', {
 
             })
         })
         socket.on('adsrefresh', (data) => {
+           console.log('OKKKKKKKKKKKKKK')
             let arrayofAds = data.ads
             arrayofAds.sort(arraysort)
             $tablebody.empty()
