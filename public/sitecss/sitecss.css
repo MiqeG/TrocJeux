@@ -226,3 +226,6 @@ img {vertical-align: middle;}
 }
 .Zoomed {
   max-height: 70vh; }
+#frontlogo:hover{
+cursor: pointer;
+}

@@ -43,11 +43,13 @@
         })
     }
 function zoomImages(e){
+   
     $('.ui.basic.modal.ImageModal').modal('show')
             $('#ModalImage').attr('src', $(e).attr('src'))
 }
     $(document).ready(function () {
-
+        var audio = new Audio('assets/sounds/light.mp3');
+        var audio2 = new Audio('assets/sounds/intuition.mp3');
         let arrayofIntervals = []
         function newCountDown(date, id) {
 
@@ -166,12 +168,14 @@ function zoomImages(e){
                 $('#' + ad._id).fadeIn(400)
 
             });
+           
         })
         socket.on('adsubstract', (data) => {
             clearInterval(arrayofIntervals[data.ad._id])
             arrayofIntervals[data.ad._id] = undefined
             $('#' + data.ad._id).fadeOut(400)
             $('#' + data.ad._id).remove()
+            audio.play()
         })
         socket.on('adadd', (data) => {
             $('#' + data.ad._id).remove()
@@ -180,6 +184,7 @@ function zoomImages(e){
             $tablebody.append(adrefresher(data.ad))
             newCountDown(data.ad.DatePublication, data.ad._id)
             $('#' + data.ad._id).fadeIn(400)
+            audio2.play()
         })
         socket.on('substractmany', (data) => {
             console.log(data)

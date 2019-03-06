@@ -8,15 +8,15 @@
   <label id="accounttype" hidden><%= user.Type %></label>
   <div class="item logo">
     <div class="paddingLogo">
-      <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="/assets/img/logo.png"
+      <img class="frontlogo" id="ModalImage2" class="SidebarOpener" src="<% ServerUrl %>/assets/img/logo.png"
         styled="width:content;" />
 
     </div>
-    <img class="frontlogo" src="<% ServerUrl %>/assets/img/logo.png" style="display: none" />
+    <img id="frontlogo" class="frontlogo" src="<% ServerUrl %>/assets/img/logo.png" style="display: none" />
   </div>
   <div class="ui accordion sidebarpage">
     <a class="item button" style="color:rgb(50, 240, 240);text-align: center;"
-      href="<% ServerUrl %>"></i><b>Troc'Jeux!</b></a>
+      href="/"></i><b>Troc'Jeux!</b></a>
 
     <% if(auth==false){ %>
     <a class="item " style="color:rgb(50, 240, 240)" href="<% ServerUrl %>/inscription"><i class="users icon"

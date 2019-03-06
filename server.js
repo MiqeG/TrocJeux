@@ -18,7 +18,7 @@ var csrf = require('csurf')
 var mkdirp = require('mkdirp')
 
 var rimraf = require("rimraf");
-let fs=require('fs')
+let fs = require('fs')
 const fs2 = require('fs-extra');
 let path = require('path')
 var csrfProtection = csrf({ cookie: true })
@@ -31,7 +31,7 @@ const CryptoJS = require("crypto-js");
 let configFile = require('./config/server_config.json')
 
 
-//http server to send to https in case someone requests http instead of https
+//http server to redirect to https in case someone requests http instead of https
 
 const clearserver = http.createServer(function (req, res) {
 
@@ -76,22 +76,27 @@ let inscriptionval = require('./routes/inscriptionval')
 let ajaxmdp = require('./routes/ajaxmdp')
 let userupdinfo = require('./routes/userupdinfo')
 let nmdp = require('./routes/nmdp')
-let emailupd=require('./routes/emailupd')
-let emailupdval=require('./routes/emailupdval')
-let adupdpost=require('./routes/adupdpost')
-let deleteuser=require('./routes/deleteuser')
+let emailupd = require('./routes/emailupd')
+let emailupdval = require('./routes/emailupdval')
+let adupdpost = require('./routes/adupdpost')
+let deleteuser = require('./routes/deleteuser')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
 let tempEmailUpd = {};
-mkdirp(configFile.serverConfigurationVariables.userImageFolder + '/temp', function (err) {
+let path2 = configFile.serverConfigurationVariables.userImageFolder + '/temp'
+rimraf(path2, function (err) {
   if (err) throw err
-  console.log('Temp folder ok!')
-});
+  mkdirp(path2, function (err) {
+    if (err) throw err
+    console.log('Temp folder ok!')
+  });
+})
+
 
 server.listen(configFile.serverConfigurationVariables.port, function () {
   console.log('server started')
-  
+
 })
 
 //listen on port specified in config file
@@ -102,7 +107,7 @@ server.listen(configFile.serverConfigurationVariables.port, function () {
 ///////////////////////////////////////
 
 let mongoConnection = require('./middlewares/mongoConnection', mongoose)
-
+let db;
 mongoConnection(mongoose)
 var User = mongoose.model('User', require('./Schemas/UserSchema'), 'Users')
 var Annonce = mongoose.model('Annonce', require('./Schemas/AnnonceSchema'), 'Annonces')
@@ -182,12 +187,121 @@ app.use(require('./middlewares/flash'))
 ///////////////////////////////////////
 //Routes
 ///////////////////////////////////////
-//parse password retrieval form
+
 //index
 app.get('/', csrfProtection, (req, res) => {
 
   index(req, res, configFile, Annonce)
 })
+app.post('/adapi', (req, res) => {
+  var db = mongoose.connection;
+  let coll = db.collection('Annonces');
+  coll.countDocuments().then((count) => {
+    console.log(count);
+
+    if (req.body && req.body.pagination && req.body.categorie && req.body.amount) {
+
+      if (isNaN(req.body.pagination) || isNaN(req.body.amount)) {
+        let json = { message: 'Erreur requête invalide,quantité ou pagination incorrects' }
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(json));
+        return
+      }
+      else {
+        if (req.body.categorie > 0 || req.body.categorie < 0) {
+          let json = { message: 'Erreur requête invalide, pagination incorrecte' }
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(json));
+          return
+        }
+        if (req.body.amount < 1 || req.body.amount > configFile.serverConfigurationVariables.adamount) {
+          let json = { message: 'Erreur requête invalide, quantité incorrecte ou supérieure a: ' + configFile.serverConfigurationVariables.adamount }
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(json));
+          return
+        }
+        let offset = parseInt(req.body.amount * req.body.pagination)
+        if (req.body.pagination < 1) {
+          let json = { message: 'Erreur requête invalide, pagination incorrecte' }
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(json));
+          return
+        }
+        else {
+
+          let limit = parseInt(req.body.amount)
+          let dateReference = new Date
+          console.log(dateReference)
+          dateReference -= (1 * 60 * 60 * 1000);
+          if (offset > count && count < 100) {
+            offset = 0
+          }
+
+          if (parseInt(req.body.categorie) == 0) {
+            Annonce.find({ DatePublication: { "$lt": dateReference } }, function (err, annonces) {
+              if (err) {
+                let json = { message: 'Erreur fatale base de données...' }
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(json));
+                return
+              }
+              if (annonces.length < 1) {
+                let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(json));
+                return
+              }
+              let json = annonces
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify(json));
+
+            }).skip(offset).limit(limit)
+          } else {
+            let categoriesArray = configFile.categories
+
+            if (categoriesArray.includes(req.body.categorie.trim())) {
+
+              Annonce.find({ DatePublication: { "$lt": dateReference }, Categories: req.body.categorie.trim() }, function (err, annonces) {
+                if (err) {
+                  let json = { message: 'Erreur fatale base de données...' }
+                  res.writeHead(500, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify(json));
+                  return
+                }
+                if (annonces.length < 1) {
+                  let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify(json));
+                  return
+                }
+                let json = annonces
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(json));
+
+              }).skip(offset).limit(limit)
+            }
+            else{
+              let json = { message: 'Erreur requête invalide, catégorie introuvable' }
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify(json));
+              return
+            }
+          }
+
+        }
+
+      }
+
+    }
+    else {
+      let json = { message: 'Erreur requête invalide' }
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(json));
+      return
+    }
+  })
+})
+//parse password retrieval form
 app.get('/inscriptionval', (req, res) => {
   inscriptionval(req, res, User, CryptoJS, configFile, tempUsers, function (returnedUsers) {
     tempUsers = returnedUsers
@@ -261,102 +375,107 @@ app.get('/searchApi', (req, res) => {
 })
 
 //Update email ajax
-app.post('/emailupd',isLoggedIn,function(req,res){
- 
-    emailupd(req,res,CryptoJS,tempEmailUpd,configFile,User,function(returnedTempEmail){
-      tempEmailUpd=returnedTempEmail
-   console.log('email updated')
-    })
+app.post('/emailupd', isLoggedIn, function (req, res) {
 
-})
-app.post('/checkannonce',isLoggedIn,function(req,res){
-  if(req.user.Type=='Admin'){
-   console.log('Admin: '+req.user.NomUitilisateur +" a checké l'annonce: " +req.body._id)
-   let newdate= new Date
-   console.log(newdate)
-   newdate=newdate.setDate(newdate.getHours()-3)
-   
-   
-   let dateReference = new Date
-            dateReference -= (1 * 60 * 60 * 1000);
-   Annonce.findOneAndUpdate({_id:req.body._id},{$set:{DatePublication:dateReference}}, {new: true},function(err,annonce){
-     if(err){
-
-     }
-     else if(annonce==null){
-
-     }
-     else if(annonce){
-       console.log(annonce)
-      io.emit('adsubstract',{
-        ad:annonce
-      })
-     }
-   })
-  }
-  else{
-    res.redirect('/')
-  }
-})
-app.post('/adupdpost',isLoggedIn,function(req,res){
-
-if(req.body){
-  
-  adupdpost(req,res,Annonce,configFile, IoOp, formidable, path, mkdirp,fs,io)
-}
-else{
-  req.flash('error','Erreur interne serveur...')
-  res.redirect('/espacemembre')
-  return
-}
-
-})
-app.post('/deleteuser',isLoggedIn,function(req,res){
-  if(req.body.user_Id!=req.user._id){
-  
-    req.flash('error','Erreur interne serveur contactez nous!...')
-    res.redirect('/logout')
-    return
-  }
-  else if(req.body.Email!=req.user.Email){
-  
-    req.flash('error','Erreur interne serveur contactez nous!...')
-    res.redirect('/logout')
-    return
-  }
-  else{
-    deleteuser(req,res,User,Annonce,configFile, rimraf,io)
-  }
- 
-
+  emailupd(req, res, CryptoJS, tempEmailUpd, configFile, User, function (returnedTempEmail) {
+    tempEmailUpd = returnedTempEmail
+    console.log('email updated')
   })
-//Connect user
-app.get('/espaceadmin',isLoggedIn,function(req,res){
-  if(req.user.Type=='Admin'){
-    res.render('pages/espaceadmin',{configFile:configFile,ServerUrl:configFile.serverConfigurationVariables.ServerUrl, auth: req.isAuthenticated(),user: req.user,categories:configFile.categories})
+
+})
+//when admin validates ad
+app.post('/checkannonce', isLoggedIn, function (req, res) {
+  if (req.user.Type == 'Admin') {
+    console.log('Admin: ' + req.user.NomUitilisateur + " a checké l'annonce: " + req.body._id)
+    let newdate = new Date
+
+    newdate = newdate.setDate(newdate.getHours() - 3)
+
+
+    let dateReference = new Date
+    dateReference -= (1 * 60 * 60 * 1000);
+    Annonce.findOneAndUpdate({ _id: req.body._id }, { $set: { DatePublication: dateReference } }, { new: true }, function (err, annonce) {
+      if (err) {
+
+      }
+      else if (annonce == null) {
+
+      }
+      else if (annonce) {
+
+        io.emit('adsubstract', {
+          ad: annonce
+        })
+      }
+    })
   }
-  else{
+  else {
+    res.redirect('/')
+  }
+})
+app.post('/adupdpost', isLoggedIn, function (req, res) {
+
+  if (req.body) {
+
+    adupdpost(req, res, Annonce, configFile, IoOp, formidable, path, mkdirp, fs, io)
+  }
+  else {
+    req.flash('error', 'Erreur interne serveur...')
+    res.redirect('/espacemembre')
+    return
+  }
+
+})
+
+//when admin or user deletes
+app.post('/deleteuser', isLoggedIn, function (req, res) {
+  if (req.body.user_Id != req.user._id) {
+
+    req.flash('error', 'Erreur interne serveur contactez nous!...')
+    res.redirect('/logout')
+    return
+  }
+  else if (req.body.Email != req.user.Email) {
+
+    req.flash('error', 'Erreur interne serveur contactez nous!...')
+    res.redirect('/logout')
+    return
+  }
+  else {
+    deleteuser(req, res, User, Annonce, configFile, rimraf, io)
+  }
+
+
+})
+
+//Admin back-end
+app.get('/espaceadmin', isLoggedIn, function (req, res) {
+  if (req.user.Type == 'Admin') {
+    res.render('pages/espaceadmin', { configFile: configFile, ServerUrl: configFile.serverConfigurationVariables.ServerUrl, auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+  }
+  else {
     res.redirect('/')
   }
 
 })
+//Connect user
 app.post('/connexion',
 
   passport.authenticate('local', { failureRedirect: '/error' }),
   function (req, res) {
-   
-   if(req.user.Type=='Admin'){
-    req.session._id = req.user._id
 
-    res.redirect('/espaceadmin')
-   }
-   else if(req.user.Type=='User'){
-    
-    req.session._id = req.user._id
+    if (req.user.Type == 'Admin') {
+      req.session._id = req.user._id
 
-    res.redirect('/espacemembre')
-   }
-   
+      res.redirect('/espaceadmin')
+    }
+    else if (req.user.Type == 'User') {
+
+      req.session._id = req.user._id
+
+      res.redirect('/espacemembre')
+    }
+
   });
 
 //logout user
@@ -375,51 +494,52 @@ app.get('/ajaxCodePostal', csrfProtection, (req, res) => {
   ajaxCodePostal(req, res, SearchVille)
 
 })
-app.post('/adupd',isLoggedIn,function(req,res){
+app.post('/adupd', isLoggedIn, function (req, res) {
 
-Annonce.findOne({_id:req.body._id},function(err,annonce){
-  if(err){
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify('Erreur inconnue! veuillez nous contacter!'));
+  Annonce.findOne({ _id: req.body._id }, function (err, annonce) {
+    if (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify('Erreur inconnue! veuillez nous contacter!'));
+      return
+    }
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(annonce));
     return
-  }
-
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(annonce));
-  return
-})
+  })
 })
 //validate email upload link
-app.get('/emailupdval',function(req,res){
-  if(req.query.u&&req.query.e&&req.query.d){
-    emailupdval(req,res,req.query.u,req.query.e,req.query.d,tempEmailUpd,CryptoJS,configFile,User,Annonce,function(returnedTempEmailUpd){
-      tempEmailUpd=returnedTempEmailUpd
+app.get('/emailupdval', function (req, res) {
+  if (req.query.u && req.query.e && req.query.d) {
+    emailupdval(req, res, req.query.u, req.query.e, req.query.d, tempEmailUpd, CryptoJS, configFile, User, Annonce, function (returnedTempEmailUpd) {
+      tempEmailUpd = returnedTempEmailUpd
     })
   }
- else{
-   req.flash('error','Lien Invalide!!')
-   res.redirect('/')
- }
+  else {
+    req.flash('error', 'Lien Invalide!!')
+    res.redirect('/')
+  }
 })
 
-//member area
+//user member area
 app.get('/espacemembre', isLoggedIn, csrfProtection, function (req, res) {
-if(req.user.Type=='Admin'){
-  
-  res.redirect('/espaceadmin')
-  return
-}
-else if(req.user.Type=='User'){
-  let searchoption = getSearchOption(req)
-  espacemembre(req, res, Annonce, configFile, User, searchoption, csrfProtection)
+  if (req.user.Type == 'Admin') {
 
-}
-  else{
+    res.redirect('/espaceadmin')
+    return
+  }
+  else if (req.user.Type == 'User') {
+    let searchoption = getSearchOption(req)
+    espacemembre(req, res, Annonce, configFile, User, searchoption, csrfProtection)
+
+  }
+  else {
     redirect('/')
   }
 
 
 });
+//password ajax retrieval
 app.post('/ajaxmdp', isLoggedIn, function (req, res) {
   ajaxmdp(req, res, User)
 })
@@ -435,7 +555,7 @@ app.post('/upduserinfo', isLoggedIn, parseForm, csrfProtection, function (req, r
 })
 //parse incoming ad post
 app.post('/deposer', isLoggedIn, (req, res) => {
-  deposer(req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp,io)
+  deposer(req, res, User, Annonce, configFile, IoOp, formidable, path, mkdirp, io)
 
 })
 // parse incoming user subscription
@@ -449,8 +569,8 @@ app.post('/inscription', parseForm, csrfProtection, (req, res) => {
 //remove ad
 app.post('/effacerannonce', isLoggedIn, (req, res) => {
 
-  
-  effacerAnnonce(req, res, Annonce, rimraf, configFile,io)
+
+  effacerAnnonce(req, res, Annonce, rimraf, configFile, io)
 
 })
 
@@ -468,60 +588,60 @@ app.use(function (req, res, next) {
 ///////////////////////////////////////
 const io = require('socket.io')(server);
 io.on('connection', (socket) => {
-  
-  socket.emit('authenticate',{
-    message:'please authenticate'
+
+  socket.emit('authenticate', {
+    message: 'please authenticate'
   })
-  socket.on('checkcredentials',(data)=>{
-  
-    User.findOne({_id:data._id},function(err,user){
- 
-      if(err){
-        
+  socket.on('checkcredentials', (data) => {
+
+    User.findOne({ _id: data._id }, function (err, user) {
+
+      if (err) {
+
         console.log('disconnecting1')
         socket.disconnect()
         return
       }
-      else if(user==null){
+      else if (user == null) {
         console.log('disconnecting2')
         socket.disconnect()
         return
       }
-      if(data.password==user.MotDePasse){
-        
-        socket.emit('Logged',{
-    
+      if (data.password == user.MotDePasse) {
+
+        socket.emit('Logged', {
+
         })
       }
     })
   })
 
-  
-  socket.on('getads',(data)=>{
-    
-    let dateReference=new Date
+
+  socket.on('getads', (data) => {
+
+    let dateReference = new Date
     dateReference -= (1 * 60 * 60 * 1000);
-  
 
 
-    Annonce.find({DatePublication:{"$gt": dateReference}},function(err,annonces){
-      if(err){
-       
-        socket.emit('error',{
-          error:"database research error",
+
+    Annonce.find({ DatePublication: { "$gt": dateReference } }, function (err, annonces) {
+      if (err) {
+
+        socket.emit('error', {
+          error: "database research error",
         })
       }
-      else if(annonces==null){
-        
-        socket.emit('empty',{
-          message:'aucune annonce a valider'
+      else if (annonces == null) {
+
+        socket.emit('empty', {
+          message: 'aucune annonce a valider'
         })
 
       }
-      else if (annonces){
+      else if (annonces) {
 
-        socket.emit('adsrefresh',{
-          ads:annonces
+        socket.emit('adsrefresh', {
+          ads: annonces
         })
       }
     })

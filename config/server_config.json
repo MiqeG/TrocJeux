@@ -11,7 +11,8 @@
         "keyPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-key.pem",
         "certPath": "C:/ProgramData/win-acme/httpsacme-v02.api.letsencrypt.org/theroxxors.ml-crt.pem",
         "serverKey":"trocjeuxclef",
-        "maxAnnonces":4
+        "maxAnnonces":4,
+        "adamount":101
         
     },
     "ServerUrl": "https://theroxxors.ml",
