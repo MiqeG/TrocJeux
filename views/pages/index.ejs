@@ -1,6 +1,8 @@
 <% include header %>
 <hi>Index</h1> 
-
+<div class="ui grid adcontainer">
+ 
+</div>
 
 
 <div class="ui  primary button" id="refreshads"><i class="check icon"></i>Refresh</div>
@@ -11,14 +13,45 @@
 <% include footer %>
 
 <script>
-  $('#refreshads').click(function(){
+  
+  $(document).ready(function(){
+    function ajaxads(pagination,categorie,amount){
+      
     $.ajax({
       url: '/adapi',
       type: 'POST',
       dataType: 'json',
-      data: { pagination: 1, categorie: 'Stratégie' ,amount:20},
+      data: { pagination: pagination, categorie: categorie ,amount:amount},
       success: function (data) {
-         
+
+   
+        data.forEach(element => {
+          let output = `<div class="four wide column"><div class="ui card">
+    <div class="image">
+      <div class="ui placeholder">
+        <div class="square image"></div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="ui placeholder">
+        <div class="header">
+          <div class="very short line"></div>
+          <div class="medium line"></div>
+        </div>
+        <div class="paragraph">
+          <div class="short line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="extra content">
+      <div class="ui disabled primary button">Add</div>
+      <div class="ui disabled button">Delete</div>
+    </div>
+  </div>
+    </div></div>`
+    $('.adcontainer').append(output)
+        });
+       
       console.log(data)
       },
       error: function (err) {
@@ -27,5 +60,10 @@
         
       }
   })
+  }
+  $('#refreshads').click(function(){
+   ajaxads(1,0,20)
   })
+  })
+ 
 </script>
