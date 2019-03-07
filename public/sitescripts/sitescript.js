@@ -22,13 +22,7 @@
                     window.location.href= '/'
                 })
               
-                $('#frontlogo').hover(function(){
-
-                    if($('#frontlogo').is(':visible')){
-                        $('#frontlogo').transition('jiggle')
-                    }
-                   
-                })
+               
             $('.miniImage').mouseenter(function () {
                 $(this).transition('jiggle')
                     ;

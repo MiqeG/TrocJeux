@@ -1,11 +1,30 @@
 <% include header %>
-<hi>Index</h1> 
-<div class="ui grid adcontainer">
- 
+
+
+<div class="ui  asd"   style="margin-bottom:10%;">
+    <h1><i class=" big teal file icon"> </i> Nos Annonces</h1>
+    <table id="adtable"  class="ui teal table" style="max-width:945px;background-color:transparent" >
+       <tbody>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+            <tr class="ui grid adcontainer" >
+          
+              </tr>
+        </tbody>
+      
+      </table>
+            
+         
+      
+
+
+
+
+  
+
 </div>
-
-
-<div class="ui  primary button" id="refreshads"><i class="check icon"></i>Refresh</div>
 
 </div>
 
@@ -13,57 +32,112 @@
 <% include footer %>
 
 <script>
-  
-  $(document).ready(function(){
-    function ajaxads(pagination,categorie,amount){
-      
-    $.ajax({
-      url: '/adapi',
-      type: 'POST',
-      dataType: 'json',
-      data: { pagination: pagination, categorie: categorie ,amount:amount},
-      success: function (data) {
 
-   
-        data.forEach(element => {
-          let output = `<div class="four wide column"><div class="ui card">
-    <div class="image">
-      <div class="ui placeholder">
-        <div class="square image"></div>
-      </div>
-    </div>
-    <div class="content">
-      <div class="ui placeholder">
-        <div class="header">
-          <div class="very short line"></div>
-          <div class="medium line"></div>
-        </div>
-        <div class="paragraph">
-          <div class="short line"></div>
-        </div>
-      </div>
-    </div>
-    <div class="extra content">
-      <div class="ui disabled primary button">Add</div>
-      <div class="ui disabled button">Delete</div>
-    </div>
-  </div>
-    </div></div>`
-    $('.adcontainer').append(output)
-        });
-       
-      console.log(data)
-      },
-      error: function (err) {
-
-        console.log(err.responseJSON.message)
-        
-      }
-  })
+  function clickFunk(event) {
+    $('.ui.basic.modal.ImageModal').modal('show')
+    $('#ModalImage').attr('src', $(event).attr('src'))
   }
-  $('#refreshads').click(function(){
-   ajaxads(1,0,20)
-  })
+
+  function bigcards(entry) {
+    $(entry).transition({
+    animation: 'pulse',
+    interval: 10000,
+    duration:500,
+    allowRepeats:false,
+    useFailSafe:true
   })
  
+  
+
+  }
+
+
+
+  $(document).ready(function () {
+
+    ajaxads(1, 0, 20)
+    function ajaxads(pagination, categorie, amount) {
+
+      $.ajax({
+        url: '/adapi',
+        type: 'POST',
+        dataType: 'json',
+        data: { pagination: pagination, categorie: categorie, amount: amount },
+        success: function (data) {
+
+
+          data.forEach(element => {
+            let finalstring=''
+            element.Categories.forEach(cat=>{
+             let str=` <a class="">${cat}</a>,`
+             finalstring+=str
+            })
+            let link = '/?a=' + element._id
+            let mainImageSrc = 'pregistered/' + element.User_Id + '/' + element._id + '/' + element.UserImages[0]
+            let output = `<td class="centered" ><div style="height:500px;width:220px"><div class="ui card" style="height:480px;width:200px;margin-top:15%;margin:5%;" data-adid="${element._id}"
+            
+            >
+    <div class="image"  >
+        <div style="width:100%;" class="ui  teal button" ></i>${element.NomUitilisateur}</div> 
+      <div class="ui ">
+        <div class="ui ${element._id}" style="height:200px;width:200px;">
+          
+            <img  class="ui  rounded centered image ZoomImage" onclick="clickFunk(this)" src="${mainImageSrc}"  style="height:215px;width:100%; ">
+            
+          </div>
+        
+      </div>
+    </div>
+   
+    <div class="content  ${element._id}" style="overflow-y:auto;height:45px;" >
+      <div class="ui ">
+        <div class="header" style="overflow-y:auto;color:teal;" >
+          ${element.Titre}
+        </div>
+       
+       
+      </div>
+      
+    </div>
+
+    <div class="content " style="height:25px;">
+      <div class="ui ">
+    <div class="paragraph" style="color:tomato;">
+         ${element.Ville}, ${element.CodePostal}
+        </div>
+      </div>
+      
+    </div>
+    <div class="content" style="height:25px;">
+    <div class="ui ">
+       
+        <span style="font-size:13px;">  ${finalstring}</span>  
+       
+        </div>
+       
+    </div>
+   
+  
+   
+    <div  class="ui  primary button" id="refreshads"  onmousedown="if(event.button==0){window.location.href='${link}'} else if(event.button==1){ window.open('${link}', '_blank');}"></i>Détails</div> 
+
+  </div>
+    </div></div></td>`
+            $('.adcontainer').append(output)
+          });
+
+          console.log(data)
+        },
+        error: function (err) {
+
+          console.log(err.responseJSON.message)
+
+        }
+      })
+    }
+    $('#refreshads').click(function () {
+
+    })
+  })
+
 </script>

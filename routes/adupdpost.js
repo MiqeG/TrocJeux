@@ -80,8 +80,9 @@ module.exports = function (req, res, Annonce, configFile, IoOp, formidable, path
         }
         
         let date=new Date
+        let categoryArray=fields.actualCategories.split(',')
         Annonce.findOneAndUpdate({ _id: fields.upd_id },
-             { $set: { Titre: fields.updTitre,Texte:fields.updTexte,Categories:fields.actualCategories,UserImages:finalfilearray,DatePublication:date } },{new: true},
+             { $set: { Titre: fields.updTitre,Texte:fields.updTexte,Categories:categoryArray,UserImages:finalfilearray,DatePublication:date } },{new: true},
               function (err, annonce) {
             if (err) {
                 req.flash('error','Erreur de type inconnue!!')

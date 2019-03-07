@@ -16,7 +16,7 @@ var formidable = require('formidable'),
   util = require('util');
 var csrf = require('csurf')
 var mkdirp = require('mkdirp')
-
+const VALIDATION_TOKEN = "MonsieurMG";
 var rimraf = require("rimraf");
 let fs = require('fs')
 const fs2 = require('fs-extra');
@@ -27,9 +27,9 @@ const passport = require('passport');
 let session = require('express-session')
 const CryptoJS = require("crypto-js");
 //Configuration file
-
+const request = require('request');
 let configFile = require('./config/server_config.json')
-
+let bodyParser = require('body-parser')
 
 //http server to redirect to https in case someone requests http instead of https
 
@@ -45,7 +45,8 @@ const clearserver = http.createServer(function (req, res) {
 
 const privateKey = fs2.readFileSync(configFile.serverConfigurationVariables.keyPath, 'utf8');
 const certificate = fs2.readFileSync(configFile.serverConfigurationVariables.certPath, 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+const server_ca = fs2.readFileSync(configFile.serverConfigurationVariables.server_ca, 'utf8')
+const credentials = { key: privateKey, cert: certificate, ca: server_ca };
 const server = require('https').createServer(credentials, app);
 //json file of french cities
 
@@ -80,6 +81,7 @@ let emailupd = require('./routes/emailupd')
 let emailupdval = require('./routes/emailupdval')
 let adupdpost = require('./routes/adupdpost')
 let deleteuser = require('./routes/deleteuser')
+
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -134,7 +136,8 @@ app.use('/pregistered', express.static('UserImages'))
 //Cookies
 ///////////////////////////////////////
 
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000,
@@ -149,7 +152,9 @@ app.use(cookieSession({
 
 
 app.set('trust proxy', 1) // trust first proxy
-
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(passport.initialize());
 
 app.use(passport.session());
@@ -188,7 +193,11 @@ app.use(require('./middlewares/flash'))
 //Routes
 ///////////////////////////////////////
 
-//index
+//
+
+app.get('/politiqueconf', (req, res) => {
+  res.render('pages/politiqueconf')
+})
 app.get('/', csrfProtection, (req, res) => {
 
   index(req, res, configFile, Annonce)
@@ -280,7 +289,7 @@ app.post('/adapi', (req, res) => {
 
               }).skip(offset).limit(limit)
             }
-            else{
+            else {
               let json = { message: 'Erreur requête invalide, catégorie introuvable' }
               res.writeHead(500, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify(json));
@@ -301,6 +310,54 @@ app.post('/adapi', (req, res) => {
     }
   })
 })
+//facebook webhook
+
+app.get('/webhook', function (req, res) {
+  console.log('ok')
+  if (req.query['hub.mode'] === 'subscribe' &&
+    req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+});
+app.post('/webhook/', function (req, res) {
+
+
+
+  console.log('contacted by fb')
+  let message_events = req.body.entry[0].messaging
+  if (message_events != undefined) {
+    for (let index = 0; index < message_events.length; index++) {
+      let sender = message_events[index].sender.id
+      if (message_events[index].message && message_events[index].message.text) {
+        let text = message_events[index].message.text
+        sendTextMessage(sender, "J'ai recu : " + text.substring(0, 200), function () {
+          sendTextMessage(sender, "Mais regarde ça d'abord", function () {
+            sendButtonsMessage(sender, function () {
+              sendImageMessage(sender, '', function () {
+             
+              })
+            })
+           
+          })
+        })
+
+
+
+      }
+
+    }
+  }
+
+
+  res.sendStatus(200)
+
+
+})
+
 //parse password retrieval form
 app.get('/inscriptionval', (req, res) => {
   inscriptionval(req, res, User, CryptoJS, configFile, tempUsers, function (returnedUsers) {
@@ -670,5 +727,131 @@ function getSearchOption(req) {
     return searchoption
   }
 }
+function sendTextMessage(sender, text, callback) {
+  let data = { text: text }
+  let access_token = "EAAEvWG7hdzkBAHwlU78c0Jr4yj5i20ZAZAamBrLAqaKtKN3hijuTQf0HFX3ALZBOIMchTxrM8Tpze4CrlptQrXIE95N9EbDHNvAUYryU2ELCTagUh50FpPZAsKCEzGz9TfVthVyQpsoIgsna0pl5f7vs4ZCpsKZBQZAEB7ibnpmZCwZDZD";
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: access_token },
+    method: 'POST',
+    json: {
+      recipient: { id: sender },
+      message: data,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending messages: ', error)
+      return
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error)
+      return
+    }
+    callback()
+  })
+}
 
-
+function sendQuickReplyMessage(sender, text, callback) {
+  let data =
+  {
+    text: text,
+    "quick_replies": [
+      {
+        "content_type": "text",
+        "title": "Bleu",
+        "payload": "prefereCouleurBleu"
+      },
+      {
+        "content_type": "text",
+        "title": "Vert",
+        "payload": "prefereCouleurVert"
+      }
+    ]
+  }
+  let access_token = "EAAEvWG7hdzkBAHwlU78c0Jr4yj5i20ZAZAamBrLAqaKtKN3hijuTQf0HFX3ALZBOIMchTxrM8Tpze4CrlptQrXIE95N9EbDHNvAUYryU2ELCTagUh50FpPZAsKCEzGz9TfVthVyQpsoIgsna0pl5f7vs4ZCpsKZBQZAEB7ibnpmZCwZDZD";
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: access_token },
+    method: 'POST',
+    json: {
+      recipient: { id: sender },
+      message: data,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending quick reply messages: ', error)
+      return
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error)
+      return
+    }
+    callback()
+  })
+}
+function sendImageMessage(sender, text, callback) {
+  let data =
+  {
+    "attachment": {
+      "type": "image",
+      "payload": {
+        "url": "https://theroxxors.ml/assets/img/logoinverted.png"
+      }
+    }
+  }
+  let access_token = "EAAEvWG7hdzkBAHwlU78c0Jr4yj5i20ZAZAamBrLAqaKtKN3hijuTQf0HFX3ALZBOIMchTxrM8Tpze4CrlptQrXIE95N9EbDHNvAUYryU2ELCTagUh50FpPZAsKCEzGz9TfVthVyQpsoIgsna0pl5f7vs4ZCpsKZBQZAEB7ibnpmZCwZDZD";
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: access_token },
+    method: 'POST',
+    json: {
+      recipient: { id: sender },
+      message: data,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending image messages: ', error)
+      return
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error)
+      return
+    }
+    callback()
+  })
+}
+function sendButtonsMessage(sender, callback) {
+  let data =
+  {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "Voici des liens intéréssants",
+        "buttons": [
+          {
+            "type": "web_url",
+            "url": "https://theroxxors.ml",
+            "title": "Mon site"
+          }
+        ]
+      }
+    }
+  }
+  let access_token = "EAAEvWG7hdzkBAHwlU78c0Jr4yj5i20ZAZAamBrLAqaKtKN3hijuTQf0HFX3ALZBOIMchTxrM8Tpze4CrlptQrXIE95N9EbDHNvAUYryU2ELCTagUh50FpPZAsKCEzGz9TfVthVyQpsoIgsna0pl5f7vs4ZCpsKZBQZAEB7ibnpmZCwZDZD";
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: access_token },
+    method: 'POST',
+    json: {
+      recipient: { id: sender },
+      message: data,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending buttons messages: ', error)
+      return
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error)
+      return
+    }
+    callback()
+  })
+}
