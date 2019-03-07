@@ -2,11 +2,12 @@
 
 
 <div class="ui  asd"   style="margin-bottom:10%;">
-    <h1><i class=" big teal file icon"> </i> Nos Annonces</h1>
+    <h1><i class=" big teal calendar alternate outline icon"> </i> Nos Annonces</h1>
     <table id="adtable"  class="ui teal table" style="max-width:945px;background-color:transparent" >
        <tbody>
         </tbody>
       </table>
+      <br>
       <table>
         <tbody>
             <tr class="ui grid adcontainer" >
@@ -74,55 +75,36 @@
             })
             let link = '/?a=' + element._id
             let mainImageSrc = 'pregistered/' + element.User_Id + '/' + element._id + '/' + element.UserImages[0]
-            let output = `<td class="centered" ><div style="height:500px;width:220px"><div class="ui card" style="height:480px;width:200px;margin-top:15%;margin:5%;" data-adid="${element._id}"
-            
-            >
-    <div class="image"  >
-        <div style="width:100%;" class="ui  teal button" ></i>${element.NomUitilisateur}</div> 
-      <div class="ui ">
-        <div class="ui ${element._id}" style="height:200px;width:200px;">
-          
-            <img  class="ui  rounded centered image ZoomImage" onclick="clickFunk(this)" src="${mainImageSrc}"  style="height:215px;width:100%; ">
-            
-          </div>
-        
-      </div>
-    </div>
-   
-    <div class="content  ${element._id}" style="overflow-y:auto;height:45px;" >
-      <div class="ui ">
-        <div class="header" style="overflow-y:auto;color:teal;" >
-          ${element.Titre}
-        </div>
-       
-       
-      </div>
-      
-    </div>
-
-    <div class="content " style="height:25px;">
-      <div class="ui ">
-    <div class="paragraph" style="color:tomato;">
-         ${element.Ville}, ${element.CodePostal}
-        </div>
-      </div>
-      
-    </div>
-    <div class="content" style="height:25px;">
-    <div class="ui ">
-       
-        <span style="font-size:13px;">  ${finalstring}</span>  
-       
-        </div>
-       
-    </div>
-   
-  
-   
-    <div  class="ui  primary button" id="refreshads"  onmousedown="if(event.button==0){window.location.href='${link}'} else if(event.button==1){ window.open('${link}', '_blank');}"></i>Détails</div> 
-
+            let output = `<td class="centered" ><div style="height:500px;width:220px"><div style="height:420px;" class="ui  card" data-html="<div class='header'>User Rating</div><div class='content'><div class='ui star rating'><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i></div></div>">
+  <div class="image">
+    <img src="${mainImageSrc}" style="height:200px;" class="ZoomImage" onclick="clickFunk(this)">
   </div>
-    </div></div></td>`
+  <div class="content">
+    <div class="header" style="overflow-y:auto;height:60px;"> ${element.Titre}</div>
+    <div class="description">
+        <a href="">  ${element.NomUitilisateur}</a>
+    </div>
+    <div class="description">
+      ${element.CodePostal},${element.Ville}
+    </div>
+    <div class="description">
+      ${finalstring}
+    </div>
+  </div>
+  <div class="ui two bottom attached buttons">
+    <div class="ui button">
+      <i class="user icon"></i>
+      Profil
+    </div>
+    <div class="ui primary button">
+      <i class="calendar alternate outline icon"></i>
+      Détails
+    </div>
+  </div>
+</div>
+
+  
+   </div></td>`
             $('.adcontainer').append(output)
           });
 
