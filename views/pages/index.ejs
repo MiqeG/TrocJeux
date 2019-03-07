@@ -1,29 +1,29 @@
 <% include header %>
 
 
-<div class="ui  asd"   style="margin-bottom:10%;">
-    <h1><i class=" big teal calendar alternate outline icon"> </i> Nos Annonces</h1>
-    <table id="adtable"  class="ui teal table" style="max-width:945px;background-color:transparent" >
-       <tbody>
-        </tbody>
-      </table>
-      <br>
-      <table>
-        <tbody>
-            <tr class="ui grid adcontainer" >
-          
-              </tr>
-        </tbody>
-      
-      </table>
-            
-         
-      
+<div class="ui  asd" style="margin-bottom:10%;">
+  <h1><i class=" big teal calendar alternate outline icon"> </i> Nos Annonces</h1>
+  <table id="adtable" class="ui teal table" style="max-width:945px;background-color:transparent">
+    <tbody>
+    </tbody>
+  </table>
+  <br>
+  <table>
+    <tbody>
+      <tr class="ui grid adcontainer">
+
+      </tr>
+    </tbody>
+
+  </table>
 
 
 
 
-  
+
+
+
+
 
 </div>
 
@@ -41,14 +41,14 @@
 
   function bigcards(entry) {
     $(entry).transition({
-    animation: 'pulse',
-    interval: 10000,
-    duration:500,
-    allowRepeats:false,
-    useFailSafe:true
-  })
- 
-  
+      animation: 'pulse',
+      interval: 10000,
+      duration: 500,
+      allowRepeats: false,
+      useFailSafe: true
+    })
+
+
 
   }
 
@@ -68,14 +68,17 @@
 
 
           data.forEach(element => {
-            let finalstring=''
-            element.Categories.forEach(cat=>{
-             let str=` <a class="">${cat}</a>,`
-             finalstring+=str
+            let finalstring = ''
+            element.Categories.forEach(cat => {
+              let str = ` <a class="">${cat}</a>,`
+              finalstring += str
             })
             let link = '/?a=' + element._id
             let mainImageSrc = 'pregistered/' + element.User_Id + '/' + element._id + '/' + element.UserImages[0]
-            let output = `<td class="centered" ><div style="height:500px;width:220px"><div style="height:420px;" class="ui  card" data-html="<div class='header'>User Rating</div><div class='content'><div class='ui star rating'><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i></div></div>">
+            let output = 
+            `<td class="centered" ><div style="height:500px;width:220px"><div style="height:420px;" class="ui  card" data-html="<div class='header'>User Rating</div>
+              <div class='content'><div class='ui star rating'><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i>
+                <i class='active icon'></i></div></div>">
   <div class="image">
     <img src="${mainImageSrc}" style="height:200px;" class="ZoomImage" onclick="clickFunk(this)">
   </div>
@@ -96,7 +99,7 @@
       <i class="user icon"></i>
       Profil
     </div>
-    <div class="ui primary button">
+    <div class="ui primary button" onclick="window.location.href='${link}'">
       <i class="calendar alternate outline icon"></i>
       Détails
     </div>

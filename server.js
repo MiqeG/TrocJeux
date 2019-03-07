@@ -81,7 +81,7 @@ let emailupd = require('./routes/emailupd')
 let emailupdval = require('./routes/emailupdval')
 let adupdpost = require('./routes/adupdpost')
 let deleteuser = require('./routes/deleteuser')
-
+let moment=require('moment')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -514,6 +514,56 @@ app.get('/espaceadmin', isLoggedIn, function (req, res) {
     res.redirect('/')
   }
 
+})
+//diagflow
+//
+app.get('/diagFlow',function(req,res){
+  res.render('pages/diagflow', { configFile: configFile, ServerUrl: configFile.serverConfigurationVariables.ServerUrl, auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
+
+})
+app.post('/weather',function (request,response)  {
+ // console.log(request.body.queryResult.queryText)
+console.log('contacted by diagflow')
+  //console.log(request.body.queryResult.parameters['date-time'])
+ // console.log(request.body.queryResult)
+  let address=''
+  let city=''
+  let country=''
+  let region=''
+  let  date=request.body.queryResult.parameters['date-time']
+  
+  if(request.body.queryResult.parameters.address['street-address']){
+    address=request.body.queryResult.parameters.address['street-address']
+  }
+  if(request.body.queryResult.parameters.address.city){
+    city=request.body.queryResult.parameters.address.city
+  }
+ if(request.body.queryResult.parameters.address.country){
+country=request.body.queryResult.parameters.address.country
+ }
+ if(request.body.queryResult.parameters.address['subadmin-area']){
+  region=request.body.queryResult.parameters.address['subadmin-area']
+   }
+   moment.locale('fr'); 
+    let result = 'La météo sur '+address+' '+city+' '+region+' '+country+' le: '+moment(date).format('Do MMMM YYYY')+' est belle!';
+    let responseObj={
+      "fulfillmentText":result
+     ,"fulfillmentMessages":[
+         {
+             "text": {
+                 "text": [
+                     "Hello I m Responding to intent"
+                 ]
+             }
+         }
+     ]
+     ,"source":""
+ }
+   
+
+  response.writeHead(200, { 'Content-Type': 'application/json; ; charset=utf-8' });
+  response.end(JSON.stringify(responseObj));
+  
 })
 //Connect user
 app.post('/connexion',
