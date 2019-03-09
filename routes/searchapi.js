@@ -1,7 +1,9 @@
 module.exports = function (req, res, Annonce) {
     let strRegExPatternUpper = '(?i)' + req.query.q + '(?-i)'
     let searchWithoption
-
+    let dateReference = new Date
+   
+    dateReference -= (1 * 60 * 60 * 1000);
     switch (req.query.t) {
         case '1':
             searchWithoption = {
@@ -9,7 +11,7 @@ module.exports = function (req, res, Annonce) {
                     "$or": [
                         { "Titre": { "$regex": strRegExPatternUpper } }
                     ]
-                }, { "Active": true }]
+                }, { "Active": true },{DatePublication: { "$lt": dateReference }}]
             }
             break;
         case '2':
@@ -19,7 +21,7 @@ module.exports = function (req, res, Annonce) {
                     "$or": [
                         { Categories: { "$regex": strRegExPatternUpper } }
                     ]
-                }, { "Active": true }]
+                }, { "Active": true },{DatePublication: { "$lt": dateReference }}]
             }
             break
         case '3':
@@ -28,7 +30,7 @@ module.exports = function (req, res, Annonce) {
                     "$or": [
                         { "CodePostal": req.query.q }, { "Ville": { "$regex": strRegExPatternUpper } }
                     ]
-                }, { "Active": true }]
+                }, { "Active": true },{DatePublication: { "$lt": dateReference }}]
             }
             break
         case '4':
@@ -37,7 +39,7 @@ module.exports = function (req, res, Annonce) {
                     "$or": [
                         { "NomUitilisateur": req.query.q }
                     ]
-                }, { "Active": true }]
+                }, { "Active": true },{DatePublication: { "$lt": dateReference }}]
             }
             break
         default:

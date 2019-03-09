@@ -203,11 +203,14 @@ app.get('/', csrfProtection, (req, res) => {
   index(req, res, configFile, Annonce)
 })
 app.post('/adapi', (req, res) => {
-  var db = mongoose.connection;
-  let coll = db.collection('Annonces');
-  coll.countDocuments().then((count) => {
-    
-  console.log(req.body)
+  let dateReference = new Date
+  console.log(dateReference)
+  dateReference -= (1 * 60 * 60 * 1000);
+
+Annonce.countDocuments({DatePublication: { "$lt": dateReference }},(err,count) => {
+  console.log(count)
+    if(err)throw err
+
     if (req.body && req.body.pagination && req.body.categorie && req.body.amount) {
   
   
@@ -231,7 +234,9 @@ app.post('/adapi', (req, res) => {
           res.end(JSON.stringify(json));
           return
         }
-        let offset = parseInt(req.body.amount * req.body.pagination)
+        let x =parseInt(req.body.amount)
+        let y=parseInt(req.body.pagination)-1
+        let offset = parseInt(x * y)
         if (req.body.pagination < 1) {
           let json = { message: 'Erreur requête invalide, pagination incorrecte' }
           res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -239,17 +244,13 @@ app.post('/adapi', (req, res) => {
           return
         }
         else {
-
-          let limit = parseInt(req.body.amount)
-          let dateReference = new Date
-          console.log(dateReference)
-          dateReference -= (1 * 60 * 60 * 1000);
-          if (offset > count && count < 100) {
-            offset = 0
-          }
         
+          let limit = parseInt(req.body.amount)
+       
+          
+          console.log(offset)
           if (req.body.categorie=='Toutes') {
-         
+            console.log(req.body)
             Annonce.find({ DatePublication: { "$lt": dateReference } }, function (err, annonces) {
             
               if (err) {
