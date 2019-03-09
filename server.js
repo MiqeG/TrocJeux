@@ -81,7 +81,7 @@ let emailupd = require('./routes/emailupd')
 let emailupdval = require('./routes/emailupdval')
 let adupdpost = require('./routes/adupdpost')
 let deleteuser = require('./routes/deleteuser')
-let moment=require('moment')
+let moment = require('moment')
 //Empty temp folder on startup
 let tempUsers = {};
 let tempReinit = {};
@@ -206,11 +206,13 @@ app.post('/adapi', (req, res) => {
   var db = mongoose.connection;
   let coll = db.collection('Annonces');
   coll.countDocuments().then((count) => {
-    console.log(count);
-
+    
+  console.log(req.body)
     if (req.body && req.body.pagination && req.body.categorie && req.body.amount) {
-
-      if (isNaN(req.body.pagination) || isNaN(req.body.amount)) {
+  
+  
+       let pagination=parseInt(req.body.pagination)
+      if (isNaN(pagination) || isNaN(req.body.amount)) {
         let json = { message: 'Erreur requête invalide,quantité ou pagination incorrects' }
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(json));
@@ -224,7 +226,7 @@ app.post('/adapi', (req, res) => {
           return
         }
         if (req.body.amount < 1 || req.body.amount > configFile.serverConfigurationVariables.adamount) {
-          let json = { message: 'Erreur requête invalide, quantité incorrecte ou supérieure a: ' + configFile.serverConfigurationVariables.adamount }
+          let json = { message: 'Erreur requête invalide, quantité incorrecte ou supérieure a: ' + configFile.serverConfigurationVariables.adamount}
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify(json));
           return
@@ -245,22 +247,34 @@ app.post('/adapi', (req, res) => {
           if (offset > count && count < 100) {
             offset = 0
           }
-
-          if (parseInt(req.body.categorie) == 0) {
+        
+          if (req.body.categorie=='Toutes') {
+         
             Annonce.find({ DatePublication: { "$lt": dateReference } }, function (err, annonces) {
+            
               if (err) {
                 let json = { message: 'Erreur fatale base de données...' }
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(json));
                 return
               }
+             
               if (annonces.length < 1) {
+               
                 let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
-                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(json));
                 return
               }
-              let json = annonces
+             
+              let counter=annonces.length/parseInt(req.body.amount)
+              counter=parseInt(counter+1)
+           
+              sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination}
+              console.log(sendFinal.totaladamount)
+              let json = sendFinal
+             
+            
               res.writeHead(200, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify(json));
 
@@ -283,7 +297,14 @@ app.post('/adapi', (req, res) => {
                   res.end(JSON.stringify(json));
                   return
                 }
-                let json = annonces
+               
+                let counter=annonces.length/parseInt(req.body.amount)
+                counter=parseInt(counter+1)
+             
+                sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination}
+                console.log(sendFinal.totaladamount)
+                let json = sendFinal
+               
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(json));
 
@@ -338,10 +359,10 @@ app.post('/webhook/', function (req, res) {
           sendTextMessage(sender, "Mais regarde ça d'abord", function () {
             sendButtonsMessage(sender, function () {
               sendImageMessage(sender, '', function () {
-             
+
               })
             })
-           
+
           })
         })
 
@@ -517,53 +538,53 @@ app.get('/espaceadmin', isLoggedIn, function (req, res) {
 })
 //diagflow
 //
-app.get('/diagFlow',function(req,res){
+app.get('/diagFlow', function (req, res) {
   res.render('pages/diagflow', { configFile: configFile, ServerUrl: configFile.serverConfigurationVariables.ServerUrl, auth: req.isAuthenticated(), user: req.user, categories: configFile.categories })
 
 })
-app.post('/weather',function (request,response)  {
- // console.log(request.body.queryResult.queryText)
-console.log('contacted by diagflow')
+app.post('/weather', function (request, response) {
+  // console.log(request.body.queryResult.queryText)
+  console.log('contacted by diagflow')
   //console.log(request.body.queryResult.parameters['date-time'])
- // console.log(request.body.queryResult)
-  let address=''
-  let city=''
-  let country=''
-  let region=''
-  let  date=request.body.queryResult.parameters['date-time']
-  
-  if(request.body.queryResult.parameters.address['street-address']){
-    address=request.body.queryResult.parameters.address['street-address']
+  // console.log(request.body.queryResult)
+  let address = ''
+  let city = ''
+  let country = ''
+  let region = ''
+  let date = request.body.queryResult.parameters['date-time']
+
+  if (request.body.queryResult.parameters.address['street-address']) {
+    address = request.body.queryResult.parameters.address['street-address']
   }
-  if(request.body.queryResult.parameters.address.city){
-    city=request.body.queryResult.parameters.address.city
+  if (request.body.queryResult.parameters.address.city) {
+    city = request.body.queryResult.parameters.address.city
   }
- if(request.body.queryResult.parameters.address.country){
-country=request.body.queryResult.parameters.address.country
- }
- if(request.body.queryResult.parameters.address['subadmin-area']){
-  region=request.body.queryResult.parameters.address['subadmin-area']
-   }
-   moment.locale('fr'); 
-    let result = 'La météo sur '+address+' '+city+' '+region+' '+country+' le: '+moment(date).format('Do MMMM YYYY')+' est belle!';
-    let responseObj={
-      "fulfillmentText":result
-     ,"fulfillmentMessages":[
-         {
-             "text": {
-                 "text": [
-                     "Hello I m Responding to intent"
-                 ]
-             }
-         }
-     ]
-     ,"source":""
- }
-   
+  if (request.body.queryResult.parameters.address.country) {
+    country = request.body.queryResult.parameters.address.country
+  }
+  if (request.body.queryResult.parameters.address['subadmin-area']) {
+    region = request.body.queryResult.parameters.address['subadmin-area']
+  }
+  moment.locale('fr');
+  let result = 'La météo sur ' + address + ' ' + city + ' ' + region + ' ' + country + ' le: ' + moment(date).format('Do MMMM YYYY') + ' est belle!';
+  let responseObj = {
+    "fulfillmentText": result
+    , "fulfillmentMessages": [
+      {
+        "text": {
+          "text": [
+            "Hello I m Responding to intent"
+          ]
+        }
+      }
+    ]
+    , "source": ""
+  }
+
 
   response.writeHead(200, { 'Content-Type': 'application/json; ; charset=utf-8' });
   response.end(JSON.stringify(responseObj));
-  
+
 })
 //Connect user
 app.post('/connexion',

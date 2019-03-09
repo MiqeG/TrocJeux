@@ -78,12 +78,7 @@
             .sidebar('setting', 'transition', 'overlay')
             .sidebar('toggle')
             ;
-        $(".ui.dropdown").dropdown({
-            allowCategorySelection: true,
-            transition: "fade up",
-            context: 'sidebar',
-            on: "hover"
-        });
+    
 
         $('.ui.accordion').accordion({
             selector: {
@@ -91,8 +86,8 @@
             }
         });
         ;
-        $('.ui.dropdown')
-            .dropdown()
+        $('.ui.dropdown.sidebardrop')
+        .dropdown()
         $('.ui.top.attached.tabular.menu')
             .on('click', '.item', function () {
                 if (!$(this).hasClass('dropdown')) {
