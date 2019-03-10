@@ -1,7 +1,7 @@
 {
     $(document).ready(function () {
         $(function () {
-
+         
             if ($('#Ville').val() != '') {
                 $('#inscriptionSubmit').fadeIn()
             } else {
@@ -155,7 +155,7 @@
             $('.ui.basic.modal.ImageModal').modal('show')
             $('#ModalImage').attr('src', $(this).attr('src'))
         })
-
+      
     })
 
 }

@@ -204,7 +204,7 @@ app.get('/', csrfProtection, (req, res) => {
 })
 app.post('/adapi', (req, res) => {
   let dateReference = new Date
-  console.log(dateReference)
+ 
   dateReference -= (1 * 60 * 60 * 1000);
   let CP
   if(req.body.codepostal){
@@ -237,10 +237,9 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
   searchjson={DatePublication: { "$lt": dateReference }}
 }
 
-  console.log(req.body)
- console.log(searchjson)
+  
   Annonce.countDocuments(standardjson,(err,count) => {
-    console.log('TEST COUNTER........ '+count)
+  
 
 
     if (req.body && req.body.pagination && req.body.categorie && req.body.amount) {
@@ -278,7 +277,7 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
          if(ordre>1||ordre<-1){
            ordre=-1
          }
-         console.log(offset)
+      
        
            
            Annonce.countDocuments(searchjson,(err,count) => {
@@ -303,9 +302,9 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
              let counter=count/parseInt(req.body.amount)
              
              counter=Math.ceil(counter)
-             console.log('counter....' + counter)
+           
              sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination,totaladcount:count,codepostal:req.body.codepostal,titre:req.body.titre}
-             console.log(sendFinal.totaladamount)
+           
              let json = sendFinal
             
            
@@ -334,7 +333,7 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
 //facebook webhook
 
 app.get('/webhook', function (req, res) {
-  console.log('ok')
+
   if (req.query['hub.mode'] === 'subscribe' &&
     req.query['hub.verify_token'] === VALIDATION_TOKEN) {
     console.log("Validating webhook");
@@ -543,10 +542,7 @@ app.get('/diagFlow', function (req, res) {
 
 })
 app.post('/weather', function (request, response) {
-  // console.log(request.body.queryResult.queryText)
-  console.log('contacted by diagflow')
-  //console.log(request.body.queryResult.parameters['date-time'])
-  // console.log(request.body.queryResult)
+
   let address = ''
   let city = ''
   let country = ''
@@ -726,12 +722,12 @@ io.on('connection', (socket) => {
 
       if (err) {
 
-        console.log('disconnecting1')
+        console.log('disconnecting1 user 1 : '+user.uer._id)
         socket.disconnect()
         return
       }
       else if (user == null) {
-        console.log('disconnecting2')
+        console.log('disconnecting1 user 2 : '+user.uer._id)
         socket.disconnect()
         return
       }
@@ -798,6 +794,8 @@ function getSearchOption(req) {
     return searchoption
   }
 }
+
+//BOT
 function sendTextMessage(sender, text, callback) {
   let data = { text: text }
   let access_token = "EAAEvWG7hdzkBAHwlU78c0Jr4yj5i20ZAZAamBrLAqaKtKN3hijuTQf0HFX3ALZBOIMchTxrM8Tpze4CrlptQrXIE95N9EbDHNvAUYryU2ELCTagUh50FpPZAsKCEzGz9TfVthVyQpsoIgsna0pl5f7vs4ZCpsKZBQZAEB7ibnpmZCwZDZD";

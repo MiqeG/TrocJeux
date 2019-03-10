@@ -1,7 +1,7 @@
 let moment=require('moment')
 moment.locale('fr')
 module.exports = function (req, res, configFile, Annonce) {
-    console.log(req.query.categorie)
+    
     let type='User'
     if(req.user){
         type=req.user.Type

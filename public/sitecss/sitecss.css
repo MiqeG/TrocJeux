@@ -37,7 +37,7 @@ body {
 
   body {
     
-    background-color: #eeeeee;
+    background-image: linear-gradient(to right, rgb(221, 231, 230) ,rgba(255,0,0,0));
     padding-bottom: 10%;
   }
 

@@ -8,43 +8,47 @@
     <h1><i class=" big teal calendar alternate outline icon"> </i> Nos Annonces</h1>
     <div class="container" style="width:100%;">
       <div class="right floated">
-          <div class="ui search indexsearch" style="width:fit-content;margin-right:0px;">
+          <div class="ui search indexsearch two fields" style="width:100%;margin-right:0px;">
               <div class="ui icon input">
-                <input class="prompt" id="indextitre" type="text" placeholder="Titre...">
+                <input class="prompt" id="indextitre" style="min-width:200px;" type="text"  placeholder="Titre...">
                 <i class="search icon"></i>
               </div>
               <div class="results"></div>
               <div class="ui input">
-                  <input type="text" id="indexcodepostal" placeholder="Code-Postal...">
+                  <input type="text" id="indexcodepostal" style="min-width:174px;" placeholder="Code-Postal...">
+                  
                 </div>
-            </div>
-          <div class='ui right floated'  style="width:fit-content;margin:0px;">
-              <select class="ui dropdown amountdropdown">
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                <select class="ui dropdown catdropdown">
-                  <option value="Toutes">Toutes</option>
-                  <% categories.forEach(element => { %>
-                  <option value="<%= element %>"><%= element %></option>
-                  <% }); %>
-                </select>
-              
-          </div>
-          <div class="ui primary button "  id="indexsearch">
-              <i class="search  icon"></i>
-             Rechercher
-            </div>
-           
-              <div class="ui  button "  id="orderer" data-order="-1">
-                  <i id="orderericon" class="sort down icon"></i>
-                 Date
-                </div>
-                <div class="ui red button "  id="clearer" >
-                    <i class="delete  icon"></i>
-                   Effacer
+             
+                  <select class="ui dropdown amountdropdown" >
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    <select class="ui dropdown catdropdown" style="margin-bottom:0px;">
+                      <option value="Toutes">Toutes</option>
+                      <% categories.forEach(element => { %>
+                      <option value="<%= element %>"><%= element %></option>
+                      <% }); %>
+                    </select>
+            
+                  
+                    
+                      <div class="ui  button "  id="orderer" data-order="-1">
+                          <i id="orderericon" class="sort amount down black down icon"></i>
+                         
+                        </div>
+                <div class="ui primary button "  id="indexsearch">
+                    <i class="search  icon"></i>
+                   
                   </div>
+                 
+                  
+                      <div class="ui red button "  id="clearer" >
+                          <i class="delete  icon"></i>
+                         
+                        </div>
+            </div>
+   
       </div>
       <div class="ui error message indexsearcher"></div>
       <table id="adtable" class="ui teal table" style="max-width:945px;background-color:transparent">
@@ -72,6 +76,9 @@
 <% include footer %>
 
 <script>
+
+    
+ $('.text').css('color','black')
   if($('.catdropdown').dropdown('get value')!=$('#selectedcat').val()){
 
     $('.catdropdown').dropdown('set selected',$('#selectedcat').val())
@@ -80,18 +87,22 @@
   $('#orderer').click(function(){
     if($('#orderer').attr('data-order')=='1'){
       $('#orderer').attr('data-order','-1')
-      $('#orderericon').removeClass('up')
-      $('#orderericon').addClass('down')
+      $('#orderericon').removeClass('sort amount up')
+      $('#orderericon').addClass('sort amount down')
       
     }
     else if($('#orderer').attr('data-order')=='-1'){
       $('#orderer').attr('data-order','1')
-      $('#orderericon').removeClass('down')
-      $('#orderericon').addClass('up')
+      $('#orderericon').removeClass('amount down')
+      $('#orderericon').addClass('amount up')
   
     }
   })
 $('#clearer').click(function(){
+  $('#orderer').attr('data-order','-1')
+  $('#orderericon').removeClass('amount down')
+  $('#orderericon').removeClass('amount up')
+  $('#orderericon').addClass('amount down')
   $('#indexcodepostal').val('')
   $('#indextitre').val('')
   $('.catdropdown').dropdown('set selected','Toutes')
@@ -130,20 +141,12 @@ $('#indexcodepostal').change(function(){
       },
       error: function (err) {
         $("#indexcodepostal").val('')
-        console.log('ajax cp query error')
-
+      
+        $('.indexsearcher').text('ajax cp query error')
       }
     });
 })
-  function bigcards(entry) {
-    $(entry).transition({
-      animation: 'pulse',
-      interval: 10000,
-      duration: 500,
-      allowRepeats: false,
-      useFailSafe: true
-    })
-  }
+
   function plusfunction(thing) {
     let legthofinc = $('.inc').length
     if (parseInt($($('.inc')[legthofinc - 1]).text()) == $('.inc').length) { return }
@@ -163,9 +166,7 @@ $('#indexcodepostal').change(function(){
 
     }
   }
-  $('.ZoomImage').on('error', function () {
-    console.log('ok')
-  })
+
   moment.locale('fr')
   ajaxads(1, $('#selectedcat').val(), 20)
   function ajaxads(pagination, categorie, amount,titre,codepostal) {
@@ -187,7 +188,7 @@ $('#indexcodepostal').change(function(){
         $('.catdropdown').dropdown('set selected', data.categorie);
         $('#refresherDIv').empty()
         $('.simulaform').removeClass('loading')
-        console.log(data)
+       
         data.annonces.forEach(element => {
           let finalstring = ''
           let defaultText = $('.amountdropdown').dropdown('get value')
@@ -204,7 +205,7 @@ $('#indexcodepostal').change(function(){
               <div class='content'><div class='ui star rating'><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i>
                 <i class='active icon'></i></div></div>">
   <div class="image">
-    <img src="${mainImageSrc}" style="height:200px;" class="ZoomImage" onclick="clickFunk(this)" onerror="this.src='assets/img/error.gif'">
+    <img src="${mainImageSrc}" style="height:200px;" class="ZoomImage" onhover="pulse(this)" onclick="clickFunk(this)" onerror="this.src='assets/img/error.gif'">
   </div>
   <div class="content">
     <div class="header" style="overflow-y:auto;height:60px;"> ${element.Titre}</div>
@@ -243,7 +244,7 @@ $('#indexcodepostal').change(function(){
             ;
         })
 
-        console.log(data)
+     
 
         $('#mainpagepagination').empty()
         for (let index = 0; index <= data.totaladamount + 1; index++) {
@@ -278,7 +279,7 @@ $('#indexcodepostal').change(function(){
         $('.simulaform').removeClass('loading')
         //  $('.amountdropdown').dropdown('set selected', data.useramount);
         //$('.catdropdown').dropdown('set selected', data.categorie);
-        console.log(err.responseJSON.message)
+     
         $('.indexsearcher').show()
         $('.indexsearcher').text(err.responseJSON.message)
 
@@ -288,7 +289,7 @@ $('#indexcodepostal').change(function(){
   $('#indexsearch').click(function(){
     ajaxads(1, $('.catdropdown').dropdown('get value'), $('.amountdropdown').dropdown('get value'),$('#indextitire').val(),$('#indexcodepostal').val(),$('#orderer').attr('data-order'))
   })
-  console.log($('.amountdropdown').dropdown('get value'))
+
   $('#plusser').click(function () {
     $('.')
   })
