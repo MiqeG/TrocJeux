@@ -1,6 +1,6 @@
 <% include header %>
 <script src="https://momentjs.com/downloads/moment-with-locales.js"> </script>
-
+<input type="hidden" id="selectedcat" value="<%= selectedcat %>">
 <div class="ui  asd " style="margin-bottom:10%;">
   <form class="ui form simulaform" action="">
 
@@ -32,11 +32,21 @@
                 </select>
               
           </div>
-          <div class="ui primary button cardbutton"  id="indexsearch">
+          <div class="ui primary button "  id="indexsearch">
               <i class="search  icon"></i>
              Rechercher
             </div>
+           
+              <div class="ui  button "  id="orderer" data-order="-1">
+                  <i id="orderericon" class="sort down icon"></i>
+                 Date
+                </div>
+                <div class="ui red button "  id="clearer" >
+                    <i class="delete  icon"></i>
+                   Effacer
+                  </div>
       </div>
+      <div class="ui error message indexsearcher"></div>
       <table id="adtable" class="ui teal table" style="max-width:945px;background-color:transparent">
         <tbody>
         </tbody>
@@ -62,16 +72,36 @@
 <% include footer %>
 
 <script>
+  if($('.catdropdown').dropdown('get value')!=$('#selectedcat').val()){
 
+    $('.catdropdown').dropdown('set selected',$('#selectedcat').val())
+
+  }
+  $('#orderer').click(function(){
+    if($('#orderer').attr('data-order')=='1'){
+      $('#orderer').attr('data-order','-1')
+      $('#orderericon').removeClass('up')
+      $('#orderericon').addClass('down')
+      
+    }
+    else if($('#orderer').attr('data-order')=='-1'){
+      $('#orderer').attr('data-order','1')
+      $('#orderericon').removeClass('down')
+      $('#orderericon').addClass('up')
+  
+    }
+  })
+$('#clearer').click(function(){
+  $('#indexcodepostal').val('')
+  $('#indextitre').val('')
+  $('.catdropdown').dropdown('set selected','Toutes')
+   $('.amountdropdown').dropdown('set selected','20')
+})
   function clickFunk(event) {
     $('.ui.basic.modal.ImageModal').modal('show')
     $('#ModalImage').attr('src', $(event).attr('src'))
   }
-  $('#indexcodepostal').click(function(){
-    if($('#indexcodepostal').val()=='CP introuvable'){
-      $('#indexcodepostal').val('')
-    }
-  })
+
 $('#indexcodepostal').change(function(){
 
   $.ajax({
@@ -87,10 +117,14 @@ $('#indexcodepostal').change(function(){
         //Do Something
       
        if(result.CodePostal!=undefined&&result.CodePostal!=''){
+        $('.indexsearcher').hide()
+        
         $("#indexcodepostal").val(result.CodePostal);
       
        }else{
-        $("#indexcodepostal").val('CP introuvable')
+        $("#indexcodepostal").val('')
+        $('.indexsearcher').show()
+        $('.indexsearcher').text('Code-Postal introuvable')
        }
 
       },
@@ -133,7 +167,7 @@ $('#indexcodepostal').change(function(){
     console.log('ok')
   })
   moment.locale('fr')
-  ajaxads(1, 'Toutes', 20)
+  ajaxads(1, $('#selectedcat').val(), 20)
   function ajaxads(pagination, categorie, amount,titre,codepostal) {
     if(codepostal==undefined){
       codepostal=''
@@ -146,8 +180,9 @@ $('#indexcodepostal').change(function(){
       url: '/adapi',
       type: 'POST',
       dataType: 'json',
-      data: { pagination: pagination, categorie: categorie, amount: amount,codepostal:$('#indexcodepostal').val(),titre:$('#indextitre').val() },
+      data: { pagination: pagination, categorie: categorie, amount: amount,codepostal:$('#indexcodepostal').val(),titre:$('#indextitre').val() ,ordre:$('#orderer').attr('data-order')},
       success: function (data) {
+        $('.indexsearcher').hide()
         $('.amountdropdown').dropdown('set selected', data.useramount);
         $('.catdropdown').dropdown('set selected', data.categorie);
         $('#refresherDIv').empty()
@@ -191,10 +226,10 @@ $('#indexcodepostal').change(function(){
       <i class="user icon"></i>
       Profil
     </div>
-    <div class="ui primary button cardbutton" onhover="hoverFunk(this)" onclick="window.location.href='${link}'">
+    <a class="ui primary button cardbutton" onhover="hoverFunk(this)" href="${link}" >
       <i class="calendar alternate outline icon"></i>
       Détails
-    </div>
+    </a>
   </div>
 </div>
 
@@ -244,12 +279,14 @@ $('#indexcodepostal').change(function(){
         //  $('.amountdropdown').dropdown('set selected', data.useramount);
         //$('.catdropdown').dropdown('set selected', data.categorie);
         console.log(err.responseJSON.message)
+        $('.indexsearcher').show()
+        $('.indexsearcher').text(err.responseJSON.message)
 
       }
     })
   }
   $('#indexsearch').click(function(){
-    ajaxads(1, $('.catdropdown').dropdown('get value'), $('.amountdropdown').dropdown('get value'),$('#indextitire').val(),$('#indexcodepostal').val())
+    ajaxads(1, $('.catdropdown').dropdown('get value'), $('.amountdropdown').dropdown('get value'),$('#indextitire').val(),$('#indexcodepostal').val(),$('#orderer').attr('data-order'))
   })
   console.log($('.amountdropdown').dropdown('get value'))
   $('#plusser').click(function () {

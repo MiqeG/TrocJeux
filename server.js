@@ -211,27 +211,27 @@ app.post('/adapi', (req, res) => {
     CP=parseInt(req.body.codepostal)
   }
   let searchjson={DatePublication: { "$lt": dateReference }}
-
+  let standardjson={DatePublication: { "$lt": dateReference }}
 if(req.body.categorie!='Toutes'&&req.body.titre!=''&&req.body.codepostal!=''){
-  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,CodePostal:CP,Titre:req.body.titre}
+  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,CodePostal:CP,Titre:{$regex:'(?i)' + req.body.titre + '(?-i)'}}
 }
 else if(req.body.categorie!='Toutes'&&req.body.titre==''&&req.body.codepostal!=''){
   searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,CodePostal:CP}
 }
 else if(req.body.categorie!='Toutes'&&req.body.titre!=''&&req.body.codepostal==''){
-  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,Titre:req.body.titre}
+  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,Titre:{$regex:'(?i)' + req.body.titre + '(?-i)'}}
 }
 else if(req.body.categorie!='Toutes'&&req.body.titre==''&&req.body.codepostal==''){
   searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie}
 }
 else if(req.body.categorie=='Toutes'&&req.body.titre!=''&&req.body.codepostal!=''){
-  searchjson={DatePublication: { "$lt": dateReference },CodePostal:CP,Titre:req.body.titre}
+  searchjson={DatePublication: { "$lt": dateReference },CodePostal:CP,Titre:{$regex:'(?i)' + req.body.titre + '(?-i)'}}
 }
 else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal!=''){
   searchjson={DatePublication: { "$lt": dateReference },CodePostal:CP}
 }
 else if(req.body.categorie=='Toutes'&&req.body.titre!=''&&req.body.codepostal==''){
-  searchjson={DatePublication: { "$lt": dateReference },Titre:req.body.titre}
+  searchjson={DatePublication: { "$lt": dateReference },Titre:{$regex:'(?i)' + req.body.titre + '(?-i)'}}
 }
 else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal==''){
   searchjson={DatePublication: { "$lt": dateReference }}
@@ -239,7 +239,7 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
 
   console.log(req.body)
  console.log(searchjson)
-  Annonce.countDocuments(searchjson,(err,count) => {
+  Annonce.countDocuments(standardjson,(err,count) => {
     console.log('TEST COUNTER........ '+count)
 
 
@@ -254,12 +254,7 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
        return
      }
      else {
-       if (req.body.categorie > 0 || req.body.categorie < 0) {
-         let json = { message: 'Erreur requête invalide, pagination incorrecte' }
-         res.writeHead(500, { 'Content-Type': 'application/json' });
-         res.end(JSON.stringify(json));
-         return
-       }
+       
        if (req.body.amount < 1 || req.body.amount > configFile.serverConfigurationVariables.adamount) {
          let json = { message: 'Erreur requête invalide, quantité incorrecte ou supérieure a: ' + configFile.serverConfigurationVariables.adamount}
          res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -279,14 +274,16 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
        else {
        
          let limit = parseInt(req.body.amount)
-      
-         
+      let ordre=parseInt(req.body.ordre)
+         if(ordre>1||ordre<-1){
+           ordre=-1
+         }
          console.log(offset)
-         if (req.body.categorie=='Toutes') {
+       
            
-           Annonce.countDocuments({DatePublication: { "$lt": dateReference }},(err,count) => {
+           Annonce.countDocuments(searchjson,(err,count) => {
              if(err)throw err
-           Annonce.find({ DatePublication: { "$lt": dateReference } }, function (err, annonces) {
+           Annonce.find(searchjson, function (err, annonces) {
            
              if (err) {
                let json = { message: 'Erreur fatale base de données...' }
@@ -315,49 +312,8 @@ else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal=='
              res.writeHead(200, { 'Content-Type': 'application/json' });
              res.end(JSON.stringify(json));
 
-           }).skip(offset).limit(limit).sort({DatePublication:-1}) })
-         } else {
-           let categoriesArray = configFile.categories
-
-           if (categoriesArray.includes(req.body.categorie.trim())) {
-             Annonce.countDocuments({DatePublication: { "$lt": dateReference },Categories: req.body.categorie.trim() },(err,countcat) => {
-               if(err)throw err
-               Annonce.find({ DatePublication: { "$lt": dateReference }, Categories: req.body.categorie.trim() }, function (err, annonces) {
-                 if (err) {
-                   let json = { message: 'Erreur fatale base de données...' }
-                   res.writeHead(500, { 'Content-Type': 'application/json' });
-                   res.end(JSON.stringify(json));
-                   return
-                 }
-                 if (annonces.length < 1) {
-                   let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
-                   res.writeHead(200, { 'Content-Type': 'application/json' });
-                   res.end(JSON.stringify(json));
-                   return
-                 }
-                
-                 let counter=countcat/parseInt(req.body.amount)
-           
-                 counter=Math.ceil(counter)
-                
-                 sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination,totaladcount:countcat}
-                 console.log(sendFinal.totaladamount)
-                 let json = sendFinal
-                
-                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                 res.end(JSON.stringify(json));
- 
-               }).skip(offset).limit(limit).sort({DatePublication:-1})
-             })
-     
-           }
-           else {
-             let json = { message: 'Erreur requête invalide, catégorie introuvable' }
-             res.writeHead(500, { 'Content-Type': 'application/json' });
-             res.end(JSON.stringify(json));
-             return
-           }
-         }
+           }).skip(offset).limit(limit).sort({DatePublication:ordre}) })
+         
 
        }
 

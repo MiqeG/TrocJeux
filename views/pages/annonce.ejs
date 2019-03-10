@@ -1,52 +1,100 @@
 <% include header %>
+<script src="https://momentjs.com/downloads/moment-with-locales.js"> </script>
 
-<hi>annonce</h1>
-<div class="ui primary ignored button" >Simulate loading</div>
-<div class="ui three doubling stackable cards">
-<div class="ui card">
-  <div class="image">
-    <div class="ui placeholder">
-      <div class="square image"></div>
+<br>
+
+<style>
+  .scaler:hover{
+    cursor:pointer
+  }
+</style>
+<input type="hidden" id="annonceId" value="<%= annonce._id %>">
+<div class="ui three doubling stackable cards  centered  asd" style="padding:5%;">
+  <div style="margin-bottom:50px;" >  <div ><h1><i class="calendar alternate outline big teal icon"></i> <%= annonce.Titre %></div>
+<div class="ui card" style="width:fit-content" >
+  <div class="image" >
+    <div class="" >
+     <img id="bigscale" src="<% ServerUrl %>/pregistered/<%= annonce.User_Id %>/<%= annonce._id %>/<%= annonce.UserImages[0] %>" style="width:400px;max-height:400px;" class="ui rounded image ZoomImage">
     </div>
+   
   </div>
-  <div class="content">
-    <div class="ui placeholder">
+  <div style="width:100%; padding:2%;padding-left: 5%;" >
+  <% for(i=0;i<annonce.UserImages.length;i++){ %>
+  <img  src="<% ServerUrl %>/pregistered/<%= annonce.User_Id %>/<%= annonce._id %>/<%= annonce.UserImages[i] %>" style="width:40px;height: 40px;" class="ui small rounded image left floated scaler">
+  <% } %>
+  </div>
+  <div class="ui content centered" style="text-align:center;">
+
+  
+    <div class="">
       <div class="header">
-        <div class="very short line"></div>
+      <div><div style="color:rgb(230, 65, 65);"><i class="calendar check teal icon"></i><%= date %></div><br> <i class="user teal icon"></i><%= annonce.NomUitilisateur %><br><i class="building  teal icon"></i><%= annonce.Ville %><br><i class="address  card teal icon"></i><%= annonce.CodePostal %><br> <i class="globe  teal icon"></i>France</div>
+      <div>
+          <% annonce.Categories.forEach(element => { %>
+          <a href="<%= ServerUrl %>/?categorie=<%= element %>" class="links"><%= element %></a>
+            <% }); %>
+      </div>
         <div class="medium line"></div>
       </div>
       <div class="paragraph">
-        <div class="short line"></div>
+       
+          <div class="container centered">
+            <div>
+              <br>
+              <label for=""> <i class="calendar outline teal icon"></i> Texte d'annonce:</label> <br>
+              <br>
+              <%= annonce.Texte %>
+              <br>
+            </div>
+            
+          </div>
+      
+     
       </div>
     </div>
   </div>
-  <div class="extra content">
-    <div class="ui disabled primary button">Add</div>
-    <div class="ui disabled button">Delete</div>
+  <div class="extra content centered" style="text-align:center;">
+
+    <div class="ui  button"><i class="user icon"></i> <%= annonce.NomUitilisateur %></div>
+    <div class="ui primary button"><i class="envelope outline icon"></i> Contacter</div>
+    <% if(type=='Admin') {%>
+    <div class="ui red button"  onclick="ajaxdeleterchecker('<%=annonce._id %>','<%= annonce.User_Id %>','effacerannonce')" data-idannonce="<%= annonce._id %>"><i class="delete icon"></i> Effacer</div>
+    <% } %>
   </div>
 </div>
+<script>
+  $('.scaler').hover(function(){
+    $(this).transition('pulse')
+  })
+  $('.links').mouseenter(function(){
+    $(this).css('color','rgb(230, 65, 65)')
+  })
+  $('.links').mouseleave(function(){
+    $(this).css('color','')
+  })
+  $('.scaler').click(function(){
+    $('#bigscale').attr('src',$(this).attr('src'))
+  })
+  function ajaxdeleterchecker(id, userid,option) {
+        let ajaxof='/'+option
+        $.ajax({
+            url: ajaxof,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                _id: id, User_Id: userid
+            },
+            success: function (data) {
+               alert('Effacée!')
+            },
+            error: function (err) {
+                console.log(err)
+              alert("Erreur lors de la modification des données")
 
-<div class="ui card">
-    <div class="image">
-      <div class="ui placeholder">
-        <div class="square image"></div>
-      </div>
-    </div>
-    <div class="content">
-      <div class="ui placeholder">
-        <div class="header">
-          <div class="very short line"></div>
-          <div class="medium line"></div>
-        </div>
-        <div class="paragraph">
-          <div class="short line"></div>
-        </div>
-      </div>
-    </div>
-    <div class="extra content">
-      <div class="ui disabled primary button">Add</div>
-      <div class="ui disabled button">Delete</div>
-    </div>
-  </div>
-    </div>
+               
+            }
+        })
+    }
+</script>
+
     <% include footer %>

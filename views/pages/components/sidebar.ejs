@@ -87,7 +87,7 @@
       </div>
       <div class="ui divider " style="background-color:rgb(50, 240, 240)"></div>
       <% categories.forEach(element => { %>
-      <a class="item "><b><%= element %></b>
+      <a class="item" href="<%= ServerUrl %>/?categorie=<%= element %>"><b><%= element %></b>
       </a>
       <% }); %>
 
