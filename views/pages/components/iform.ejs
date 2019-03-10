@@ -80,7 +80,7 @@
         </div>
         <div class="field">
             <label><i class="globe teal icon"></i> Pays</label>
-            <div class="ui fluid selection dropdown">
+            <div class="ui fluid selection dropdown paysdropdown">
                 <% if(locals.formdata &&locals.formdata.Pays  ){ %>
                 <input type="hidden" name="Pays" id="Pays" value="<%= locals.formdata.Pays %>">
                 <% }else{ %>
@@ -129,7 +129,7 @@
 
 <script>
     $(document).ready(function () {
-      
+      $('.paysdropdown').dropdown()
         $('#iform1').keypress(function (e) {
             if (e.which == 13) {
                 if ($('#iform1').form('is valid')) {

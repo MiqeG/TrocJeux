@@ -206,131 +206,174 @@ app.post('/adapi', (req, res) => {
   let dateReference = new Date
   console.log(dateReference)
   dateReference -= (1 * 60 * 60 * 1000);
+  let CP
+  if(req.body.codepostal){
+    CP=parseInt(req.body.codepostal)
+  }
+  let searchjson={DatePublication: { "$lt": dateReference }}
 
-Annonce.countDocuments({DatePublication: { "$lt": dateReference }},(err,count) => {
-  console.log(count)
-    if(err)throw err
+if(req.body.categorie!='Toutes'&&req.body.titre!=''&&req.body.codepostal!=''){
+  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,CodePostal:CP,Titre:req.body.titre}
+}
+else if(req.body.categorie!='Toutes'&&req.body.titre==''&&req.body.codepostal!=''){
+  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,CodePostal:CP}
+}
+else if(req.body.categorie!='Toutes'&&req.body.titre!=''&&req.body.codepostal==''){
+  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie,Titre:req.body.titre}
+}
+else if(req.body.categorie!='Toutes'&&req.body.titre==''&&req.body.codepostal==''){
+  searchjson={DatePublication: { "$lt": dateReference },Categories:req.body.categorie}
+}
+else if(req.body.categorie=='Toutes'&&req.body.titre!=''&&req.body.codepostal!=''){
+  searchjson={DatePublication: { "$lt": dateReference },CodePostal:CP,Titre:req.body.titre}
+}
+else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal!=''){
+  searchjson={DatePublication: { "$lt": dateReference },CodePostal:CP}
+}
+else if(req.body.categorie=='Toutes'&&req.body.titre!=''&&req.body.codepostal==''){
+  searchjson={DatePublication: { "$lt": dateReference },Titre:req.body.titre}
+}
+else if(req.body.categorie=='Toutes'&&req.body.titre==''&&req.body.codepostal==''){
+  searchjson={DatePublication: { "$lt": dateReference }}
+}
+
+  console.log(req.body)
+ console.log(searchjson)
+  Annonce.countDocuments(searchjson,(err,count) => {
+    console.log('TEST COUNTER........ '+count)
+
 
     if (req.body && req.body.pagination && req.body.categorie && req.body.amount) {
   
   
-       let pagination=parseInt(req.body.pagination)
-      if (isNaN(pagination) || isNaN(req.body.amount)) {
-        let json = { message: 'Erreur requête invalide,quantité ou pagination incorrects' }
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(json));
-        return
-      }
-      else {
-        if (req.body.categorie > 0 || req.body.categorie < 0) {
-          let json = { message: 'Erreur requête invalide, pagination incorrecte' }
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify(json));
-          return
-        }
-        if (req.body.amount < 1 || req.body.amount > configFile.serverConfigurationVariables.adamount) {
-          let json = { message: 'Erreur requête invalide, quantité incorrecte ou supérieure a: ' + configFile.serverConfigurationVariables.adamount}
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify(json));
-          return
-        }
-        let x =parseInt(req.body.amount)
-        let y=parseInt(req.body.pagination)-1
-        let offset = parseInt(x * y)
-        if (req.body.pagination < 1) {
-          let json = { message: 'Erreur requête invalide, pagination incorrecte' }
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify(json));
-          return
-        }
-        else {
-        
-          let limit = parseInt(req.body.amount)
+      let pagination=parseInt(req.body.pagination)
+     if (isNaN(pagination) || isNaN(req.body.amount)) {
+       let json = { message: 'Erreur requête invalide,quantité ou pagination incorrects' }
+       res.writeHead(500, { 'Content-Type': 'application/json' });
+       res.end(JSON.stringify(json));
+       return
+     }
+     else {
+       if (req.body.categorie > 0 || req.body.categorie < 0) {
+         let json = { message: 'Erreur requête invalide, pagination incorrecte' }
+         res.writeHead(500, { 'Content-Type': 'application/json' });
+         res.end(JSON.stringify(json));
+         return
+       }
+       if (req.body.amount < 1 || req.body.amount > configFile.serverConfigurationVariables.adamount) {
+         let json = { message: 'Erreur requête invalide, quantité incorrecte ou supérieure a: ' + configFile.serverConfigurationVariables.adamount}
+         res.writeHead(500, { 'Content-Type': 'application/json' });
+         res.end(JSON.stringify(json));
+         return
+       }
+       let x =parseInt(req.body.amount)
+       let y=parseInt(req.body.pagination)-1
+       let offset = parseInt(x * y)
+       if (req.body.pagination < 1) {
+
+         let json = { message: 'Erreur requête invalide, pagination incorrecte' }
+         res.writeHead(500, { 'Content-Type': 'application/json' });
+         res.end(JSON.stringify(json));
+         return
+       }
+       else {
        
-          
-          console.log(offset)
-          if (req.body.categorie=='Toutes') {
-            console.log(req.body)
-            Annonce.find({ DatePublication: { "$lt": dateReference } }, function (err, annonces) {
-            
-              if (err) {
-                let json = { message: 'Erreur fatale base de données...' }
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify(json));
-                return
-              }
-             
-              if (annonces.length < 1) {
-               
-                let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify(json));
-                return
-              }
-             
-              let counter=annonces.length/parseInt(req.body.amount)
-              counter=parseInt(counter+1)
+         let limit = parseInt(req.body.amount)
+      
+         
+         console.log(offset)
+         if (req.body.categorie=='Toutes') {
            
-              sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination}
-              console.log(sendFinal.totaladamount)
-              let json = sendFinal
-             
+           Annonce.countDocuments({DatePublication: { "$lt": dateReference }},(err,count) => {
+             if(err)throw err
+           Annonce.find({ DatePublication: { "$lt": dateReference } }, function (err, annonces) {
+           
+             if (err) {
+               let json = { message: 'Erreur fatale base de données...' }
+               res.writeHead(500, { 'Content-Type': 'application/json' });
+               res.end(JSON.stringify(json));
+               return
+             }
             
-              res.writeHead(200, { 'Content-Type': 'application/json' });
-              res.end(JSON.stringify(json));
-
-            }).skip(offset).limit(limit)
-          } else {
-            let categoriesArray = configFile.categories
-
-            if (categoriesArray.includes(req.body.categorie.trim())) {
-
-              Annonce.find({ DatePublication: { "$lt": dateReference }, Categories: req.body.categorie.trim() }, function (err, annonces) {
-                if (err) {
-                  let json = { message: 'Erreur fatale base de données...' }
-                  res.writeHead(500, { 'Content-Type': 'application/json' });
-                  res.end(JSON.stringify(json));
-                  return
-                }
-                if (annonces.length < 1) {
-                  let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
-                  res.writeHead(200, { 'Content-Type': 'application/json' });
-                  res.end(JSON.stringify(json));
-                  return
-                }
-               
-                let counter=annonces.length/parseInt(req.body.amount)
-                counter=parseInt(counter+1)
+             if (annonces.length < 1) {
+              
+               let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
+               res.writeHead(500, { 'Content-Type': 'application/json' });
+               res.end(JSON.stringify(json));
+               return
+             }
+            
+             let counter=count/parseInt(req.body.amount)
              
-                sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination}
-                console.log(sendFinal.totaladamount)
-                let json = sendFinal
-               
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify(json));
+             counter=Math.ceil(counter)
+             console.log('counter....' + counter)
+             sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination,totaladcount:count,codepostal:req.body.codepostal,titre:req.body.titre}
+             console.log(sendFinal.totaladamount)
+             let json = sendFinal
+            
+           
+             res.writeHead(200, { 'Content-Type': 'application/json' });
+             res.end(JSON.stringify(json));
 
-              }).skip(offset).limit(limit)
-            }
-            else {
-              let json = { message: 'Erreur requête invalide, catégorie introuvable' }
-              res.writeHead(500, { 'Content-Type': 'application/json' });
-              res.end(JSON.stringify(json));
-              return
-            }
-          }
+           }).skip(offset).limit(limit).sort({DatePublication:-1}) })
+         } else {
+           let categoriesArray = configFile.categories
 
-        }
+           if (categoriesArray.includes(req.body.categorie.trim())) {
+             Annonce.countDocuments({DatePublication: { "$lt": dateReference },Categories: req.body.categorie.trim() },(err,countcat) => {
+               if(err)throw err
+               Annonce.find({ DatePublication: { "$lt": dateReference }, Categories: req.body.categorie.trim() }, function (err, annonces) {
+                 if (err) {
+                   let json = { message: 'Erreur fatale base de données...' }
+                   res.writeHead(500, { 'Content-Type': 'application/json' });
+                   res.end(JSON.stringify(json));
+                   return
+                 }
+                 if (annonces.length < 1) {
+                   let json = { message: 'Aucune annonce ne correspond a vos critères ou fin de pagination' }
+                   res.writeHead(200, { 'Content-Type': 'application/json' });
+                   res.end(JSON.stringify(json));
+                   return
+                 }
+                
+                 let counter=countcat/parseInt(req.body.amount)
+           
+                 counter=Math.ceil(counter)
+                
+                 sendFinal={annonces:annonces,totaladamount:counter,categorie:req.body.categorie,useramount:req.body.amount,userpagination:pagination,totaladcount:countcat}
+                 console.log(sendFinal.totaladamount)
+                 let json = sendFinal
+                
+                 res.writeHead(200, { 'Content-Type': 'application/json' });
+                 res.end(JSON.stringify(json));
+ 
+               }).skip(offset).limit(limit).sort({DatePublication:-1})
+             })
+     
+           }
+           else {
+             let json = { message: 'Erreur requête invalide, catégorie introuvable' }
+             res.writeHead(500, { 'Content-Type': 'application/json' });
+             res.end(JSON.stringify(json));
+             return
+           }
+         }
 
-      }
+       }
 
-    }
-    else {
-      let json = { message: 'Erreur requête invalide' }
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(json));
-      return
-    }
-  })
+     }
+
+   }
+   else {
+     let json = { message: 'Erreur requête invalide' }
+     res.writeHead(500, { 'Content-Type': 'application/json' });
+     res.end(JSON.stringify(json));
+     return
+   }
+
+})
+   
+ 
 })
 //facebook webhook
 

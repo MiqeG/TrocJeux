@@ -5,36 +5,57 @@
   <form class="ui form simulaform" action="">
 
 
-  <h1><i class=" big teal calendar alternate outline icon"> </i> Nos Annonces</h1>
-  <div class="container" style="width:100%;"><div class="right floated"><select class="ui dropdown amountdropdown">
-    <option value="20">20</option>
-    <option value="50">50</option>
-    <option value="100">100</option>
-  </select><select class="ui dropdown catdropdown">
-      <option value="Toutes">Toutes</option>
-       <% categories.forEach(element => { %>
-      <option value="<%= element %>"><%= element %></option>
-      <% }); %>
-  </select></div>
-  <table id="adtable" class="ui teal table" style="max-width:945px;background-color:transparent">
-    <tbody>
-    </tbody>
-  </table>
-  <br>
-  <table>
-    <tbody>
-      <tr class="ui grid adcontainer" id="refresherDIv">
+    <h1><i class=" big teal calendar alternate outline icon"> </i> Nos Annonces</h1>
+    <div class="container" style="width:100%;">
+      <div class="right floated">
+          <div class="ui search indexsearch" style="width:fit-content;margin-right:0px;">
+              <div class="ui icon input">
+                <input class="prompt" id="indextitre" type="text" placeholder="Titre...">
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+              <div class="ui input">
+                  <input type="text" id="indexcodepostal" placeholder="Code-Postal...">
+                </div>
+            </div>
+          <div class='ui right floated'  style="width:fit-content;margin:0px;">
+              <select class="ui dropdown amountdropdown">
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <select class="ui dropdown catdropdown">
+                  <option value="Toutes">Toutes</option>
+                  <% categories.forEach(element => { %>
+                  <option value="<%= element %>"><%= element %></option>
+                  <% }); %>
+                </select>
+              
+          </div>
+          <div class="ui primary button cardbutton"  id="indexsearch">
+              <i class="search  icon"></i>
+             Rechercher
+            </div>
+      </div>
+      <table id="adtable" class="ui teal table" style="max-width:945px;background-color:transparent">
+        <tbody>
+        </tbody>
+      </table>
+      <br>
+      <table>
+        <tbody>
+          <tr class="ui grid adcontainer" id="refresherDIv">
 
-      </tr>
-    </tbody>
+          </tr>
+        </tbody>
 
-  </table>
-  <div class="field" id="pagdiv"></div>
-  <div class="ui pagination menu" id="mainpagepagination">
-     
+      </table>
+      <div class="field" id="pagdiv"></div>
+      <div class="ui pagination menu" id="mainpagepagination">
+
+      </div>
     </div>
-</div>
-</form>
+  </form>
 </div>
 
 
@@ -46,7 +67,40 @@
     $('.ui.basic.modal.ImageModal').modal('show')
     $('#ModalImage').attr('src', $(event).attr('src'))
   }
+  $('#indexcodepostal').click(function(){
+    if($('#indexcodepostal').val()=='CP introuvable'){
+      $('#indexcodepostal').val('')
+    }
+  })
+$('#indexcodepostal').change(function(){
 
+  $.ajax({
+      url: "/ajaxCodePostal",
+      type: "get", //send it through get method
+      data: {
+        options: 'CodePostal',
+        Ville:'',
+        CodePostal: $("#indexcodepostal").val(),
+        Pays: $("#Pays").val()
+      },
+      success: function (result) {
+        //Do Something
+      
+       if(result.CodePostal!=undefined&&result.CodePostal!=''){
+        $("#indexcodepostal").val(result.CodePostal);
+      
+       }else{
+        $("#indexcodepostal").val('CP introuvable')
+       }
+
+      },
+      error: function (err) {
+        $("#indexcodepostal").val('')
+        console.log('ajax cp query error')
+
+      }
+    });
+})
   function bigcards(entry) {
     $(entry).transition({
       animation: 'pulse',
@@ -56,38 +110,62 @@
       useFailSafe: true
     })
   }
+  function plusfunction(thing) {
+    let legthofinc = $('.inc').length
+    if (parseInt($($('.inc')[legthofinc - 1]).text()) == $('.inc').length) { return }
+    for (i = 0; i < $('.inc').length; i++) {
 
-  $('.ZoomImage').on('error',function(){
-   console.log('ok')
+
+      $($('.inc')[i]).text(parseInt($($('.inc')[i]).text()) + 1)
+    }
+  }
+  function minusfunction(thing) {
+    if (parseInt($($('.inc')[0]).text()) == 1) {
+      return
+    }
+    for (i = 0; i < $('.inc').length; i++) {
+
+      $($('.inc')[i]).text(parseInt($($('.inc')[i]).text()) - 1)
+
+    }
+  }
+  $('.ZoomImage').on('error', function () {
+    console.log('ok')
   })
-moment.locale('fr')
+  moment.locale('fr')
   ajaxads(1, 'Toutes', 20)
-    function ajaxads(pagination, categorie, amount) {
-     $('.simulaform').addClass('loading')
-      $.ajax({
-        url: '/adapi',
-        type: 'POST',
-        dataType: 'json',
-        data: { pagination: pagination, categorie: categorie, amount: amount },
-        success: function (data) {
-          $('.amountdropdown').dropdown('set selected', data.useramount);
-          $('.catdropdown').dropdown('set selected', data.categorie);
-          $('#refresherDIv').empty()
-            $('.simulaform').removeClass('loading')
-           console.log(data)
-          data.annonces.forEach(element => {
-            let finalstring = ''
-            let defaultText=$('.amountdropdown').dropdown('get value')
-          
-            element.Categories.forEach(cat => {
-              let str = ` <a class="" data-cat="${cat}" onclick="ajaxads(1,'${cat}',${defaultText})">${cat}</a>,`
-              finalstring += str
-            })
-            let date=moment(element.DatePublication, "YYYYMMDD").fromNow()
-            let link = '/?a=' + element._id
-            let mainImageSrc = 'pregistered/' + element.User_Id + '/' + element._id + '/' + element.UserImages[0]
-            let output = 
-            `<td class="centered" ><div style="height:500px;width:220px"><div style="height:420px;" class="ui  card" data-html="<div class='header'>User Rating</div>
+  function ajaxads(pagination, categorie, amount,titre,codepostal) {
+    if(codepostal==undefined){
+      codepostal=''
+    }
+    if(titre==undefined){
+      titre=''
+    }
+    $('.simulaform').addClass('loading')
+    $.ajax({
+      url: '/adapi',
+      type: 'POST',
+      dataType: 'json',
+      data: { pagination: pagination, categorie: categorie, amount: amount,codepostal:$('#indexcodepostal').val(),titre:$('#indextitre').val() },
+      success: function (data) {
+        $('.amountdropdown').dropdown('set selected', data.useramount);
+        $('.catdropdown').dropdown('set selected', data.categorie);
+        $('#refresherDIv').empty()
+        $('.simulaform').removeClass('loading')
+        console.log(data)
+        data.annonces.forEach(element => {
+          let finalstring = ''
+          let defaultText = $('.amountdropdown').dropdown('get value')
+
+          element.Categories.forEach(cat => {
+            let str = ` <a class="" data-cat="${cat}" onclick="ajaxads(1,'${cat}',${defaultText})">${cat}</a>,`
+            finalstring += str
+          })
+          let date = moment(element.DatePublication, "YYYYMMDD").fromNow()
+          let link = '/?a=' + element._id
+          let mainImageSrc = 'pregistered/' + element.User_Id + '/' + element._id + '/' + element.UserImages[0]
+          let output =
+            `<td class="centered" ><div style="height:500px;width:220px"><div style="height:450px;" class="ui  card" data-html="<div class='header'>User Rating</div>
               <div class='content'><div class='ui star rating'><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i><i class='active icon'></i>
                 <i class='active icon'></i></div></div>">
   <div class="image">
@@ -122,52 +200,60 @@ moment.locale('fr')
 
   
    </div></td>`
-            $('.adcontainer').append(output)
-            
-          });
-          $('.button').mouseenter(function () {
-                $(this).transition('pulse')
-                    ;
-            })
-            
-          console.log(data)
-         
-          $('#mainpagepagination').empty()
-          for (let index = 1; index <= data.totaladamount+1; index++) {
-            if(index>10||(index==1&&data.totaladamount>10)){
-              $('#mainpagepagination').prepend(`<div class="active item" id="minusser" onclick="minusfunction($('.disabled.item.identifier'))">-</div>`)
-              break;
-            }
-           else if(index>10||(index==data.totaladamount+1&&data.totaladamount>10)){
-              $('#mainpagepagination').append(`<div class="active item" id="plusser" onclick="plusfunction($('.disabled.item.identifier'))">+</div>`)
-              break;
-            }
-           else if(data.userpagination==index){
-              $('#mainpagepagination').append(`<a class="disabled item identifier inc" onclick="ajaxads($(this).text(),$('.catdropdown').dropdown('get value'),$('.amountdropdown').dropdown('get value'))">${index}</a>`)
-            }
-            else if(index<=data.totaladamount){
-              $('#mainpagepagination').append(`<a class="item identifier inc" onclick="ajaxads($(this).text(),$('.catdropdown').dropdown('get value'),$('.amountdropdown').dropdown('get value'))">${index}</a>`)
-            }
-            else{
-              break
-            }
-            
+          $('.adcontainer').append(output)
+
+        });
+        $('.button').mouseenter(function () {
+          $(this).transition('pulse')
+            ;
+        })
+
+        console.log(data)
+
+        $('#mainpagepagination').empty()
+        for (let index = 0; index <= data.totaladamount + 1; index++) {
+          if (index == 0) {
+
+            $('#mainpagepagination').prepend(`<div class=" item" id="minusser" onclick="minusfunction($('.disabled.item.identifier'))">-</div>`)
+
+
+
           }
-        },
-        error: function (err) {
-          $('.simulaform').removeClass('loading')
-        //  $('.amountdropdown').dropdown('set selected', data.useramount);
-          //$('.catdropdown').dropdown('set selected', data.categorie);
-          console.log(err.responseJSON.message)
+
+          else if (data.userpagination == index) {
+            $('#mainpagepagination').append(`<a class="disabled item identifier inc" onclick="ajaxads($(this).text(),$('.catdropdown').dropdown('get value'),$('.amountdropdown').dropdown('get value'),$('#indextitre').val(),$('#indexcodepostal').val())">${index}</a>`)
+          }
+          else if (index <= data.totaladamount) {
+            $('#mainpagepagination').append(`<a class="item identifier inc" onclick="ajaxads($(this).text(),$('.catdropdown').dropdown('get value'),$('.amountdropdown').dropdown('get value'),$('#indextitre').val(),$('#indexcodepostal').val())">${index}</a>`)
+          }
+          else if (index == data.totaladamount + 1) {
+
+
+            $('#mainpagepagination').append(`<div class=" item" id="plusser" onclick="plusfunction($('.disabled.item.identifier'))">+</div>`)
+
+          }
+          else {
+
+            break
+          }
 
         }
-      })
-    }
-   console.log($('.amountdropdown').dropdown('get value'))
-   $('#plusser').click(function(){
-     $('.')
-   })
- $('.catdropdown').dropdown({onChange: function() {ajaxads(1,$('.catdropdown').dropdown('get value'),$('.amountdropdown').dropdown('get value'))}})
+      },
+      error: function (err) {
+        $('.simulaform').removeClass('loading')
+        //  $('.amountdropdown').dropdown('set selected', data.useramount);
+        //$('.catdropdown').dropdown('set selected', data.categorie);
+        console.log(err.responseJSON.message)
+
+      }
+    })
+  }
+  $('#indexsearch').click(function(){
+    ajaxads(1, $('.catdropdown').dropdown('get value'), $('.amountdropdown').dropdown('get value'),$('#indextitire').val(),$('#indexcodepostal').val())
+  })
+  console.log($('.amountdropdown').dropdown('get value'))
+  $('#plusser').click(function () {
+    $('.')
+  })
   
-    $('.amountdropdown').dropdown({ onChange: function() {ajaxads(1,$('.catdropdown').dropdown('get value'),$('.amountdropdown').dropdown('get value'))}});
 </script>

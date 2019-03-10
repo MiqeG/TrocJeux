@@ -128,7 +128,7 @@
         $('.result:first-child').on('error', function () {
             $(this).unbind("error").attr("src", "assets/img/error.gif");
         })
-        $('.ui.search')
+        $('.ui.search.searchapi')
             .search({
                 apiSettings: {
                     url: 'searchapi/?q={query}' + '&t=' + $('.item.searchOption.active.selected').attr('data-option')
