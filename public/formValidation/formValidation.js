@@ -92,7 +92,7 @@ $(document).ready(function () {
               prompt: 'Veuillez entrer un mot de passe'
             },
             {
-              type: 'regExp[^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,10}$]',
+              type: 'regExp[^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,26}$]',
               prompt: 'Veuillez entrer un mot de passe valide, minimum 8 caractères,une minuscule,une majuscule,un chiffre et un caractère spécial'
             },
             {
@@ -174,7 +174,11 @@ $(document).ready(function () {
         },
       }
     })
+
+
+ 
   function ajaxGO(options) {
+   
     $.ajax({
       url: "/ajaxCodePostal",
       type: "get", //send it through get method
@@ -207,12 +211,13 @@ $(document).ready(function () {
   }
 
   $("#CodePostal").change(function (event) {
-
+    
     ajaxGO('CodePostal')
   });
   $("#Ville").change(function (event) {
-
+    
 
     ajaxGO('Ville')
   })
+
 });
